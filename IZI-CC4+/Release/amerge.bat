@@ -1,0 +1,1 @@
+mergebin ../../IZI-Boot-sam/Release/IZI-Boot-sam.bin IZI-CC4+.bin firmware.bin 544 IZI-CC4+.hex output IZI-CC4+

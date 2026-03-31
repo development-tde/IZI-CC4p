@@ -1,0 +1,1 @@
+IziVersionBuilder.exe ..\version.c IZI-CC4+.hex
