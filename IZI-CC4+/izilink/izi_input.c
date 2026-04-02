@@ -24,6 +24,8 @@
 #define TIME_CLIP_DEBOUNCE			2400		// 40 * 60 = 1 minute
 #define TIME_HANDLED_DEBOUNCE		(TIME_CLIP_DEBOUNCE + 1)
 
+#define EXT_DEBOUNCE				(TIME_SEC/25)		// 40ms debounce for external input (in practice this will be between 30ms and 40ms)
+
 // Globals
 trace_level_t izi_input_trace_lvl = IZI_INPUT_DFLT_TRACE_LVL;
 
@@ -32,6 +34,11 @@ static uint16_t iziinput_switchoffdbc = 0;
 static uint16_t iziinput_switchclicks = 0;
 static bool iziinput_switchactive = false;
 static char text[LOG_TEXT_SIZE + 8];
+
+static uint16_t iziinput_extdbc = 0;
+static bool iziinput_extactive = false;
+static uint16_t iziinput_extoffdbc = 0;
+
 
 static uint8_t iziinput_level, iziinput_sw_mode = 0, iziinput_sw_select;
 static uint8_t iziinput_logall_dflt_timer = 0;
@@ -175,5 +182,32 @@ void IziInput_10ms(TimerHandle_t xTimer)
 			}
 		}
 	}
+	
+	if(gpio_get_pin_level(EXT) == 0)
+	{
+		if(iziinput_extdbc < TIME_CLIP_DEBOUNCE)	// Clip at on minute
+			iziinput_extdbc++;
+		if(iziinput_extdbc == EXT_DEBOUNCE)		// 40ms active
+		{
+			IziPlus_ContactReport(1);
+			iziinput_extactive = true;
+			iziinput_extoffdbc = 0;
+			IZI_INPUT_TRACE_INFO("Ext input active\r\n");
+			State_SetAttentionInfo(COLOR_GREEN, COLOR_BLUE, 2, 2);
+		}
+	}
+	else if(++iziinput_extoffdbc >= 2 && iziinput_extactive)		// Accept one low before resetting debounce, and handle ext functions
+	{
+		iziinput_extdbc = 0;
+		iziinput_extactive = false;
+		IziPlus_ContactReport(0);
+		IZI_INPUT_TRACE_INFO("Ext input inactive\r\n");
+	}
+	else if(!iziinput_extactive)
+		iziinput_extdbc = 0;
 }
 
+uint8_t IziInput_GetExtInput()
+{
+	return iziinput_extactive ? 1 : 0;
+}

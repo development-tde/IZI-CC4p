@@ -39,11 +39,14 @@
 #define DAC_MIN_VIRTUAL			512						// Minimum DAC value that we want to match other IZI+ products, but can't be met due to bad DAC
 #define DAC_MAX					4095					// Maximum DAC value for OK measurement
 
-#define POWER_MAX				40000					// Max in power in mW
+#define POWER_MAX				40000					// Max in power in mW per channel
 
 #define VIN_WARNING_DBC			4						// Debounce for vin warning (per 10 ms)
 #define VLED_OC_WARNING_DBC		4						// Debounce for open circuit warning (per 10 ms)
 #define VLED_SC_ERROR_DBC		40						// Debounce for short circuit error (per 10 ms) (should be larger than PWM_LVL_OC_DETECT)
+
+#define VLED_MIN_MV				12000					// Min Led voltage supported
+#define VLED_MAX_MV				40500					// Max Led voltage supported
 
 #define SAFETY_OFF_OPEN_MS		1000					// 1 sec off when open output detected
 #define SAFETY_OFF_SHORT_MS		5000					// 5 sec off when short on output detected
@@ -54,7 +57,9 @@
 
 #define STEPDOWN_TIMEROS_TICKS		10					// Amount of ticks for 10 msecond timer
 
-#define MIN_VIN_MV				30000					// Stop operation if vin lower than 37V (38V on again when 1V hysteresis)
+#define MIN_VLED_MV				3000					// Minimal Vled voltage (also used for short detection)
+#define MAX_VIN_VLED_DIFF_MV	4000					// Max 4000 mV difference between Vin and Vled for proper outcome of calculation
+#define MIN_VIN_MV				30000					// Stop operation if vin lower than 30V (31V on again when 1V hysteresis)
 #define WARN_VIN_MV				30000					// Warn user for low supply (on at 40V when hysteresis is 1V)
 #define MIN_VIN_HYST_MV			1000					// Hysteresis when on again
 #define MAX_VIN_MV				52000					// High vin detected
@@ -190,7 +195,7 @@ volatile stepdown_control_t stepdown_ctrl_chx[MAX_DIM_CHANNELS] =
 		.vled_last_func = Adc_GetVled1LastRaw,
 		.set_current = Stepdown_SetCurrentCh1,
 		//.temp_limit = IziPlus_Module_TempLimit_Chan1,
-		//.issafety_off = IziPlus_Module_IsSafetyOff_Ch1,
+		.issafety_off = IziPlus_Module_IsSafetyOff_Ch1,
 		.channel_enable = StepDown_ChannelEnable_Ch1,
 		.is_16b = true,
 		.tcc_freq = TCCX_CLOCK_FREQ_EN_CH1,
@@ -203,7 +208,7 @@ volatile stepdown_control_t stepdown_ctrl_chx[MAX_DIM_CHANNELS] =
 		.vled_last_func = Adc_GetVled2LastRaw,
 		.set_current = Stepdown_SetCurrentCh2,
 		//.temp_limit = IziPlus_Module_TempLimit_Chan2,
-		//.issafety_off = IziPlus_Module_IsSafetyOff_Ch2,
+		.issafety_off = IziPlus_Module_IsSafetyOff_Ch2,
 		.channel_enable = StepDown_ChannelEnable_Ch2,
 		.is_16b = false,
 		.tcc_freq = TCCX_CLOCK_FREQ_EN_CH2,
@@ -216,7 +221,7 @@ volatile stepdown_control_t stepdown_ctrl_chx[MAX_DIM_CHANNELS] =
 		.vled_last_func = Adc_GetVled3LastRaw,
 		.set_current = Stepdown_SetCurrentCh3,
 		//.temp_limit = IziPlus_Module_TempLimit_Chan3,
-		//.issafety_off = IziPlus_Module_IsSafetyOff_Ch3,
+		.issafety_off = IziPlus_Module_IsSafetyOff_Ch3,
 		.channel_enable = StepDown_ChannelEnable_Ch3,
 		.is_16b = true,
 		.tcc_freq = TCCX_CLOCK_FREQ_EN_CH3,
@@ -229,7 +234,7 @@ volatile stepdown_control_t stepdown_ctrl_chx[MAX_DIM_CHANNELS] =
 		.vled_last_func = Adc_GetVled4LastRaw,
 		.set_current = Stepdown_SetCurrentCh4,
 		//.temp_limit = IziPlus_Module_TempLimit_Chan3,
-		//.issafety_off = IziPlus_Module_IsSafetyOff_Ch4,
+		.issafety_off = IziPlus_Module_IsSafetyOff_Ch4,
 		.channel_enable = StepDown_ChannelEnable_Ch4,
 		.is_16b = false,
 		.tcc_freq = TCCX_CLOCK_FREQ_EN_CH4,
@@ -1003,14 +1008,57 @@ void StepDown_CheckLimits()
 	if(IziPlus_Module_PowerCheck())
 	{
 		if(++power_high_warn_prs >= 10)							// More than 100ms too high?
-			State_SetWarning(STATE_WARNING_POWER1_HIGH);
+			State_SetWarning(STATE_WARNING_POWER_TOT_HIGH);
 	}
 	else
 	{
 		if(power_high_warn_prs > 0)
 		{
 			if(--power_high_warn_prs == 0)
-				State_ClearWarning(STATE_WARNING_POWER1_HIGH);
+				State_ClearWarning(STATE_WARNING_POWER_TOT_HIGH);
+		}
+	}
+	
+	for(int i = 0; i < MAX_DIM_CHANNELS; i++)
+	{
+		volatile stepdown_control_t *ctrl = &stepdown_ctrl_chx[i];
+		
+		uint16_t vledx = ctrl->vled_func();
+		if(vledx > (vin - MAX_VIN_VLED_DIFF_MV) && ctrl->level_curve16 > PWM_LVL_OC_DETECT)
+		{
+			if(++ctrl->oc_warning_prs >= VLED_OC_WARNING_DBC)
+			{
+				State_SetWarning(STATE_WARNING_OUTPUT1_OPEN + i);
+				ctrl->oc_warning_prs = VLED_OC_WARNING_DBC * 32;		// Do times 32, new try will not clear the error when vled is not stable yet
+				IziPlus_Module_SafetyOff_Chx(i, SAFETY_OFF_OPEN_MS);		// 1 sec off
+			}
+		}
+		else if(!IziPlus_Module_IsSafetyOff_Chx(i))
+		{
+			if(ctrl->oc_warning_prs > 0)
+			{
+				//OS_TRACE_ERROR("Vled1: %d\r\n", vled1);
+				if(--ctrl->oc_warning_prs == 0)
+					State_ClearWarning(STATE_WARNING_OUTPUT1_OPEN + i);
+			}
+		}
+	
+		if(vledx < MIN_VLED_MV && (ctrl->level_curve16 > PWM_LVL_SHORT_DETECT))
+		{
+			if(++ctrl->sc_error_prs >= VLED_SC_ERROR_DBC)
+			{
+				State_SetError(STATE_ERROR_OUTPUT1_SHORT + i);
+				ctrl->sc_error_prs = VLED_SC_ERROR_DBC;
+				IziPlus_Module_SafetyOff_Chx(i, SAFETY_OFF_SHORT_MS);		// 5 sec off
+			}
+		}
+		else if(!IziPlus_Module_IsSafetyOff_Chx(i))
+		{
+			if(ctrl->sc_error_prs > 0)
+			{
+				ctrl->sc_error_prs = 0;
+				State_ClearError(STATE_ERROR_OUTPUT1_SHORT + i);
+			}
 		}
 	}
 }
@@ -1020,22 +1068,20 @@ void StepDown_CheckLimits()
 #define CONST_B		14UL
 #define CONST_C		407UL
 #define CONST_D		12UL
-#define CONST_E		182500UL
-#define CONST_F		67UL
-#define CONST_G		3341UL
+#define CONST_E		169100UL
+#define CONST_F		62UL
+#define CONST_G		3096UL
 #define CONST_H		0UL
 #define CONST_I		3478UL
 #define CONST_J		407UL
-#define CONST_K		210UL
-#define CONST_L		67UL
-#define CONST_M		3341UL
+#define CONST_K		195UL
+#define CONST_L		62UL
+#define CONST_M		3096UL
 #define CONST_N		0UL
-#define CONST_O		4994UL
+#define CONST_O		5390UL
 #define CONST_P		0UL
 #define CONST_Q		255UL
 #define CONST_U		5UL
-
-#define MIN_VLED_MV				3000					// Minimal Vled voltage (also used for short detection)
 
 static uint8_t vled_prs = 0;
 
@@ -1164,10 +1210,10 @@ void Stepdown_SetCurrentCalc(uint16_t mA, volatile  stepdown_control_t *ctrl, ui
 	if(ctrl->dac_data > dac_power)
 	{
 		ctrl->dac_data = dac_power;
-		State_SetWarning(ctrl->channel == 1 ? STATE_WARNING_POWER1_HIGH : STATE_WARNING_POWER2_HIGH);
+		State_SetWarning(STATE_WARNING_POWER1_HIGH + chan_idx);
 	}
 	else
-		State_ClearWarning(ctrl->channel == 1 ? STATE_WARNING_POWER1_HIGH : STATE_WARNING_POWER2_HIGH);
+		State_ClearWarning(STATE_WARNING_POWER1_HIGH + chan_idx);
 	
 	//ctrl->dac_data_max = dac_max;
 	
@@ -1252,6 +1298,40 @@ bool StepDown_SleepCheck()
 	return true;
 }
 
+void StepDown_CheckCalibration()
+{
+	for(int i = 0; i < MAX_DIM_CHANNELS; i++)
+	{
+		volatile stepdown_control_t *ctrl = &stepdown_ctrl_chx[i];
+		if((ctrl->level > 0) || (ctrl->sc_error_prs > 0))				// Don't store anything when one of the channels is on
+			return;
+	}
+	
+	bool store = false;
+	for(int i = 0; i < MAX_DIM_CHANNELS; i++)
+	{
+		volatile stepdown_control_t *ctrl = &stepdown_ctrl_chx[i];
+		
+		if(ctrl->vled_max_store_mv > 0)
+		{
+			int32_t diff = (int32_t)appCalibData->vled_max_mv[i] - (int32_t)ctrl->vled_max_store_mv;
+			if((abs(diff) > 2000) || (ctrl->force_calibration == 2))		// More than 2V diff
+			{
+				appCalibData->pwm_offset[i] = ctrl->pwm_offset;
+				appCalibData->vled_max_mv[i] = ctrl->vled_max_store_mv;
+				ctrl->force_calibration = 0;
+				store = true;
+			}
+			ctrl->vled_max_store_mv = 0;
+		}
+	}
+	if(store)
+	{
+		AppCalib_Set();				// Set can be seen if level is not 0!!
+		State_SetAttentionInfo(COLOR_AQUA, COLOR_BLUE, 2, 1);
+	}
+}
+
 uint8_t StepDown_GetDutyPercentage(uint8_t chan_idx)
 {
 	if(chan_idx >= MAX_DIM_CHANNELS)
@@ -1281,6 +1361,8 @@ void StepDown_Logging()
 			State_SetAttentionInfo(COLOR_GREEN, COLOR_AQUA, 2, 1);
 		last_log_ticks = xTaskGetTickCount();
 	}
+	
+	StepDown_CheckCalibration();
 }
 
 bool do_ff = false;
@@ -1586,16 +1668,34 @@ static void StepDown_SetPwm(volatile stepdown_control_t *ctrl, uint8_t chan_idx)
 	int32_t level_pwm_chx_t = ctrl->pwm_new;			// Store calculated value
 	
 	uint8_t sel = ctrl->timing_sel > 0 ? 0 : 1;
-	if(ctrl->level_curve == 0 || StepDown_IsClosed())	// Check if not in safety situation, if so, set to 0
+	if(ctrl->level_curve == 0 || StepDown_IsClosed() || ctrl->issafety_off())	// Check if not in safety situation, if so, set to 0
 	{
 		ctrl->pwm_new = 0;
 		ctrl->channel_enable(false, chan_idx);
+		if(ctrl->vled_max_session > 0)
+		{
+			if(!ctrl->issafety_off())
+			{
+				uint16_t vled_max_mv = ADC_RAW_MV(ctrl->vled_max_session);			// Set new calibration for fixture on at low level (so LED on at < 5%)
+				if((vled_max_mv > VLED_MIN_MV) && (vled_max_mv <= VLED_MAX_MV))
+				{
+					ctrl->pwm_offset = vled_max_mv >> 11;
+					if(ctrl->pwm_offset < 0)
+						ctrl->pwm_offset = 0;
+					
+					ctrl->vled_max_store_mv = vled_max_mv;
+					if(ctrl->force_calibration == 1)
+						ctrl->force_calibration = 2;					// More than 2V diff, store in flash
+				}
+				else
+					ctrl->pwm_offset = 10;
+			}
+			ctrl->vled_max_session = 0;
+			ctrl->vled_max_session_prs = 0;
+		}
 	}
 	else
 	{
-		if(chan_idx == 0)
-			stepdown_ctrl_chx[0].test = ctrl->level_curve >> 16;
-		
 		ctrl->freq_new = StepDown_GetFrequency(ctrl->level_curve);	// Get the frequency for the channel (in case of WD and TW the master value will be used, this is not good for the resolution, but ok for the sound as in annoying hearable frequencies, in WD white and blue will start with 22kHz, beware that the DAC also used the master)
 		
 		for(int i = 0; i < MAX_TABLE; i++)
@@ -1639,7 +1739,11 @@ static void StepDown_SetPwm(volatile stepdown_control_t *ctrl, uint8_t chan_idx)
 			if(ctrl->dac_data_real < ctrl->dac_data)
 				pwm_new = (pwm_new * ctrl->dac_data_real)/ctrl->dac_data;			// Compensate diff that DAC couldn't do
 #endif
-				
+			pwm_new = pwm_new + (((ctrl->pwm_offset)) - ((ctrl->level_curve16 * (ctrl->pwm_offset)) / 65536UL));
+			
+			if(pwm_new > ctrl->per[sel][i])
+				pwm_new = ctrl->per[sel][i] - 1;
+			
 			pwm_new = ctrl->per[sel][i] - pwm_new;
 							
 			// Precharge
@@ -1844,6 +1948,9 @@ static void StepDown_SetControl(uint16_t level_chx, volatile  stepdown_control_t
 	}
 	ctrl->level_curve_raw = ctrl->level_curve;
 	
+	if(ctrl->issafety_off())
+		ctrl->level_curve = 0;														// Set too 0 when safety is on
+	
 	// Todo: TW/WD modes
 	//ctrl->level_curve = IziPlus_Module_GetTable(chan_idx, ctrl->level_curve);
 	//ctrl->test2 = ctrl->level_curve;
@@ -2006,6 +2113,13 @@ static void StepDown_Task(void *p)
 	Analog_Init();
 	stepdown_task_fast = false;
 	
+	for(int i = 0; i < MAX_DIM_CHANNELS; i++)
+	{
+		volatile stepdown_control_t *ctrl = &stepdown_ctrl_chx[i];
+		ctrl->pwm_offset = appCalibData->pwm_offset[i];
+		ctrl->force_calibration = 0;
+	}
+	
 	while(true)
 	{
 		uint16_t delay = stepdown_task_fast ? (STEPDOWN_TIMEROS_TICKS / 4) : (STEPDOWN_TIMEROS_TICKS/2);
@@ -2040,11 +2154,11 @@ static void StepDown_Task(void *p)
 		boot_data.last_code = '$';
 		if(!I2Cx_Check())
 		{
-			State_SetWarning(STATE_WARNING_EMITTER_COM);
+			State_SetError(STATE_ERROR_HW_ERROR);
 			stepdown_i2c_warning_time = 200;				// Delay so warning is shortly shown
 		}
 		else if(stepdown_i2c_warning_time == 0)
-			State_ClearWarning(STATE_WARNING_EMITTER_COM);
+			State_ClearError(STATE_ERROR_HW_ERROR);
 		else
 			stepdown_i2c_warning_time--;
 		

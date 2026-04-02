@@ -27,7 +27,7 @@
 #define MAX_INTERN_TEMP				104						// Max 104 degrees intern (104 = off, from 104 - TEMP_LIMIT_START_OFFSET reduce will start)
 #define MAX_NTC_TEMP				90						// Max 90 degrees intern (90 = off, from 90 - TEMP_LIMIT_START_OFFSET reduce will start)
 #define POWER_MAX_RESOLUTION		TEMP_MAX_RESOLUTION		// 0.05% per 100ms
-#define POWER_MAX_CC4				160000					// in 1mW
+#define POWER_MAX_CC4				120000					// in 1mW = 120Watt (while 4x40W)
 
 #define MODE_CTRL_UNKNOWN		0
 #define MODE_CTRL_RGBW			1
@@ -65,6 +65,8 @@ uint16_t power_master = TEMP_MAX_RESOLUTION;
 uint32_t iziplus_maxpower;
 
 uint8_t timer_prs = 0;
+
+volatile uint16_t safety_time_ch[MAX_DIM_CHANNELS] = { 0, 0, 0, 0 };						// Time to overrule channel level to 0 for safety
 
 //uint8_t monitor_timer_idx_prs = 0;
 uint8_t monitor_idx = 0, monitor_idx_ext = 0;
@@ -396,11 +398,17 @@ bool IziPlus_Module_PowerCheck()
  */
 void IziPlus_Module_Timer100ms()
 {
-	if(++module_identify_prs >= 10)
+	if(++module_identify_prs >= 50)
 		module_identify_prs = 0;
 	if(overrule_time_chx > 0)
 		overrule_time_chx--;
 		
+	for(int i = 0; i < MAX_DIM_CHANNELS; i++)
+	{
+		if(safety_time_ch[i] > 0)
+			safety_time_ch[i]--;
+	}
+	
 	if(module_reset_report > 0)
 	{
 		if(--module_reset_report == 0)
@@ -433,10 +441,30 @@ void IziPlus_Module_Timer100ms()
 		{
 			if(module_identify_mode == IZIPLUS_IDENTMODE_BLINK)
 			{
-				if(module_identify_prs == 1)
-					IziPlus_Module_Overrule_Ch1234(0xFFFFFFFF, 500, PRIO_OVERRULE_HIGH);
-				else if(module_identify_prs == 6)
-					IziPlus_Module_Overrule_Ch1234(0, 500, PRIO_OVERRULE_HIGH);
+				if(module_identify_prs <= 1)
+					IziPlus_Module_Overrule_Ch1234(0xFFFFFFFF, 400, PRIO_OVERRULE_HIGH);
+				else if(module_identify_prs == 4)
+					IziPlus_Module_Overrule_Ch1234(0, 200, PRIO_OVERRULE_HIGH);
+					
+				if(module_identify_prs == 6)
+					IziPlus_Module_Overrule_Chx(0, 0xFF, 200, PRIO_OVERRULE_HIGH);
+				else if(module_identify_prs == 8)
+					IziPlus_Module_Overrule_Chx(0, 0, 200, PRIO_OVERRULE_HIGH);
+			
+				if(module_identify_prs == 10 || module_identify_prs == 14)
+					IziPlus_Module_Overrule_Chx(1, 0xFF, 200, PRIO_OVERRULE_HIGH);
+				else if(module_identify_prs == 12 || module_identify_prs == 16)
+					IziPlus_Module_Overrule_Chx(1, 0, 200, PRIO_OVERRULE_HIGH);
+					
+				if(module_identify_prs == 18 || module_identify_prs == 22 || module_identify_prs == 26)
+					IziPlus_Module_Overrule_Chx(2, 0xFF, 200, PRIO_OVERRULE_HIGH);
+				else if(module_identify_prs == 20 || module_identify_prs == 24 || module_identify_prs == 28)
+					IziPlus_Module_Overrule_Chx(2, 0, 200, PRIO_OVERRULE_HIGH);
+					
+				if(module_identify_prs == 30 || module_identify_prs == 34 || module_identify_prs == 38 || module_identify_prs == 42)
+					IziPlus_Module_Overrule_Chx(3, 0xFF, 200, PRIO_OVERRULE_HIGH);
+				else if(module_identify_prs == 32 || module_identify_prs == 36 || module_identify_prs == 40 || module_identify_prs == 44)
+					IziPlus_Module_Overrule_Chx(3, 0, module_identify_prs == 44 ? 600 : 200, PRIO_OVERRULE_HIGH);
 			}
 			else if(module_identify_mode == IZIPLUS_IDENTMODE_SPOTON)
 			{
@@ -446,7 +474,7 @@ void IziPlus_Module_Timer100ms()
 			{
 				for(int i = 0; i < MAX_DIM_CHANNELS; i++)
 				{
-					uint8_t level = (iziplus_data_comquality() * (uint8_t)(0xFFFFFFFF >> (i * 8))) / 100;
+					uint8_t level = (iziplus_data_comquality() * 0xFF) / 100;
 					IziPlus_Module_Overrule_Chx(i, level, 1000, PRIO_OVERRULE_HIGH);
 				}
 			}
@@ -516,6 +544,43 @@ void IziPlus_Module_Timer100ms()
 	}
 }
 
+bool IziPlus_Module_IsSafetyOff_Ch1()
+{
+	return (safety_time_ch[0] > 0);
+}
+
+bool IziPlus_Module_IsSafetyOff_Ch2()
+{
+	return (safety_time_ch[1] > 0);
+}
+
+bool IziPlus_Module_IsSafetyOff_Ch3()
+{
+	return (safety_time_ch[2] > 0);
+}
+
+bool IziPlus_Module_IsSafetyOff_Ch4()
+{
+	return (safety_time_ch[3] > 0);
+}
+
+bool IziPlus_Module_IsSafetyOff_Chx(uint8_t idx)
+{
+	if(idx >= MAX_DIM_CHANNELS)
+		return false;
+	
+	return safety_time_ch[idx] > 0;
+}
+
+void IziPlus_Module_SafetyOff_Chx(uint8_t idx, uint16_t time)
+{
+	if(idx >= MAX_DIM_CHANNELS)
+		return;
+		
+	safety_time_ch[idx] = time / 100;
+}
+
+
 void IziPlus_Module_IdentifySync()
 {
 	module_identify_prs = 0;
@@ -543,17 +608,18 @@ uint8_t IziPlus_Module_MonitorValue(uint8_t ref, uint8_t *bfr)
 		*bfr = iziplus_data_comquality();
 		return 1;
 	}
-	else if(ref == 26)				// Power per 0.333mV (div 3)
+	else if(ref == 26)				// Power per 0.01V (div 100)
 	{
-		uint32_t power = StepDown_GetPower() / 100;
+		uint32_t power = StepDown_GetPower() / 10;
 		bfr[0] = (uint8_t)(power >> 0);
 		bfr[1] = (uint8_t)(power >> 8);
-		return 1;
+		stepdown_ctrl_chx[0].test = power;
+		return 2;
 	}
 	else if(ref == 23)				// Output (100% is no limiter active)
 	{
 		uint8_t temp_limit = intern_temp_master > ntc_temp_master ? (ntc_temp_master/(TEMP_MAX_RESOLUTION/100)) : (intern_temp_master/(TEMP_MAX_RESOLUTION/100));
-		uint8_t power_limit = State_IsWarningActive(STATE_WARNING_POWER1_HIGH) ? (power_master/(TEMP_MAX_RESOLUTION/100)) : 100;
+		uint8_t power_limit = State_IsWarningActive(STATE_WARNING_POWER_TOT_HIGH) ? (power_master/(TEMP_MAX_RESOLUTION/100)) : 100;
 		*bfr = power_limit < temp_limit ? power_limit : temp_limit;
 		if(module_monitor[3] < appLogData->min_output)
 			appLogData->min_output = module_monitor[3];
@@ -564,9 +630,14 @@ uint8_t IziPlus_Module_MonitorValue(uint8_t ref, uint8_t *bfr)
 		*bfr = Adc_GetTemperature();
 		return 1;
 	}
-	else if(ref == 3)				// LED Temp
+	else if(ref == 5)				// NTC1
 	{
 		*bfr = Adc_GetNtc();
+		return 1;
+	}
+	else if(ref == 6)				// NTC2
+	{
+		*bfr = Adc_GetNtc2();
 		return 1;
 	}
 	else if(ref == 13)				// Max Intern Temp
@@ -574,9 +645,19 @@ uint8_t IziPlus_Module_MonitorValue(uint8_t ref, uint8_t *bfr)
 		*bfr = Adc_GetTemperatureMax();
 		return 1;
 	}
-	else if(ref == 12)				// Max LED emitter Temp
+	else if(ref == 14)				// Max NTC1 Temp
 	{
 		*bfr = Adc_GetNtcMax();
+		return 1;
+	}
+	else if(ref == 15)				// Max NTC2 Temp
+	{
+		*bfr = Adc_GetNtc2Max();
+		return 1;
+	}
+	else if(ref == 25)
+	{	
+		*bfr = IziInput_GetExtInput();
 		return 1;
 	}
 	else if(ref == 32)				// Up Time (time the device is powered and running) in seconds
@@ -601,8 +682,14 @@ uint8_t IziPlus_Module_MonitorValue(uint8_t ref, uint8_t *bfr)
 		{
 			if(error == STATE_ERROR_VIN_LOW)
 				state = 132;
-			else if(error == STATE_ERROR_OUTPUT_SHORT)
-				state = 136;
+			if(error == STATE_ERROR_OUTPUT1_SHORT)
+				state = 138;
+			else if(error == STATE_ERROR_OUTPUT2_SHORT)
+				state = 140;
+			else if(error == STATE_ERROR_OUTPUT3_SHORT)
+				state = 142;
+			else if(error == STATE_ERROR_OUTPUT4_SHORT)
+				state = 144;
 			else if(error == STATE_ERROR_VIN_LOW)
 				state = 132;
 			else if(error == STATE_ERROR_HW_ERROR)
@@ -611,20 +698,30 @@ uint8_t IziPlus_Module_MonitorValue(uint8_t ref, uint8_t *bfr)
 		int8_t warning = State_GetHighestWarning();
 		if(warning >= 0 && state == 0)
 		{
-			if(warning == STATE_WARNING_TEMP_HIGH)
+			if(warning == STATE_WARNING_OUTPUT1_OPEN)
+				state = 137;
+			else if(warning == STATE_WARNING_OUTPUT2_OPEN)
+				state = 139;
+			else if(warning == STATE_WARNING_OUTPUT3_OPEN)
+				state = 141;
+			else if(warning == STATE_WARNING_OUTPUT4_OPEN)
+				state = 143;
+			else if(warning == STATE_WARNING_TEMP_HIGH)
 				state = 128;
 			else if(warning == STATE_WARNING_NTC1_HIGH)
 				state = 130;
+			else if(warning == STATE_WARNING_NTC2_HIGH)
+				state = 131;
 			else if(warning == STATE_WARNING_SUPPLY_HIGH)
 				state = 133;
 			else if(warning == STATE_WARNING_BAD_COMQUAL)
 				state = 148;
-			else if(warning == STATE_WARNING_POWER1_HIGH)
-				state = 2;
+			else if(warning == STATE_WARNING_POWER_TOT_HIGH || warning == STATE_WARNING_POWER1_HIGH || warning == STATE_WARNING_POWER2_HIGH || warning == STATE_WARNING_POWER3_HIGH || warning == STATE_WARNING_POWER4_HIGH)
+				state = 160;
 			else if(warning == STATE_WARNING_UART_OVW_WARN)
 				state = 151;
 			else if(warning == STATE_WARNING_VIN_LOW)
-				state = 156;
+				state = 132;
 			else if(warning == STATE_WARNING_REBOOT_NEEDED)
 				state = 157;
 		}
@@ -1023,10 +1120,12 @@ bool IziPlus_Module_IsOverruled()
 
 bool IziPlus_Module_Test(uint8_t idx, uint32_t time, uint8_t prio)
 {
-	IziPlus_Module_Overrule_Ch1234(0xFFFFFFFF, time, prio);
-	idx++;
 	if(idx >= MAX_DIM_CHANNELS)
+	{
+		IziPlus_Module_Overrule_Ch1234(0xFFFFFFFF, time, prio);
 		return true;
+	}
+	IziPlus_Module_Overrule_Ch1234(0x000000FF << (idx * 8), time, prio);
 	return false;
 }
 

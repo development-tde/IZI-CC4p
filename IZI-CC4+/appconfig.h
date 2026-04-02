@@ -65,11 +65,9 @@ typedef struct appcalib_s {
 	uint32_t crc;
 	uint32_t ref;										// time of file (used in code as first after crc, so do not move)
 	uint32_t version;
-	uint16_t pwm1_offset;
-	uint16_t pwm2_offset;
-	uint16_t vled1_max_mv;
-	uint16_t vled2_max_mv;
-	char dummy[APPCALIB_SECTOR_SIZE-20];				// Filler (page), check AppCalib_Set if larger than 128 (is page size)
+	uint16_t pwm_offset[4];
+	uint16_t vled_max_mv[4];
+	char dummy[APPCALIB_SECTOR_SIZE-28];				// Filler (page), check AppCalib_Set if larger than 128 (is page size)
 } appcalib_t;
 
 #define APPLOG_SECTOR_SIZE		128
@@ -83,11 +81,12 @@ typedef struct applog_s {
 	uint32_t active_sec;
 	uint16_t intern_temp_max;
 	uint16_t ntc_temp_max;
+	uint16_t ntc2_temp_max;
 	uint16_t supply_min;
 	uint16_t change_count;
 	uint8_t min_output;
 	uint32_t active_ch_sec[4];							// Time time the channel was on (on > 0%)
-	char dummy[APPLOG_SECTOR_SIZE-51];					// Filler (page), check AppCalib_Set if larger than 64 (is page size)
+	char dummy[APPLOG_SECTOR_SIZE-53];					// Filler (page), check AppCalib_Set if larger than 64 (is page size)
 } applog_t;
 
 extern appcalib_t *appCalibData;

@@ -296,6 +296,7 @@
       <Value>USART2_INT_PRIO=5</Value>
       <Value>xUSART2_DMA</Value>
       <Value>DEBUG_UART=0</Value>
+      <Value>USE_CONTACT_TRIGGER</Value>
     </ListValues>
   </armgcc.compiler.symbols.DefSymbols>
   <armgcc.compiler.directories.IncludePaths>
@@ -461,6 +462,7 @@
       <Value>USART2_INT_PRIO=5</Value>
       <Value>xUSART2_DMA</Value>
       <Value>DEBUG_UART=0</Value>
+      <Value>USE_CONTACT_TRIGGER</Value>
     </ListValues>
   </armgcc.compiler.symbols.DefSymbols>
   <armgcc.compiler.directories.IncludePaths>

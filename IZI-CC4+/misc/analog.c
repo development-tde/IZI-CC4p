@@ -53,8 +53,8 @@
 #define ANALOG_TIMEROS_TICKS		125
 #define ANALOG_SECOND_PRS			(1000/ANALOG_TIMEROS_TICKS)				// Second prescaler in timer
 
-#define ADC_CHANNELS_MAX			7				// 7 values measured
-#define ADC2_CHANNELS_MAX			2				// 2 values measured
+#define ADC_CHANNELS_MAX			8				// 8 values measured
+#define ADC2_CHANNELS_MAX			3				// 3 values measured
 
 volatile bool analog_vcc_calibrate = false;
 
@@ -94,11 +94,11 @@ TimerHandle_t  xAnalog_Timer = NULL;
 
 static volatile int channel_index = 0, res; 
 
-const uint8_t adc_channels[ADC_CHANNELS_MAX] = { ADC_CH1_INPUTCTRL_MUXPOS, ADC_CH2_INPUTCTRL_MUXPOS, ADC_CH3_INPUTCTRL_MUXPOS, ADC_CH4_INPUTCTRL_MUXPOS, ADC_TINT1_INPUTCTRL_MUXPOS, ADC_TINT2_INPUTCTRL_MUXPOS, ADC_INPUTCTRL_MUXPOS_SCALEDIOVCC };
-const uint8_t adc_filters[ADC_CHANNELS_MAX] = { 3, 3, 3, 3, 6, 6, 3 };
+const uint8_t adc_channels[ADC_CHANNELS_MAX] = { ADC_CH1_INPUTCTRL_MUXPOS, ADC_CH2_INPUTCTRL_MUXPOS, ADC_CH3_INPUTCTRL_MUXPOS, ADC_CH4_INPUTCTRL_MUXPOS, ADC_TINT1_INPUTCTRL_MUXPOS, ADC_TINT2_INPUTCTRL_MUXPOS, ADC_INPUTCTRL_MUXPOS_SCALEDIOVCC, EXT_NTC2_INPUTCTRL_MUXPOS };
+const uint8_t adc_filters[ADC_CHANNELS_MAX] = { 3, 3, 3, 3, 6, 6, 3, 6 };
 	
-const uint8_t adc2_channels[ADC2_CHANNELS_MAX] = { EXT_NTC_INPUTCTRL_MUXPOS, ADC_VIN_INPUTCTRL_MUXPOS };
-const uint8_t adc2_filters[ADC2_CHANNELS_MAX] = { 6, 6 };
+const uint8_t adc2_channels[ADC2_CHANNELS_MAX] = { EXT_NTC_INPUTCTRL_MUXPOS, ADC_VIN_INPUTCTRL_MUXPOS, ADC_INPUTCTRL_MUXPOS_SCALEDIOVCC };
+const uint8_t adc2_filters[ADC2_CHANNELS_MAX] = { 6, 6, 3 };
 
 // ADC1
 #define AD_CHAN_1			0
@@ -108,15 +108,17 @@ const uint8_t adc2_filters[ADC2_CHANNELS_MAX] = { 6, 6 };
 #define AD_CHAN_TINT1		4
 #define AD_CHAN_TINT2		5
 #define AD_CHAN_IOVCC		6
+#define AD_CHAN_NTC2		7
 
 // ADC2
 #define AD2_CHAN_NTC		0
 #define AD2_CHAN_VSUPPLY	1
-
+#define AD2_CHAN_IOVCC		2
 
 // Proto
 void Analog_125ms(TimerHandle_t xTimer);
 void Analog_Apply_Gain_Correction(uint16_t measured);
+void Analog_Apply_Gain_Correction2(uint16_t measured);
 
 #ifdef PCB_REV6	
 extern const int8_t ntc_table[512];
@@ -178,6 +180,11 @@ void Analog_Init()
 	gpio_set_pin_function(ADC_TINT1, ADC_TINT1_AD);
 	gpio_set_pin_direction(ADC_TINT2, GPIO_DIRECTION_OFF);
 	gpio_set_pin_function(ADC_TINT2, ADC_TINT2_AD);
+	
+	//gpio_set_pin_direction(EXT_NTC, GPIO_DIRECTION_OFF);
+	//gpio_set_pin_function(EXT_NTC, EXT_NTC_AD);
+	gpio_set_pin_direction(EXT_NTC2, GPIO_DIRECTION_OFF);
+	gpio_set_pin_function(EXT_NTC2, EXT_NTC2_AD);
 
 	// Input voltage
 	gpio_set_pin_direction(ADC_VIN, GPIO_DIRECTION_OFF);
@@ -366,6 +373,8 @@ void ADC2_INT1(void)
 			adc2_channel_val[adc2_channel_sel] = calcVal;
 			adc2_channel_last[adc2_channel_sel] = newVal;
 		}
+		if(adc2_channel_sel == AD_CHAN_IOVCC && analog_vcc_calibrate)
+			Analog_Apply_Gain_Correction2(adc2_channel_val[AD2_CHAN_IOVCC]);
 		if(++adc2_channel_sel >= ADC2_CHANNELS_MAX)
 			adc2_channel_sel = 0;
 		
@@ -403,6 +412,27 @@ void Analog_Apply_Gain_Correction(uint16_t measured)
 	//while (ADC_REG->SYNCBUSY.bit.CTRLB); // Wait for sync if required
 }
 
+void Analog_Apply_Gain_Correction2(uint16_t measured)
+{
+	if (measured == 0) return; // avoid division by zero
+
+	// Gain = reference / measured
+	// GAINCORR = gain * 0x2000 = (ADC_IO_VCC_TICKS * 0x800) / measured
+	uint32_t gaincorr = ((uint32_t)ADC_IO_VCC_TICKS * 0x800U + (measured / 2U)) / measured; // +0.5 rounding
+
+	// Clip to valid 12-bit signed range (0x0000–0x3FFF)
+	if (gaincorr > 0x0FFFU) gaincorr = 0x0FFFU;
+
+	//stepdown_ctrl_chx[0].test = gaincorr;
+	
+	// Apply correction
+	ADC2_REG->GAINCORR.reg = (uint16_t)gaincorr;
+	ADC2_REG->OFFSETCORR.reg = 0;      // Optional: only if you also want offset correction
+	ADC2_REG->CTRLB.bit.CORREN = 1;    // Enable correction
+
+	//while (ADC_REG->SYNCBUSY.bit.CTRLB); // Wait for sync if required
+}
+
 void Analog_125ms(TimerHandle_t xTimer)
 {
 	//stepdown_ctrl_chx[0].test = adc_calibrate_offset;
@@ -411,9 +441,19 @@ void Analog_125ms(TimerHandle_t xTimer)
 		analog_vcc_calibrate = true;
 		
 		uint8_t temp = Adc_GetNtc();
+		if(temp < 17)
+			temp = 0;
 		if(appLogData->ntc_temp_max < temp || appLogData->ntc_temp_max == 255)
 		{
 			appLogData->ntc_temp_max = temp;
+			appLogData->change_count++;
+		}
+		temp = Adc_GetNtc2();
+		if(temp < 17)
+			temp = 0;
+		if(appLogData->ntc2_temp_max < temp || appLogData->ntc2_temp_max == 255)
+		{
+			appLogData->ntc2_temp_max = temp;
 			appLogData->change_count++;
 		}
 		
@@ -516,6 +556,21 @@ uint16_t Adc_GetNtcRaw()
 	return adc2_channel_val[AD2_CHAN_NTC];
 }
 
+uint16_t Adc_GetNtc2()
+{
+	return  ntc_table[((adc_channel_val[AD_CHAN_NTC2]) >> 3) & 0x01FF];	//AT30TSE_DEGREES(ntc);
+}
+
+uint8_t Adc_GetNtc2Max()
+{
+	return appLogData->ntc2_temp_max;
+}
+
+uint16_t Adc_GetNtc2Raw()
+{
+	return adc_channel_val[AD_CHAN_NTC2];
+}
+
 uint16_t Adc_GetVled1Raw()
 {
 	return (adc_channel_val[AD_CHAN_1]);
@@ -587,37 +642,36 @@ uint16_t Analog_GetProcessorTemperature()
 
 const uint8_t ntc_table[512] =
 {
-	255,	255,	255,	255,	255,	255,	195,	186,	178,	171,	166,	161,	156,	152,	148,	145,
-	142,	139,	136,	133,	131,	129,	127,	125,	123,	121,	119,	117,	116,	114,	113,	112,
-	110,	109,	108,	107,	105,	104,	103,	102,	101,	100,	99,	98,	97,	96,	96,	95,
-	94,	93,	92,	92,	91,	90,	89,	89,	88,	87,	87,	86,	85,	85,	84,	84,
-	83,	82,	82,	81,	81,	80,	80,	79,	79,	78,	78,	77,	77,	76,	76,	75,
-	75,	74,	74,	74,	73,	73,	72,	72,	72,	71,	71,	70,	70,	70,	69,	69,
-	69,	68,	68,	67,	67,	67,	66,	66,	66,	65,	65,	65,	64,	64,	64,	64,
-	63,	63,	63,	62,	62,	62,	61,	61,	61,	61,	60,	60,	60,	60,	59,	59,
-	59,	58,	58,	58,	58,	57,	57,	57,	57,	56,	56,	56,	56,	56,	55,	55,
-	55,	55,	54,	54,	54,	54,	53,	53,	53,	53,	53,	52,	52,	52,	52,	52,
-	51,	51,	51,	51,	51,	50,	50,	50,	50,	50,	49,	49,	49,	49,	49,	48,
-	48,	48,	48,	48,	48,	47,	47,	47,	47,	47,	47,	46,	46,	46,	46,	46,
-	45,	45,	45,	45,	45,	45,	45,	44,	44,	44,	44,	44,	44,	43,	43,	43,
-	43,	43,	43,	42,	42,	42,	42,	42,	42,	42,	41,	41,	41,	41,	41,	41,
-	41,	40,	40,	40,	40,	40,	40,	40,	39,	39,	39,	39,	39,	39,	39,	39,
-	38,	38,	38,	38,	38,	38,	38,	37,	37,	37,	37,	37,	37,	37,	37,	36,
-	36,	36,	36,	36,	36,	36,	36,	35,	35,	35,	35,	35,	35,	35,	35,	35,
-	34,	34,	34,	34,	34,	34,	34,	34,	34,	33,	33,	33,	33,	33,	33,	33,
-	33,	33,	32,	32,	32,	32,	32,	32,	32,	32,	32,	31,	31,	31,	31,	31,
-	31,	31,	31,	31,	31,	30,	30,	30,	30,	30,	30,	30,	30,	30,	30,	29,
-	29,	29,	29,	29,	29,	29,	29,	29,	29,	28,	28,	28,	28,	28,	28,	28,
-	28,	28,	28,	27,	27,	27,	27,	27,	27,	27,	27,	27,	27,	27,	26,	26,
-	26,	26,	26,	26,	26,	26,	26,	26,	26,	25,	25,	25,	25,	25,	25,	25,
-	25,	25,	25,	25,	25,	24,	24,	24,	24,	24,	24,	24,	24,	24,	24,	24,
-	24,	23,	23,	23,	23,	23,	23,	23,	23,	23,	23,	23,	23,	22,	22,	22,
-	22,	22,	22,	22,	22,	22,	22,	22,	22,	22,	21,	21,	21,	21,	21,	21,
-	21,	21,	21,	21,	21,	21,	21,	20,	20,	20,	20,	20,	20,	20,	20,	20,
-	20,	20,	20,	20,	19,	19,	19,	19,	19,	19,	19,	19,	19,	19,	19,	19,
-	19,	18,	18,	18,	18,	18,	18,	18,	18,	18,	18,	18,	18,	18,	18,	17,
-	17,	17,	17,	17,	17,	17,	17,	17,	17,	17,	17,	17,	17,	17,	16,	16,
-	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	16,	15,	15,	15,
-	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	15,	14,	14,	0,	0
-
+	255,	255,	255,	245,	224,	209,	197,	188,	180,	173,	168,	162,	158,	154,	150,	146,
+	143,	140,	138,	135,	133,	130,	128,	126,	124,	122,	121,	119,	117,	116,	114,	113,
+	112,	110,	109,	108,	107,	106,	105,	104,	102,	102,	101,	100,	99,	98,	97,	96,
+	95,	94,	94,	93,	92,	91,	91,	90,	89,	89,	88,	87,	87,	86,	85,	85,
+	84,	84,	83,	83,	82,	82,	81,	80,	80,	79,	79,	78,	78,	78,	77,	77,
+	76,	76,	75,	75,	74,	74,	74,	73,	73,	72,	72,	72,	71,	71,	70,	70,
+	70,	69,	69,	69,	68,	68,	68,	67,	67,	67,	66,	66,	66,	65,	65,	65,
+	64,	64,	64,	64,	63,	63,	63,	62,	62,	62,	62,	61,	61,	61,	60,	60,
+	60,	60,	59,	59,	59,	59,	58,	58,	58,	58,	57,	57,	57,	57,	56,	56,
+	56,	56,	56,	55,	55,	55,	55,	54,	54,	54,	54,	54,	53,	53,	53,	53,
+	53,	52,	52,	52,	52,	52,	51,	51,	51,	51,	51,	50,	50,	50,	50,	50,
+	49,	49,	49,	49,	49,	49,	48,	48,	48,	48,	48,	47,	47,	47,	47,	47,
+	47,	46,	46,	46,	46,	46,	46,	45,	45,	45,	45,	45,	45,	45,	44,	44,
+	44,	44,	44,	44,	43,	43,	43,	43,	43,	43,	43,	42,	42,	42,	42,	42,
+	42,	42,	41,	41,	41,	41,	41,	41,	41,	40,	40,	40,	40,	40,	40,	40,
+	40,	39,	39,	39,	39,	39,	39,	39,	38,	38,	38,	38,	38,	38,	38,	38,
+	37,	37,	37,	37,	37,	37,	37,	37,	36,	36,	36,	36,	36,	36,	36,	36,
+	36,	35,	35,	35,	35,	35,	35,	35,	35,	35,	34,	34,	34,	34,	34,	34,
+	34,	34,	34,	33,	33,	33,	33,	33,	33,	33,	33,	33,	32,	32,	32,	32,
+	32,	32,	32,	32,	32,	32,	31,	31,	31,	31,	31,	31,	31,	31,	31,	31,
+	30,	30,	30,	30,	30,	30,	30,	30,	30,	30,	29,	29,	29,	29,	29,	29,
+	29,	29,	29,	29,	28,	28,	28,	28,	28,	28,	28,	28,	28,	28,	28,	27,
+	27,	27,	27,	27,	27,	27,	27,	27,	27,	27,	27,	26,	26,	26,	26,	26,
+	26,	26,	26,	26,	26,	26,	25,	25,	25,	25,	25,	25,	25,	25,	25,	25,
+	25,	25,	24,	24,	24,	24,	24,	24,	24,	24,	24,	24,	24,	24,	24,	23,
+	23,	23,	23,	23,	23,	23,	23,	23,	23,	23,	23,	22,	22,	22,	22,	22,
+	22,	22,	22,	22,	22,	22,	22,	22,	21,	21,	21,	21,	21,	21,	21,	21,
+	21,	21,	21,	21,	21,	21,	20,	20,	20,	20,	20,	20,	20,	20,	20,	20,
+	20,	20,	20,	19,	19,	19,	19,	19,	19,	19,	19,	19,	19,	19,	19,	19,
+	19,	19,	18,	18,	18,	18,	18,	18,	18,	18,	18,	18,	18,	18,	18,	18,
+	17,	17,	17,	17,	17,	17,	17,	17,	17,	17,	17,	17,	17,	17,	17,	16,
+	16,	16,	16,	16,	16,	16,	16,	16,	16,	0,	0,	0,	0,	0,	0,	0			// First values 0-d, in case offset or gain make the value something lower
 };

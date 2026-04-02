@@ -125,8 +125,8 @@ void AppCalib_Default()
 	calib->ref = 0;
 	calib->version = CALIB_VERSION;
 	
-	calib->vled1_max_mv = calib->vled2_max_mv = 0;
-	calib->pwm1_offset = calib->pwm2_offset = 100;
+	memset(calib->vled_max_mv, 0, sizeof(calib->vled_max_mv));
+	memset(calib->pwm_offset, 0, sizeof(calib->pwm_offset));
 	
 	uint16_t crc = Crc16((uint8_t *)&calib->ref, (uint16_t)(sizeof(appconfig_t) - sizeof(calib->crc)), 0xFFFF);
 	calib->crc = crc;
@@ -285,11 +285,11 @@ void AppLog_Default(bool all)
 	
 	if(all)
 		log->operating_sec = log->active_sec = 0;
-	log->intern_temp_max = log->ntc_temp_max = 0;
+	log->intern_temp_max = log->ntc_temp_max = log->ntc2_temp_max = 0;
 	log->supply_min = 55000;		// 55V
 	log->min_output = 100;			// 100%
 	log->change_count = 0;
-	memset(log->active_ch_sec, 0, 4);
+	memset(log->active_ch_sec, 0, sizeof(log->active_ch_sec));
 	
 	uint16_t crc = Crc16((uint8_t *)&log->ref, (uint16_t)(sizeof(applog_t) - sizeof(log->crc)), 0xFFFF);
 	log->crc = crc;

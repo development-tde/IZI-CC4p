@@ -105,30 +105,39 @@ void State_SetLed(uint8_t color_idx, uint16_t fade_ms);
 char *StateErrorText[STATE_ERROR_DEFINED] =
 {
 	"No production data",			// STATE_ERROR_NO_SERIAL
-	"No emitter",					// STATE_ERROR_NO_EMITTER
 	"Hardware error",				// STATE_ERROR_HW_ERR
 	"No communication",				// STATE_ERROR_NO_COM
 	"Vin too low",					// STATE_ERROR_VIN_LOW
 	"Output 1 short",				// STATE_ERROR_OUTPUT1_SHORT
+	"Output 2 short",				// STATE_ERROR_OUTPUT2_SHORT
+	"Output 3 short",				// STATE_ERROR_OUTPUT3_SHORT
+	"Output 4 short",				// STATE_ERROR_OUTPUT4_SHORT
 	"NTC error",					// STATE_ERROR_NTC
-	"Emitter data",					// STATE_ERROR_EMITTER_DATA
 	"Incomplete com"				// STATE_ERROR_INCOMPLETE_COM
 };
 
 char *StateWarningText[STATE_WARNING_DEFINED] =
 {
 	"Output 1 open",				// STATE_WARNING_OUTPUT1_OPEN
-	"Emitter temp fail",			// STATE_WARNING_TEMP_FAIL
+	"Output 2 open",				// STATE_WARNING_OUTPUT2_OPEN
+	"Output 3 open",				// STATE_WARNING_OUTPUT3_OPEN
+	"Output 4 open",				// STATE_WARNING_OUTPUT4_OPEN
+	"Reboot needed",				// STATE_WARNING_REBOOT_NEEDED
+	"Bad com quality",				// STATE_WARNING_BAD_COMQUAL
+	"Supply too low",				// STATE_WARNING_VIN_LOW
 	"Intern temperature high",		// STATE_WARNING_TEMP_HIGH
 	"NTC1 temperature too high",	// STATE_WARNING_NTC1_HIGH
-	"Emitter com",					// STATE_WARNING_EMITTER_COM
-	"Bad com quality",				// STATE_WARNING_BAD_COMQUAL
+	"NTC2 temperature too high",	// STATE_WARNING_NTC2_HIGH
+	"Total power too high",			// STATE_WARNING_POWER_TOT_HIGH
 	"Supply voltage too high",		// STATE_WARNING_SUPPLY_HIGH
-	"Power ch1 too high",			// STATE_WARNING_POWER1_HIGH
-	"Power ch2 too high",					// STATE_WARNING_POWER2_HIGH
-	"Timing warning"				// STATE_WARNING_TIMING_WARN
-	"DMX data incomplete"			// STATE_WARNING_DMX_WARN
-	"Uart overflow"					// STATE_WARNING_UART_OVW_WARN
+	"Timing warning",				// STATE_WARNING_TIMING_WARN
+	"Uart overflow",				// STATE_WARNING_UART_OVW_WARN
+	"DMX warning",					// STATE_WARNING_DMX_WARN
+	"",
+	"Power limit Ch1",				// STATE_WARNING_POWER1_HIGH
+	"Power limit Ch2",				// STATE_WARNING_POWER2_HIGH
+	"Power limit Ch3",				// STATE_WARNING_POWER3_HIGH
+	"Power limit Ch4",				// STATE_WARNING_POWER4_HIGH
 };
 
 const char *StateStartInfoText[STATE_STARTINFO_DEFINED] =

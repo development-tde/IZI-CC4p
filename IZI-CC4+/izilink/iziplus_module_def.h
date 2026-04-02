@@ -225,6 +225,12 @@ uint8_t IziPlus_Module_ConfigValue(uint8_t ref, uint8_t *bfr);
 uint8_t *IziPlus_Module_GetConfig();
 uint8_t IziPlus_Module_SetConfigValue(uint8_t ref, uint8_t *bfr, uint8_t len);
 uint8_t IziPlus_Module_SetConfigByIndex(uint8_t idx, uint8_t *bfr, uint8_t len);
-uint8_t IziPlus_Module_CCT_Level(uint8_t kelvin_centi);
+
+bool IziPlus_Module_IsSafetyOff_Ch1();
+bool IziPlus_Module_IsSafetyOff_Ch2();
+bool IziPlus_Module_IsSafetyOff_Ch3();
+bool IziPlus_Module_IsSafetyOff_Ch4();
+bool IziPlus_Module_IsSafetyOff_Chx(uint8_t idx);
+void IziPlus_Module_SafetyOff_Chx(uint8_t idx, uint16_t time);
 
 #endif /* IZIPLUS_MODULE_DEF_H_ */

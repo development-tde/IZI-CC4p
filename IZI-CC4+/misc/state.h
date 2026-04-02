@@ -9,35 +9,44 @@
 #define STATE_H_
 
 #define STATE_ERROR_MAX				32
-#define STATE_ERROR_DEFINED			9
+#define STATE_ERROR_DEFINED			11
 
 #define STATE_ERROR_NO_SERIAL		0			// No production data
-#define STATE_ERROR_NO_EMITTER		1			// No emitter (table)
 #define STATE_ERROR_HW_ERROR		2			// Hardware error (DCBM1 error)
 #define STATE_ERROR_NO_COM			3			// No communication (but is configured)
 #define STATE_ERROR_VIN_LOW			4			// Vin too low
-#define STATE_ERROR_OUTPUT_SHORT	5			// Output short circuit
-#define STATE_ERROR_NTC				6			// NTC error (internal Tint1 or Tint2)
-#define STATE_ERROR_EMITTER_DATA	7			// Emitter data corrupt
-#define STATE_ERROR_EMITTER_TYPE	8			// Emitter type not known
-#define STATE_ERROR_INCOMPLETE_COM	9			// Incomplete communication (but is configured, but no tokens received)
+#define STATE_ERROR_OUTPUT1_SHORT	5			// Output1 short circuit
+#define STATE_ERROR_OUTPUT2_SHORT	6			// Output2 short circuit
+#define STATE_ERROR_OUTPUT3_SHORT	7			// Output3 short circuit
+#define STATE_ERROR_OUTPUT4_SHORT	8			// Output4 short circuit
+#define STATE_ERROR_NTC				9			// NTC error (internal Tint1 or Tint2)
+#define STATE_ERROR_INCOMPLETE_COM	10			// Incomplete communication (but is configured, but no tokens received)
 // Increase STATE_ERROR_DEFINED when error added
 
 #define STATE_WARNING_MAX			32
-#define STATE_WARNING_DEFINED		11
+#define STATE_WARNING_DEFINED		20
 
-#define STATE_WARNING_REBOOT_NEEDED	0		// Reboot needed after production or emitter write
-#define STATE_WARNING_VIN_LOW		1		// Vin is too low for optimal operation
-#define STATE_WARNING_TEMP_HIGH		2		// Intern temperature high, reducing power
-#define STATE_WARNING_NTC1_HIGH		3		// NTC1 temp high, reducing power
-#define STATE_WARNING_EMITTER_COM	4		// Emitter COM reset
+#define STATE_WARNING_OUTPUT1_OPEN	0		// Output1 open (no load)
+#define STATE_WARNING_OUTPUT2_OPEN	1		// Output2 open (no load)
+#define STATE_WARNING_OUTPUT3_OPEN	2		// Output3 open (no load)
+#define STATE_WARNING_OUTPUT4_OPEN	3		// Output4 open (no load)
+#define STATE_WARNING_REBOOT_NEEDED	4		// Reboot needed after production or emitter write
 #define STATE_WARNING_BAD_COMQUAL	5		// Bad Com quality (less than 35% response)
-#define STATE_WARNING_SUPPLY_HIGH	6		// Supply voltage high
-#define STATE_WARNING_POWER1_HIGH	7		// Power consumption over 36W
-#define STATE_WARNING_POWER2_HIGH	8		// Power consumption over 40W on channel 2
-#define STATE_WARNING_TIMING_WARN	9		// Timing in task not stable
-#define STATE_WARNING_DMX_WARN		10		// Light data frame does not contain enough data
-#define STATE_WARNING_UART_OVW_WARN	11		// Uart overflow error
+#define STATE_WARNING_VIN_LOW		6		// Vin is too low for optimal operation
+#define STATE_WARNING_TEMP_HIGH		7		// Intern temperature high, reducing power
+#define STATE_WARNING_NTC1_HIGH		8		// NTC1 temp high, reducing power
+#define STATE_WARNING_NTC2_HIGH		9		// NTC2 temp high, reducing power
+#define STATE_WARNING_POWER_TOT_HIGH	10		// Power consumption total too high
+#define STATE_WARNING_SUPPLY_HIGH	11		// Supply voltage high
+#define STATE_WARNING_TIMING_WARN	12		// Timing in task not stable
+#define STATE_WARNING_UART_OVW_WARN	13		// Uart overflow error
+#define STATE_WARNING_DMX_WARN		14		// Light data frame does not contain enough data
+
+// 0x0F when displaying
+#define STATE_WARNING_POWER1_HIGH	16
+#define STATE_WARNING_POWER2_HIGH	17
+#define STATE_WARNING_POWER3_HIGH	18
+#define STATE_WARNING_POWER4_HIGH	19
 // Increase STATE_WARNING_DEFINED when error added
 
 #define STATE_STARTINFO_MAX		32

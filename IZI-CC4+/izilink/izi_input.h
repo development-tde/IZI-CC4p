@@ -28,5 +28,6 @@
 // Proto
 void IziInput_Init();
 void IziInput_10ms();
+uint8_t IziInput_GetExtInput();
 
 #endif /* IZI_INPUT_H_ */

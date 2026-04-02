@@ -90,6 +90,10 @@ struct stepdown_control_s {
 	uint16_t vled_max_session;	// Max Vled since off (when at least 50%)
 	uint16_t vled_max_session_prs;	// Max Vled since off (when at least 50%)
 	uint16_t dac_scale_max;
+	uint16_t oc_warning_prs;
+	uint16_t sc_error_prs;
+	int16_t pwm_offset;
+	uint8_t force_calibration;
 	bool update_timer;
 } __attribute__((packed));
 

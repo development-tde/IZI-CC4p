@@ -457,8 +457,8 @@ void system_init(void)
 	
 	
 	// Set pin direction to output
-	gpio_set_pin_direction(EXT, GPIO_DIRECTION_OUT);
-
+	gpio_set_pin_direction(EXT, GPIO_DIRECTION_IN);
+	gpio_set_pin_pull_mode(EXT, GPIO_PULL_UP);
 	gpio_set_pin_function(EXT, GPIO_PIN_FUNCTION_OFF);
 	
 	
