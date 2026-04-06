@@ -558,7 +558,7 @@ Disassembly of section .text:
  69c:	4770      	bx	lr
  69e:	bf00      	nop
  6a0:	40001000 	.word	0x40001000
- 6a4:	02102e02 	.word	0x02102e02
+ 6a4:	02602e02 	.word	0x02602e02
 
 000006a8 <_oscctrl_init_referenced_generators>:
  6a8:	4b17      	ldr	r3, [pc, #92]	; (708 <_oscctrl_init_referenced_generators+0x60>)

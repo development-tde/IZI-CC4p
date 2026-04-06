@@ -1051,6 +1051,8 @@ uint16_t IziPlus_Module_GetDim(uint8_t chan_idx)
 		val = (lvl << 8) | lvl;
 	}
 	
+	iziplus_level_chx[chan_idx] = val;
+	
 	return val;
 }
 

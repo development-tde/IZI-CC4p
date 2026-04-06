@@ -7,5 +7,5 @@
 
 #include "version.h"
 
-const version_u __attribute__ ((section (".firmwareinfosection"))) version = { .v.major = 1, .v.minor = 0, .v.build = 4  };
+const version_u __attribute__ ((section (".firmwareinfosection"))) version = { .v.major = 1, .v.minor = 0, .v.build = 5  };
 	

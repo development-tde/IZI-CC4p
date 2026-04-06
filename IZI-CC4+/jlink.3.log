@@ -1,12 +1,12 @@
-T6D2C 4654:000.128   SEGGER J-Link V8.78 Log File
-T6D2C 4654:000.640   DLL Compiled: Oct 16 2025 08:27:36
-T6D2C 4654:000.640   Logging started @ 2026-04-02 08:27
-T6D2C 4654:000.640   Process: C:\Program Files (x86)\Atmel\Studio\7.0\atbackend\atbackend.exe
-T6D2C 4654:000.640 - 6562.284ms 
-T6D2C 4654:003.712 JLINK_ExecCommand("Device = ATSAME51J18A", ...). 
-T6D2C 4654:005.248   Device "ATSAME51J18A" selected.
-T6D2C 4654:009.856 - 5.862ms returns 0x00
-T6D2C 4654:035.968 JLINK_Close()
-T6D2C 4654:045.696 - 9.928ms
-T6D2C 4654:045.696   
-T6D2C 4654:045.696   Closed
+T54CC 598:266.432   SEGGER J-Link V8.78 Log File
+T54CC 598:266.496   DLL Compiled: Oct 16 2025 08:27:36
+T54CC 598:266.496   Logging started @ 2026-04-02 08:48
+T54CC 598:266.560   Process: C:\Program Files (x86)\Atmel\Studio\7.0\atbackend\atbackend.exe
+T54CC 598:266.560 - 341608.384ms 
+T54CC 598:288.192 JLINK_ExecCommand("Device = ATSAME51J18A", ...). 
+T54CC 598:289.536   Device "ATSAME51J18A" selected.
+T54CC 598:294.016 - 5.747ms returns 0x00
+T54CC 598:336.320 JLINK_Close()
+T54CC 598:350.208 - 13.924ms
+T54CC 598:350.272   
+T54CC 598:350.272   Closed
