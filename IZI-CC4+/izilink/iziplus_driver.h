@@ -25,6 +25,15 @@ struct iziplus_cmd_delayed_req_s {
 
 typedef struct iziplus_cmd_delayed_req_s iziplus_cmd_delayed_req_t;
 
+typedef struct iziplus_nwtemp_s {
+	// General
+	uint32_t pan_id;
+	uint8_t pl_frequency;
+	uint8_t pl_rate;
+	uint8_t short_id;
+	uint8_t pl_txlevel;
+} iziplus_nwtemp_t;
+
 #define IZI_PREFIX	"[izi]\t"
 
 #ifndef  IZI_TRACE_BUILD_LVL

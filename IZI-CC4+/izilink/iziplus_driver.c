@@ -103,10 +103,15 @@ static uint16_t iziplus_firmware_allow_time = 0;
 static uint16_t iziplus_sleep_time = 0;	
 
 static uint16_t iziplus_state_version_report = 4;
+#ifdef EMITTER_SUPPORT
+static emitter_fixture_def emitter_fixdef_copy;
+#endif
 extern boot_t boot_data;
 
 static uint16_t iziplus_state_checkhw_prs = 0, iziplus_state_error_time = 0;
 static bool iziplus_state_checkhw_first = false;
+
+static iziplus_nwtemp_t iziplus_nwtemp;
 
 /*******************************************************************************
  * Proto
@@ -123,6 +128,8 @@ void IziPlus_HandleRxIdle();
  ******************************************************************************/
 void IziPlus_Init()
 {
+	iziplus_nwtemp.pan_id = 0;
+	
 	xIziPlus_DelaySemaphore = xSemaphoreCreateBinary();
 	if(xIziPlus_DelaySemaphore == NULL){
 		while (1) {
@@ -338,12 +345,20 @@ static void IziPlus_Task(void *p)
 		}*/
 		
 		boot_data.last_code = 'C';
+#ifdef DMX_RDM		
+		if(iziplus_com_active_timer == 0 && xTaskGetTickCount() > 10000 && !Dmx_Valid())		// Wait at least 10 sec after power-up
+#else
 		if(iziplus_com_active_timer == 0 && xTaskGetTickCount() > 10000)		// Wait at least 10 sec after power-up
+#endif				
 			State_SetError(STATE_ERROR_NO_COM);
 		else
 			State_ClearError(STATE_ERROR_NO_COM);
-		
+
+#ifdef DMX_RDM			
+		if(iziplus_com_tokens == 0 && xTaskGetTickCount() > 30000 && !Dmx_Valid())				// Wait at least 30 sec after power-up (else error will appear after long scan)
+#else
 		if(iziplus_com_tokens == 0 && xTaskGetTickCount() > 30000)				// Wait at least 30 sec after power-up (else error will appear after long scan)
+#endif		
 			State_SetError(STATE_ERROR_INCOMPLETE_COM);
 		else
 			State_ClearError(STATE_ERROR_INCOMPLETE_COM);
@@ -354,7 +369,46 @@ static void IziPlus_Task(void *p)
 
 bool IziPlus_LightDataOk()
 {
+#ifdef DMX_RDM	
+	return (iziplus_lightdata_ok && iziplus_com_active_timer > 0) || Dmx_Valid();
+#else
 	return (iziplus_lightdata_ok && iziplus_com_active_timer > 0);
+#endif		
+}
+
+uint32_t iziplus_data_get_panid()
+{
+	if(iziplus_nwtemp.pan_id > 0)
+		return iziplus_nwtemp.pan_id;
+	return appConfig->pan_id;
+}
+
+uint8_t iziplus_data_get_frequency()
+{
+	if(iziplus_nwtemp.pan_id > 0)
+		return iziplus_nwtemp.pl_frequency;
+	return appConfig->pl_frequency;
+}
+
+uint8_t iziplus_data_get_rate()
+{
+	if(iziplus_nwtemp.pan_id > 0)
+		return iziplus_nwtemp.pl_rate;
+	return appConfig->pl_rate;
+}
+
+uint8_t iziplus_data_get_short_id()
+{
+	if(iziplus_nwtemp.pan_id > 0)
+		return iziplus_nwtemp.short_id;
+	return appConfig->short_id;
+}
+
+uint8_t iziplus_data_get_tx_level()
+{
+	if(iziplus_nwtemp.pan_id > 0)
+		return iziplus_nwtemp.pl_txlevel;
+	return appConfig->pl_txlevel;
 }
 
 void IziPlus_HandleRx(iziplus_data_frame_t *frame, bool handled)
@@ -363,7 +417,7 @@ void IziPlus_HandleRx(iziplus_data_frame_t *frame, bool handled)
 	if(handled)
 	{
 		bool cmd_ok = false;
-		if((frame->pan_id & IZIPLUS_PANID_BASE_SERIAL) == (appConfig->pan_id & IZIPLUS_PANID_BASE_SERIAL))			// Recognize lower part of pan id? Missed a discover?
+		if((frame->pan_id & IZIPLUS_PANID_BASE_SERIAL) == (iziplus_data_get_panid() & IZIPLUS_PANID_BASE_SERIAL))			// Recognize lower part of pan id? Missed a discover?
 		{
 			iziplus_network_data_t *nw_data = ((iziplus_network_data_t *)frame->data);
 			if(frame->destination == 0)
@@ -374,7 +428,7 @@ void IziPlus_HandleRx(iziplus_data_frame_t *frame, bool handled)
 					GEN_TRACE_INFO("Join Pan: %08X, our PAN: %08X\r\n", frame->pan_id, appConfig->pan_id);
 					
 					izi_version_u version = { .v.major = IZIPLUS_PROTOCOL_VERSION_MAJOR, .v.minor = IZIPLUS_PROTOCOL_VERSION_MINOR };
-					uint16_t nw_length = iziplus_networkframe_joinnetworkaction(iziplus_nwdata, nw_data->seqid, appConfig->pan_id, version);
+					uint16_t nw_length = iziplus_networkframe_joinnetworkaction(iziplus_nwdata, nw_data->seqid, iziplus_data_get_panid(), version);
 					iziplus_dataframe_response(frame->pan_id, IZIPLUS_DEVTYPE, (uint8_t *)iziplus_nwdata, nw_length);
 				}
 			}
@@ -424,10 +478,11 @@ void IziPlus_HandleRx(iziplus_data_frame_t *frame, bool handled)
 			}
 		}
 	}
-	else if(nw_data->cmd == IZIPLUS_CMD_ASSIGN_NETWORK && nw_data->msgtype.u.frame_type == IZIPLUS_FRAMETYPE_REQ)
+	else if(nw_data->cmd == IZIPLUS_CMD_ASSIGN_NETWORK && (nw_data->msgtype.u.frame_type == IZIPLUS_FRAMETYPE_REQ || nw_data->msgtype.u.frame_type == IZIPLUS_FRAMETYPE_NOT))
 	{
 		if(nw_data->msgtype.u.cmd_type == IZIPLUS_CMDTYPE_WRITE)
 		{
+			//State_SetAttentionInfo(COLOR_MAGENTA, COLOR_AQUA, 10, 4);
 #ifndef DEBUG			
 			if((iziplus_state == IZIPLUS_STATE_COMMISSIONING) || (iziplus_assign_network_allow))
 			{
@@ -435,21 +490,43 @@ void IziPlus_HandleRx(iziplus_data_frame_t *frame, bool handled)
 				if(frame->lengthdir.u.length >= (sizeof(iziplus_network_data_t) + sizeof(iziplus_cmd_assign_network_wreq_t)))
 				{
 					iziplus_cmd_assign_network_wreq_t *assign_network_req = (iziplus_cmd_assign_network_wreq_t *)&frame->data[sizeof(iziplus_network_data_t)];
-					appconfig_t *appconfig = AppConfig_Get();					// Get current app config in RAM
-					appconfig->pan_id = assign_network_req->pan_id;				// Set all received network config
-					appconfig->pl_frequency = assign_network_req->freq;
-					appconfig->pl_rate = assign_network_req->rate;
-					appconfig->short_id = assign_network_req->shortid;
-					appconfig->pl_txlevel = assign_network_req->txlevel;
-					bool res = AppConfig_Set(appconfig);						// Write back
-					if(res)
+					// Only accept when a request, in case of notification, check if the panid differs (new PowerCom) or the frequency differs (new channel). Notifications only used in case the response to DISCOVER or ASSIGN_NETWORK does not reach the PowerCom
+					if((nw_data->msgtype.u.frame_type == IZIPLUS_FRAMETYPE_REQ) || ((iziplus_data_get_panid() & IZIPLUS_PANID_BASE_SERIAL) != (assign_network_req->pan_id & IZIPLUS_PANID_BASE_SERIAL)) || (iziplus_data_get_frequency() != assign_network_req->freq))	// Also allow notification broadcast
 					{
-						iziplus_session_id = assign_network_req->session_id;	
-						uint16_t nw_length = iziplus_networkframe_assign_network(iziplus_nwdata, nw_data->seqid);			// Send response OK
-						iziplus_dataframe_response(frame->pan_id, IZIPLUS_DEVTYPE, (uint8_t *)iziplus_nwdata, nw_length);
+						bool res = true;
+						if(nw_data->msgtype.u.frame_type == IZIPLUS_FRAMETYPE_NOT)
+							State_SetAttentionInfo(COLOR_MAGENTA, COLOR_YELLOW, 10, 4);
+							
+						if(assign_network_req->options != IZIPLUS_OPTION_ASSIGN_NETWORK_TEMP)		// Not temporary?
+						{
+							appconfig_t *appconfig = AppConfig_Get();					// Get current app config in RAM
+							appconfig->pan_id = assign_network_req->pan_id;				// Set all received network config
+							appconfig->pl_frequency = assign_network_req->freq;
+							appconfig->pl_rate = assign_network_req->rate;
+							appconfig->short_id = assign_network_req->shortid;
+							appconfig->pl_txlevel = assign_network_req->txlevel;
+							res = AppConfig_Set(appconfig);						// Write back
+						}
+						else
+						{
+							iziplus_nwtemp.pan_id = assign_network_req->pan_id;
+							iziplus_nwtemp.pl_frequency = assign_network_req->freq;
+							iziplus_nwtemp.pl_rate = assign_network_req->rate;
+							iziplus_nwtemp.pl_txlevel = assign_network_req->txlevel;
+							iziplus_nwtemp.short_id = assign_network_req->shortid;
+						}
+						if(res)
+						{
+							iziplus_session_id = assign_network_req->session_id;	
+							if((nw_data->msgtype.u.frame_type != IZIPLUS_FRAMETYPE_NOT))		
+							{
+								uint16_t nw_length = iziplus_networkframe_assign_network(iziplus_nwdata, nw_data->seqid);			// Send response OK
+								iziplus_dataframe_response(frame->pan_id, IZIPLUS_DEVTYPE, (uint8_t *)iziplus_nwdata, nw_length);
+							}
+						}
+						else
+							tokenresult = IZIPLUS_TOKERES_CORRUPT_MEMORY;			// Write failed
 					}
-					else
-						tokenresult = IZIPLUS_TOKERES_CORRUPT_MEMORY;			// Write failed
 				}
 				else
 					tokenresult = IZIPLUS_TOKERES_INVALID_DATA;					// Incorrect content (not enough parameters)
@@ -476,8 +553,20 @@ void IziPlus_HandleRx(iziplus_data_frame_t *frame, bool handled)
 				if(assign_channelmode_req->mode < MODE_AMOUNT)
 				{
 					appconfig_t *appconfig = AppConfig_Get();						// Get current app config in ram
-					appconfig->channel = assign_channelmode_req->channel_id;		// Change all channel mode parameters
-					appconfig->mode = assign_channelmode_req->mode;
+					if(appconfig->channel != assign_channelmode_req->channel_id)
+					{
+						appconfig->channel = assign_channelmode_req->channel_id;		// Change all channel mode parameters
+#ifdef DMX_RDM
+						DmxRdm_Module_AddQueuedMessage(0, 0, E120_DMX_START_ADDRESS, NULL, 0);
+#endif						
+					}
+					if(appconfig->mode != assign_channelmode_req->mode)
+					{
+						appconfig->mode = assign_channelmode_req->mode;
+#ifdef DMX_RDM
+						DmxRdm_Module_AddQueuedMessage(0, 0, E120_DMX_PERSONALITY, NULL, 0);
+#endif
+					}
 					appconfig->offset = assign_channelmode_req->offset;
 					appconfig->dmxfail = assign_channelmode_req->dmxfail;
 					
@@ -487,6 +576,7 @@ void IziPlus_HandleRx(iziplus_data_frame_t *frame, bool handled)
 					iziplus_cmd_delayed_req.length = 1;
 					iziplus_cmd_delayed_req.msg_type.b = nw_data->msgtype.b;
 					iziplus_dataframe_response(frame->pan_id, IZIPLUS_DEVTYPE, (uint8_t *)iziplus_nwdata, nw_length);
+						
 					if(iziplus_cmd_delayed_req.state == DELAYED_ACTION)
 						xSemaphoreGive(xIziPlus_DelaySemaphore);
 				}
@@ -579,7 +669,13 @@ void IziPlus_HandleRx(iziplus_data_frame_t *frame, bool handled)
 					}
 					
 					appconfig_t *appconfig = AppConfig_Get();							// Get current settings in ram
-					memcpy(appconfig->name, text_write_req->text, text_amount);			// Change text
+					if(memcmp(appconfig->name, text_write_req->text, text_amount) != 0)		// Check if not the same
+					{
+						memcpy(appconfig->name, text_write_req->text, text_amount);			// Change text
+#ifdef DMX_RDM
+						DmxRdm_Module_AddQueuedMessage(0, 0, E120_DEVICE_LABEL, NULL, 0);
+#endif						
+					}
 					
 					uint16_t nw_length = iziplus_networkframe_textwritedly(iziplus_nwdata, nw_data->seqid);			// Send response delayed, write smart eeprom can take too long (most of the time it is quick)
 					iziplus_cmd_delayed_req.cmd = IZIPLUS_CMD_TEXT;
@@ -616,7 +712,11 @@ void IziPlus_HandleRx(iziplus_data_frame_t *frame, bool handled)
 			izi_version_u protversion = { .v.major = IZIPLUS_PROTOCOL_VERSION_MAJOR, .v.minor = IZIPLUS_PROTOCOL_VERSION_MINOR };
 			// Send all version and hw parameters
 			uint16_t nw_length = iziplus_networkframe_versionread(iziplus_nwdata, nw_data->seqid, IziPlus_Module_GetAppVersion(), IziPlus_Module_GetBootVersion(), protversion, IziPlus_Module_GetTypedefVersion(),
-				IziPlus_Module_GetImageVersion(), IziPlus_Module_GetLedtableVersion(), IziPlus_Module_GetMemoryVersion(), IziPlus_Module_GetHwRevision(), IziPlus_Module_GetVariant(), false, 0, -1);
+#ifdef EMITTER_SUPPORT			
+				IziPlus_Module_GetImageVersion(), IziPlus_Module_GetLedtableVersion(), IziPlus_Module_GetMemoryVersion(), IziPlus_Module_GetHwRevision(), IziPlus_Module_GetVariant(), false, emitter_fixdef.hwref, emitter_proddata.serial);
+#else
+				IziPlus_Module_GetImageVersion(), IziPlus_Module_GetLedtableVersion(), IziPlus_Module_GetMemoryVersion(), IziPlus_Module_GetHwRevision(), IziPlus_Module_GetVariant(), false, 0, 0);
+#endif
 			iziplus_dataframe_response(frame->pan_id, IZIPLUS_DEVTYPE, (uint8_t *)iziplus_nwdata, nw_length);
 		}
 		else
@@ -660,7 +760,7 @@ void IziPlus_HandleRx(iziplus_data_frame_t *frame, bool handled)
 			
 			if(nw_data->msgtype.u.frame_type == IZIPLUS_FRAMETYPE_REQ)		// Only respond on request
 			{
-				uint16_t nw_length = iziplus_networkframe_operationmodewrite(iziplus_nwdata, nw_data->seqid, appConfig->pl_frequency, appConfig->pl_rate, appConfig->short_id);
+				uint16_t nw_length = iziplus_networkframe_operationmodewrite(iziplus_nwdata, nw_data->seqid, iziplus_data_get_frequency(), iziplus_data_get_rate(), iziplus_data_get_short_id());
 				iziplus_dataframe_response(frame->pan_id, IZIPLUS_DEVTYPE, (uint8_t *)iziplus_nwdata, nw_length);
 			}
 		}
@@ -677,12 +777,23 @@ void IziPlus_HandleRx(iziplus_data_frame_t *frame, bool handled)
 				Izi_OutputSetBuffer(IZIOUTPUT_SRC_IZI, 0, &frame->data[sizeof(iziplus_network_data_t) + appConfig->offset], channel_amount);		// Set new levels
 				if(nw_data->cmd == IZIPLUS_CMD_LIGHT_DATA_NOINPUT)
 				{
-					State_ComToggleNoData();
+#ifdef DMX_RDM					
+					if(!Dmx_Valid())
+#endif					
+						State_ComToggleNoData();
 					iziplus_lightdata_ok = false;
 				}
 				else
 				{
-					State_ComToggle();
+#ifdef DMX_RDM					
+					if(!Dmx_Valid())
+#endif
+					{
+						if(iziplus_nwtemp.pan_id > 0)
+							State_ComToggleTempNetwork();
+						else
+							State_ComToggle();
+					}
 					iziplus_lightdata_ok = true;
 				}
 				State_ClearWarning(STATE_WARNING_DMX_WARN);
@@ -833,6 +944,76 @@ void IziPlus_HandleRx(iziplus_data_frame_t *frame, bool handled)
 			iziplus_dataframe_response(frame->pan_id, IZIPLUS_DEVTYPE, (uint8_t *)iziplus_nwdata, nw_length);
 		}
 	}
+#ifdef EMITTER_SUPPORT	
+	else if(nw_data->cmd == IZIPLUS_CMD_EMITTER_DATA && nw_data->msgtype.u.frame_type == IZIPLUS_FRAMETYPE_REQ)
+	{
+		if(nw_data->msgtype.u.cmd_type == IZIPLUS_CMDTYPE_WRITE && frame->lengthdir.u.length >= (16 + 4))
+		{
+			iziplus_cmd_emitter_data_wreq_t *emitter_data_req = (iziplus_cmd_emitter_data_wreq_t *)&frame->data[sizeof(iziplus_network_data_t)];
+			
+			uint16_t length = frame->lengthdir.u.length - 4;
+			if(length >= 8 && (emitter_data_req->address + emitter_data_req->length) <= sizeof(emitter_fixture_def))		// First 256 bytes has CRC16 check
+			{
+				memcpy((((uint8_t *)&emitter_fixdef_copy + emitter_data_req->address)), emitter_data_req->data, emitter_data_req->length);
+				if(emitter_data_req->lock & 0x80)			// Last byte for writing
+				{
+					uint16_t crc = Crc16((uint8_t *)&emitter_fixdef_copy, sizeof(emitter_fixdef_copy) - 2, 0);
+					if(crc == emitter_fixdef_copy.crc && emitter_fixdef_copy.max_channels <= MAX_DIM_CHANNELS &&
+						emitter_fixdef_copy.device_type == iziplus_devtype_base)		// Check CRC and content
+					{
+						M11LC160_WriteLock(0x00);
+						if(M11LC160_WriteMem((uint8_t *)&emitter_fixdef_copy, EXT_EEPROM_ADRR_FIXTURE, sizeof(emitter_fixdef_copy)) >= 0)
+						{
+							uint16_t nw_length = iziplus_networkframe_emitter_data_write(iziplus_nwdata, nw_data->seqid);
+							iziplus_dataframe_response(frame->pan_id, IZIPLUS_DEVTYPE, (uint8_t *)iziplus_nwdata, nw_length);
+							State_SetWarning(STATE_WARNING_REBOOT_NEEDED);
+							
+							if((emitter_data_req->lock & 0x3F) > 0)
+								M11LC160_WriteLock(emitter_data_req->lock & 0x3F);
+						}
+						else
+						{
+							tokenresult = IZIPLUS_TOKERES_FAIL;
+							State_SetError(STATE_ERROR_NO_EMITTER);
+						}
+					}
+					else
+						tokenresult = IZIPLUS_TOKERES_FAIL;
+				}
+				else
+				{
+					uint16_t nw_length = iziplus_networkframe_emitter_data_write(iziplus_nwdata, nw_data->seqid);
+					iziplus_dataframe_response(frame->pan_id, IZIPLUS_DEVTYPE, (uint8_t *)iziplus_nwdata, nw_length);
+				}
+			}
+			else if(length >= 8 && (emitter_data_req->address + emitter_data_req->length) <= EXT_EEPROM_SIZE)
+			{
+				M11LC160_WriteLock(0x00);
+				if(M11LC160_WriteMem(emitter_data_req->data, emitter_data_req->address, emitter_data_req->length) >= 0)
+				{
+					uint16_t nw_length = iziplus_networkframe_emitter_data_write(iziplus_nwdata, nw_data->seqid);
+					iziplus_dataframe_response(frame->pan_id, IZIPLUS_DEVTYPE, (uint8_t *)iziplus_nwdata, nw_length);
+					State_SetWarning(STATE_WARNING_REBOOT_NEEDED);
+					
+					if((emitter_data_req->lock & 0x3F) > 0)
+						M11LC160_WriteLock(emitter_data_req->lock & 0x3F);
+				}
+				else
+				{
+					tokenresult = IZIPLUS_TOKERES_FAIL;
+					State_SetError(STATE_ERROR_NO_EMITTER);
+				}
+			}
+			else
+				tokenresult = IZIPLUS_TOKERES_INVALID_DATA;
+		}
+		else if(nw_data->msgtype.u.cmd_type == IZIPLUS_CMDTYPE_READ && frame->lengthdir.u.length >= (16 + 4))
+		{
+			uint16_t nw_length = iziplus_networkframe_production_data_read(iziplus_nwdata, nw_data->seqid, (uint8_t *)PRODUCTION_DATA, sizeof(proddata_t));
+			iziplus_dataframe_response(frame->pan_id, IZIPLUS_DEVTYPE, (uint8_t *)iziplus_nwdata, nw_length);
+		}
+	}
+#endif	
 	else if(nw_data->cmd == IZIPLUS_CMD_SHUTDOWN && nw_data->msgtype.u.frame_type == IZIPLUS_FRAMETYPE_NOT)
 	{
 		if(nw_data->msgtype.u.cmd_type == IZIPLUS_CMDTYPE_ACTION)
@@ -847,6 +1028,9 @@ void IziPlus_HandleRx(iziplus_data_frame_t *frame, bool handled)
 				if(shutdown_not->time >= 100)		// Make sure there is enough time (no shutdown during store)
 				{
 					AppLog_Set();
+#ifdef EMITTER_SUPPORT					
+					AppEmitterLog_Set();			// Can take 100ms!		
+#endif					
 				}
 			}
 		}
@@ -860,7 +1044,7 @@ void IziPlus_HandleRx(iziplus_data_frame_t *frame, bool handled)
 			iziplus_cmd_contacttriggerack_not_t *iziplus_cmd_contacttriggerack = (iziplus_cmd_contacttriggerack_not_t *)&frame->data[sizeof(iziplus_network_data_t)];
 			for(int i = 0; i < ack_amount; i++)
 			{
-				if(iziplus_cmd_contacttriggerack->ack[i].short_id == appConfig->short_id)
+				if(iziplus_cmd_contacttriggerack->ack[i].short_id == iziplus_data_get_short_id())
 				{
 					if(iziplus_contact_event == iziplus_cmd_contacttriggerack->ack[i].event_id)			// received OK, stop sending
 					{
@@ -903,6 +1087,9 @@ void IziPlus_HandleRx(iziplus_data_frame_t *frame, bool handled)
 				StepDown_Close(1000);
 				vTaskDelay(200);
 				AppLog_Set();
+#ifdef EMITTER_SUPPORT				
+				AppEmitterLog_Set();										// Can take 80ms!		
+#endif				
 				
 				boot_data.action = BOOT_ACTION_COPY_EXT;					// Reprogram
 				boot_data.magic = BOOT_MAGIC_VALUE;
@@ -938,14 +1125,14 @@ void IziPlus_HandleRx(iziplus_data_frame_t *frame, bool handled)
 		iziplus_cmd_delayed_req.state = DELAYED_EMPTY;
 		iziplus_cmd_delayed_req.cmd = 0;
 	}
-	else if((nw_data->msgtype.u.frame_type == IZIPLUS_FRAMETYPE_NOT) && ((nw_data->tokenres == appConfig->short_id) || (nw_data->tokenres == IZIPLUS_TOKEN_FREE)) && frame->pan_id != IZIPLUS_PANID_WILDCARD)		// Is it our token?
+	else if((nw_data->msgtype.u.frame_type == IZIPLUS_FRAMETYPE_NOT) && ((nw_data->tokenres == iziplus_data_get_short_id()) || (nw_data->tokenres == IZIPLUS_TOKEN_FREE)) && frame->pan_id != IZIPLUS_PANID_WILDCARD)		// Is it our token?
 	{
 		uint16_t nw_length;
 		bool send_response = true;
 #if USE_CONTACT_TRIGGER		
 		if(iziplus_contact_repeat > 0)
 		{
-			if(nw_data->tokenres == appConfig->short_id)
+			if(nw_data->tokenres == iziplus_data_get_short_id())
 			{
 				nw_length = iziplus_networkframe_contactaction(iziplus_nwdata, nw_data->seqid, iziplus_contact_event, iziplus_contact_flags);
 				iziplus_contact_repeat--;
@@ -966,7 +1153,7 @@ void IziPlus_HandleRx(iziplus_data_frame_t *frame, bool handled)
 			nw_length = iziplus_networkframe_identifyaction_not(iziplus_nwdata, nw_data->seqid);
 			iziplus_identify_local = false;
 		}
-		else if (nw_data->tokenres == appConfig->short_id)			// Only report state if it was our token
+		else if (nw_data->tokenres == iziplus_data_get_short_id())			// Only report state if it was our token
 		{
 			if(iziplus_state_version_report)
 				iziplus_state_version_report--;
@@ -975,7 +1162,11 @@ void IziPlus_HandleRx(iziplus_data_frame_t *frame, bool handled)
 			{
 				izi_version_u protversion = { .v.major = IZIPLUS_PROTOCOL_VERSION_MAJOR, .v.minor = IZIPLUS_PROTOCOL_VERSION_MINOR };
 				nw_length = iziplus_networkframe_versionread(iziplus_nwdata, nw_data->seqid, IziPlus_Module_GetAppVersion(), IziPlus_Module_GetBootVersion(), protversion, IziPlus_Module_GetTypedefVersion(),
-					IziPlus_Module_GetImageVersion(), IziPlus_Module_GetLedtableVersion(), IziPlus_Module_GetMemoryVersion(), IziPlus_Module_GetHwRevision(), IziPlus_Module_GetVariant(), true, 0, -1);
+#ifdef EMITTER_SUPPORT				
+					IziPlus_Module_GetImageVersion(), IziPlus_Module_GetLedtableVersion(), IziPlus_Module_GetMemoryVersion(), IziPlus_Module_GetHwRevision(), IziPlus_Module_GetVariant(), true, emitter_fixdef.hwref, emitter_proddata.serial);
+#else
+					IziPlus_Module_GetImageVersion(), IziPlus_Module_GetLedtableVersion(), IziPlus_Module_GetMemoryVersion(), IziPlus_Module_GetHwRevision(), IziPlus_Module_GetVariant(), true, 0, 0);
+#endif
 			}
 			else
 				nw_length = iziplus_networkframe_stateread(iziplus_nwdata, nw_data->seqid, IZIPLUS_FRAMETYPE_NOT, IziPlus_Module_GetCpuState().w, IziPlus_Module_GetMonitor(), MONITOR_SIZE);
@@ -995,7 +1186,7 @@ void IziPlus_HandleRx(iziplus_data_frame_t *frame, bool handled)
 			//gpio_set_pin_level(LED_R, false);
 			xSemaphoreGive(xIziPlus_DelaySemaphore);
 		}
-		if(nw_data->tokenres == appConfig->short_id)
+		if(nw_data->tokenres == iziplus_data_get_short_id())
 			iziplus_com_tokens = IZIPLUS_COM_TOKEN_TIME / IZIPLUS_TIMEROS_TICKS;
 	}
 	else if(nw_data->tokenres == IZIPLUS_TOKEN_BLOCK)
@@ -1026,7 +1217,7 @@ void IziPlus_HandleRx(iziplus_data_frame_t *frame, bool handled)
 				}
 			}
 		}	
-		else 
+		else
 			iziplus_com_reinit = 0;	
 	}
 	
@@ -1108,9 +1299,9 @@ void IziPlus_Powerup(uint8_t commissioning)
 	else
 	{
 		State_ClearStartInfo(STATE_START_COMMISSIONING);
-		iziplus_pl_freq = appConfig->pl_frequency;
-		iziplus_pl_rate = appConfig->pl_rate;
-		iziplus_pl_txlevel = appConfig->pl_txlevel;				
+		iziplus_pl_freq = iziplus_data_get_frequency();
+		iziplus_pl_rate = iziplus_data_get_rate();
+		iziplus_pl_txlevel = iziplus_data_get_tx_level();				
 		
 		if(iziplus_driver_ok >= 0)
 			iziplus_driver_ok = dcbm1_setcom(iziplus_pl_freq, iziplus_pl_rate, iziplus_pl_txlevel);
