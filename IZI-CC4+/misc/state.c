@@ -753,7 +753,7 @@ void State_ComToggleRdm()
 
 void State_ComToggleNoData()
 {
-	if(state_free_toggle && state_com_show)
+	if(state_free_toggle)// && state_com_show)
 	{
 		state_toggle ? State_SetLed(COLOR_YELLOW, 0) : State_SetLed(COLOR_OFF, 0);
 		state_toggle = !state_toggle;
@@ -763,7 +763,7 @@ void State_ComToggleNoData()
 
 void State_ComToggleTempNetwork()
 {
-	if(state_free_toggle && state_com_show)
+	if(state_free_toggle)// && state_com_show)
 	{
 		state_toggle ? State_SetLed(COLOR_GREEN, 0) : State_SetLed(COLOR_OFF, 0);
 		state_toggle = state_toggle != 1 ? 1 : 0;

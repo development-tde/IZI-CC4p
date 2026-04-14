@@ -1160,7 +1160,7 @@ void IziPlus_NoComCheck()
 	bool isok = IziPlus_LightDataOk();
 	if(!isok)
 	{
-		if(xTaskGetTickCount() < 5000)				// Do nothing if shorter than 5 sec after power-up (should not go on during discover)
+		if(xTaskGetTickCount() < 6000)				// Do nothing if shorter than 5 sec after power-up (should not go on during discover)
 			return;
 		
 		if((iziplus_data_wasok && (DMXFAIL_OPERATE(appConfig->dmxfail) == DMXFAIL_MAX)) || (!iziplus_data_wasok && (DMXFAIL_PUP(appConfig->dmxfail) == DMXFAIL_MAX)))

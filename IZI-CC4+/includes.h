@@ -96,13 +96,14 @@ typedef enum trace_level_e
 	TRACE_LEVEL_VERBOSE = 4,
 }trace_level_t;
 
-#define OS_REPORT_ALLTASKS	0x0000000F
+#define OS_REPORT_ALLTASKS	0x0000001F
 typedef enum os_report_task_e
 {
 	TASK_DEBUG	= 0,
 	TASK_CANDRIVER	= 1,
 	TASK_STEPDOWN	= 2,
 	TASK_IZIPLUS	= 3,
+	TASK_IZIDATA    = 4,
 	// When added, adjust OS_REPORT_ALLTASKS
 	// Max 32
 }os_report_task_t;

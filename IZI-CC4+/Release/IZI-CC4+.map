@@ -2452,7 +2452,7 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
 LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7e-m/crtn.o
                 0x00001000                STACK_SIZE = DEFINED (STACK_SIZE)?STACK_SIZE:DEFINED (__stack_size__)?__stack_size__:0x1000
 
-.text           0x00004000     0xdecc
+.text           0x00004000     0xdf0c
                 0x00004000                . = ALIGN (0x4)
                 0x00004000                _sfixed = .
  *(.vectors .vectors.*)
@@ -2514,1384 +2514,1384 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
                 0x00004a70      0x130 izilink/slave/iziplus_dataframe.o
                 0x00004a70                iziplus_data_handle_rx
  .text.iziplus_data_RxTask
-                0x00004ba0       0xe4 izilink/slave/iziplus_dataframe.o
+                0x00004ba0      0x114 izilink/slave/iziplus_dataframe.o
  .text.iziplus_dataframe_response
-                0x00004c84       0x38 izilink/slave/iziplus_dataframe.o
-                0x00004c84                iziplus_dataframe_response
+                0x00004cb4       0x38 izilink/slave/iziplus_dataframe.o
+                0x00004cb4                iziplus_dataframe_response
  .text.iziplus_dataframe_timer100ms
-                0x00004cbc       0x48 izilink/slave/iziplus_dataframe.o
-                0x00004cbc                iziplus_dataframe_timer100ms
+                0x00004cec       0x48 izilink/slave/iziplus_dataframe.o
+                0x00004cec                iziplus_dataframe_timer100ms
  .text.iziplus_dataframe_loss
-                0x00004d04       0x10 izilink/slave/iziplus_dataframe.o
-                0x00004d04                iziplus_dataframe_loss
+                0x00004d34       0x10 izilink/slave/iziplus_dataframe.o
+                0x00004d34                iziplus_dataframe_loss
  .text.iziplus_networkframe_error
-                0x00004d14       0x24 izilink/slave/iziplus_networkframe.o
-                0x00004d14                iziplus_networkframe_error
+                0x00004d44       0x24 izilink/slave/iziplus_networkframe.o
+                0x00004d44                iziplus_networkframe_error
  .text.iziplus_networkframe_discover
-                0x00004d38       0x30 izilink/slave/iziplus_networkframe.o
-                0x00004d38                iziplus_networkframe_discover
+                0x00004d68       0x30 izilink/slave/iziplus_networkframe.o
+                0x00004d68                iziplus_networkframe_discover
  .text.iziplus_networkframe_assign_network
-                0x00004d68       0x20 izilink/slave/iziplus_networkframe.o
-                0x00004d68                iziplus_networkframe_assign_network
+                0x00004d98       0x20 izilink/slave/iziplus_networkframe.o
+                0x00004d98                iziplus_networkframe_assign_network
  .text.iziplus_networkframe_assign_channelmodewritedelay
-                0x00004d88       0x28 izilink/slave/iziplus_networkframe.o
-                0x00004d88                iziplus_networkframe_assign_channelmodewritedelay
+                0x00004db8       0x28 izilink/slave/iziplus_networkframe.o
+                0x00004db8                iziplus_networkframe_assign_channelmodewritedelay
  .text.iziplus_networkframe_assign_channelmodewrite
-                0x00004db0       0x28 izilink/slave/iziplus_networkframe.o
-                0x00004db0                iziplus_networkframe_assign_channelmodewrite
+                0x00004de0       0x28 izilink/slave/iziplus_networkframe.o
+                0x00004de0                iziplus_networkframe_assign_channelmodewrite
  .text.iziplus_networkframe_assign_channelmoderead
-                0x00004dd8       0x3c izilink/slave/iziplus_networkframe.o
-                0x00004dd8                iziplus_networkframe_assign_channelmoderead
+                0x00004e08       0x3c izilink/slave/iziplus_networkframe.o
+                0x00004e08                iziplus_networkframe_assign_channelmoderead
  .text.iziplus_networkframe_assign_configwrite
-                0x00004e14       0x20 izilink/slave/iziplus_networkframe.o
-                0x00004e14                iziplus_networkframe_assign_configwrite
+                0x00004e44       0x20 izilink/slave/iziplus_networkframe.o
+                0x00004e44                iziplus_networkframe_assign_configwrite
  .text.iziplus_networkframe_assign_configwritedly
-                0x00004e34       0x28 izilink/slave/iziplus_networkframe.o
-                0x00004e34                iziplus_networkframe_assign_configwritedly
+                0x00004e64       0x28 izilink/slave/iziplus_networkframe.o
+                0x00004e64                iziplus_networkframe_assign_configwritedly
  .text.iziplus_networkframe_assign_configread
-                0x00004e5c       0x34 izilink/slave/iziplus_networkframe.o
-                0x00004e5c                iziplus_networkframe_assign_configread
+                0x00004e8c       0x34 izilink/slave/iziplus_networkframe.o
+                0x00004e8c                iziplus_networkframe_assign_configread
  .text.iziplus_networkframe_textwrite
-                0x00004e90       0x20 izilink/slave/iziplus_networkframe.o
-                0x00004e90                iziplus_networkframe_textwrite
+                0x00004ec0       0x20 izilink/slave/iziplus_networkframe.o
+                0x00004ec0                iziplus_networkframe_textwrite
  .text.iziplus_networkframe_textwritedly
-                0x00004eb0       0x28 izilink/slave/iziplus_networkframe.o
-                0x00004eb0                iziplus_networkframe_textwritedly
+                0x00004ee0       0x28 izilink/slave/iziplus_networkframe.o
+                0x00004ee0                iziplus_networkframe_textwritedly
  .text.iziplus_networkframe_textread
-                0x00004ed8       0x34 izilink/slave/iziplus_networkframe.o
-                0x00004ed8                iziplus_networkframe_textread
+                0x00004f08       0x34 izilink/slave/iziplus_networkframe.o
+                0x00004f08                iziplus_networkframe_textread
  .text.iziplus_networkframe_versionread
-                0x00004f0c       0x80 izilink/slave/iziplus_networkframe.o
-                0x00004f0c                iziplus_networkframe_versionread
+                0x00004f3c       0x80 izilink/slave/iziplus_networkframe.o
+                0x00004f3c                iziplus_networkframe_versionread
  .text.iziplus_networkframe_operationmodewrite
-                0x00004f8c       0x30 izilink/slave/iziplus_networkframe.o
-                0x00004f8c                iziplus_networkframe_operationmodewrite
- .text.iziplus_networkframe_stateread
                 0x00004fbc       0x30 izilink/slave/iziplus_networkframe.o
-                0x00004fbc                iziplus_networkframe_stateread
+                0x00004fbc                iziplus_networkframe_operationmodewrite
+ .text.iziplus_networkframe_stateread
+                0x00004fec       0x30 izilink/slave/iziplus_networkframe.o
+                0x00004fec                iziplus_networkframe_stateread
  .text.iziplus_networkframe_contactaction
-                0x00004fec       0x2c izilink/slave/iziplus_networkframe.o
-                0x00004fec                iziplus_networkframe_contactaction
+                0x0000501c       0x2c izilink/slave/iziplus_networkframe.o
+                0x0000501c                iziplus_networkframe_contactaction
  .text.iziplus_networkframe_joinnetworkaction
-                0x00005018       0x30 izilink/slave/iziplus_networkframe.o
-                0x00005018                iziplus_networkframe_joinnetworkaction
+                0x00005048       0x30 izilink/slave/iziplus_networkframe.o
+                0x00005048                iziplus_networkframe_joinnetworkaction
  .text.iziplus_networkframe_identifyaction
-                0x00005048       0x24 izilink/slave/iziplus_networkframe.o
-                0x00005048                iziplus_networkframe_identifyaction
+                0x00005078       0x24 izilink/slave/iziplus_networkframe.o
+                0x00005078                iziplus_networkframe_identifyaction
  .text.iziplus_networkframe_identifyaction_not
-                0x0000506c       0x24 izilink/slave/iziplus_networkframe.o
-                0x0000506c                iziplus_networkframe_identifyaction_not
+                0x0000509c       0x24 izilink/slave/iziplus_networkframe.o
+                0x0000509c                iziplus_networkframe_identifyaction_not
  .text.iziplus_networkframe_firmwarewrite
-                0x00005090       0x20 izilink/slave/iziplus_networkframe.o
-                0x00005090                iziplus_networkframe_firmwarewrite
+                0x000050c0       0x20 izilink/slave/iziplus_networkframe.o
+                0x000050c0                iziplus_networkframe_firmwarewrite
  .text.iziplus_networkframe_firmwarewritedly
-                0x000050b0       0x28 izilink/slave/iziplus_networkframe.o
-                0x000050b0                iziplus_networkframe_firmwarewritedly
+                0x000050e0       0x28 izilink/slave/iziplus_networkframe.o
+                0x000050e0                iziplus_networkframe_firmwarewritedly
  .text.iziplus_networkframe_firmwareapply
-                0x000050d8       0x20 izilink/slave/iziplus_networkframe.o
-                0x000050d8                iziplus_networkframe_firmwareapply
+                0x00005108       0x20 izilink/slave/iziplus_networkframe.o
+                0x00005108                iziplus_networkframe_firmwareapply
  .text.iziplus_networkframe_firmwareapplydly
-                0x000050f8       0x28 izilink/slave/iziplus_networkframe.o
-                0x000050f8                iziplus_networkframe_firmwareapplydly
+                0x00005128       0x28 izilink/slave/iziplus_networkframe.o
+                0x00005128                iziplus_networkframe_firmwareapplydly
  .text.iziplus_networkframe_firmwareallow
-                0x00005120       0x2c izilink/slave/iziplus_networkframe.o
-                0x00005120                iziplus_networkframe_firmwareallow
+                0x00005150       0x2c izilink/slave/iziplus_networkframe.o
+                0x00005150                iziplus_networkframe_firmwareallow
  .text.iziplus_networkframe_production_data_write
-                0x0000514c       0x20 izilink/slave/iziplus_networkframe.o
-                0x0000514c                iziplus_networkframe_production_data_write
+                0x0000517c       0x20 izilink/slave/iziplus_networkframe.o
+                0x0000517c                iziplus_networkframe_production_data_write
  .text.iziplus_networkframe_production_data_read
-                0x0000516c       0x38 izilink/slave/iziplus_networkframe.o
-                0x0000516c                iziplus_networkframe_production_data_read
+                0x0000519c       0x38 izilink/slave/iziplus_networkframe.o
+                0x0000519c                iziplus_networkframe_production_data_read
  .text.bod33_enable_at_poweron
-                0x000051a4       0x74 misc/bod.o
-                0x000051a4                bod33_enable_at_poweron
+                0x000051d4       0x74 misc/bod.o
+                0x000051d4                bod33_enable_at_poweron
  .text.bod33_ensure
-                0x00005218       0xb8 misc/bod.o
-                0x00005218                bod33_ensure
+                0x00005248       0xb8 misc/bod.o
+                0x00005248                bod33_ensure
  .text.RtcTime_GetSeconds
-                0x000052d0        0xc misc/rtctime.o
-                0x000052d0                RtcTime_GetSeconds
+                0x00005300        0xc misc/rtctime.o
+                0x00005300                RtcTime_GetSeconds
  .text.RtcTime_Tick
-                0x000052dc       0x10 misc/rtctime.o
-                0x000052dc                RtcTime_Tick
+                0x0000530c       0x10 misc/rtctime.o
+                0x0000530c                RtcTime_Tick
  .text.Eeprom_init
-                0x000052ec       0x44 misc/smart_eeprom.o
-                0x000052ec                Eeprom_init
+                0x0000531c       0x44 misc/smart_eeprom.o
+                0x0000531c                Eeprom_init
  .text.Eeprom_Read
-                0x00005330       0x30 misc/smart_eeprom.o
-                0x00005330                Eeprom_Read
+                0x00005360       0x30 misc/smart_eeprom.o
+                0x00005360                Eeprom_Read
  .text.Eeprom_Write
-                0x00005360       0x44 misc/smart_eeprom.o
-                0x00005360                Eeprom_Write
+                0x00005390       0x44 misc/smart_eeprom.o
+                0x00005390                Eeprom_Write
  .text.dcbm1_err_cb
-                0x000053a4       0x10 powerline/dcbm1_driver.o
+                0x000053d4       0x10 powerline/dcbm1_driver.o
  .text.dcbm1_rx_cb
-                0x000053b4       0x40 powerline/dcbm1_driver.o
+                0x000053e4       0x40 powerline/dcbm1_driver.o
  .text.dcbm1_tx_cb
-                0x000053f4       0x98 powerline/dcbm1_driver.o
+                0x00005424       0x98 powerline/dcbm1_driver.o
  .text.dcbm1_set_rx_callback
-                0x0000548c       0x24 powerline/dcbm1_driver.o
-                0x0000548c                dcbm1_set_rx_callback
+                0x000054bc        0xc powerline/dcbm1_driver.o
+                0x000054bc                dcbm1_set_rx_callback
  .text.dcbm1_enable_bus_busy
-                0x000054b0        0xc powerline/dcbm1_driver.o
-                0x000054b0                dcbm1_enable_bus_busy
+                0x000054c8        0xc powerline/dcbm1_driver.o
+                0x000054c8                dcbm1_enable_bus_busy
  .text.dcbm1_send
-                0x000054bc       0xd0 powerline/dcbm1_driver.o
-                0x000054bc                dcbm1_send
+                0x000054d4       0xd0 powerline/dcbm1_driver.o
+                0x000054d4                dcbm1_send
  .text.dcbm1_writesync
-                0x0000558c       0x58 powerline/dcbm1_driver.o
-                0x0000558c                dcbm1_writesync
+                0x000055a4       0x58 powerline/dcbm1_driver.o
+                0x000055a4                dcbm1_writesync
  .text.dcbm1_writereg
-                0x000055e4       0x58 powerline/dcbm1_driver.o
-                0x000055e4                dcbm1_writereg
+                0x000055fc       0x5c powerline/dcbm1_driver.o
+                0x000055fc                dcbm1_writereg
  .text.dcbm1_writeonlyreg
-                0x0000563c       0x7c powerline/dcbm1_driver.o
-                0x0000563c                dcbm1_writeonlyreg
+                0x00005658       0x7c powerline/dcbm1_driver.o
+                0x00005658                dcbm1_writeonlyreg
  .text.dcbm1_readreg
-                0x000056b8       0x70 powerline/dcbm1_driver.o
-                0x000056b8                dcbm1_readreg
+                0x000056d4       0x70 powerline/dcbm1_driver.o
+                0x000056d4                dcbm1_readreg
  .text.dcbm1_writeverifyreg
-                0x00005728       0x54 powerline/dcbm1_driver.o
-                0x00005728                dcbm1_writeverifyreg
+                0x00005744       0x54 powerline/dcbm1_driver.o
+                0x00005744                dcbm1_writeverifyreg
  .text.dcbm1_checkfrequency
-                0x0000577c       0x28 powerline/dcbm1_driver.o
-                0x0000577c                dcbm1_checkfrequency
+                0x00005798       0x28 powerline/dcbm1_driver.o
+                0x00005798                dcbm1_checkfrequency
  .text.dcbm1_getfrequency_h
-                0x000057a4       0x10 powerline/dcbm1_driver.o
-                0x000057a4                dcbm1_getfrequency_h
+                0x000057c0       0x10 powerline/dcbm1_driver.o
+                0x000057c0                dcbm1_getfrequency_h
  .text.dcbm1_getfrequency_l
-                0x000057b4       0x18 powerline/dcbm1_driver.o
-                0x000057b4                dcbm1_getfrequency_l
+                0x000057d0       0x18 powerline/dcbm1_driver.o
+                0x000057d0                dcbm1_getfrequency_l
  .text.dcbm1_checkrate
-                0x000057cc       0x28 powerline/dcbm1_driver.o
-                0x000057cc                dcbm1_checkrate
+                0x000057e8       0x28 powerline/dcbm1_driver.o
+                0x000057e8                dcbm1_checkrate
  .text.dcbm1_getrate_kHz
-                0x000057f4       0x20 powerline/dcbm1_driver.o
-                0x000057f4                dcbm1_getrate_kHz
+                0x00005810       0x20 powerline/dcbm1_driver.o
+                0x00005810                dcbm1_getrate_kHz
  .text.dcbm1_checkerror
-                0x00005814        0x4 powerline/dcbm1_driver.o
-                0x00005814                dcbm1_checkerror
+                0x00005830        0x4 powerline/dcbm1_driver.o
+                0x00005830                dcbm1_checkerror
  .text.dcbm1_setcom
-                0x00005818       0x44 powerline/dcbm1_driver.o
-                0x00005818                dcbm1_setcom
+                0x00005834       0x44 powerline/dcbm1_driver.o
+                0x00005834                dcbm1_setcom
  .text.dcbm1_init
-                0x0000585c      0x154 powerline/dcbm1_driver.o
-                0x0000585c                dcbm1_init
+                0x00005878      0x148 powerline/dcbm1_driver.o
+                0x00005878                dcbm1_init
  .text.dcbm1_nap
-                0x000059b0       0x6c powerline/dcbm1_driver.o
-                0x000059b0                dcbm1_nap
+                0x000059c0       0x6c powerline/dcbm1_driver.o
+                0x000059c0                dcbm1_nap
  .text.dcbm1_driver_init
-                0x00005a1c       0x24 powerline/dcbm1_driver.o
-                0x00005a1c                dcbm1_driver_init
+                0x00005a2c       0x24 powerline/dcbm1_driver.o
+                0x00005a2c                dcbm1_driver_init
  .text.Production_Write
-                0x00005a40       0x40 production/production.o
-                0x00005a40                Production_Write
+                0x00005a50       0x40 production/production.o
+                0x00005a50                Production_Write
  .text.Production_WriteStruct
-                0x00005a80       0x1c production/production.o
-                0x00005a80                Production_WriteStruct
+                0x00005a90       0x1c production/production.o
+                0x00005a90                Production_WriteStruct
  .text.I2Cx_Init
-                0x00005a9c       0xf4 uart/i2cx.o
-                0x00005a9c                I2Cx_Init
+                0x00005aac       0xf4 uart/i2cx.o
+                0x00005aac                I2Cx_Init
  .text.I2Cx_Write_Sequence
-                0x00005b90       0x40 uart/i2cx.o
-                0x00005b90                I2Cx_Write_Sequence
+                0x00005ba0       0x40 uart/i2cx.o
+                0x00005ba0                I2Cx_Write_Sequence
  .text.I2Cx_Check
-                0x00005bd0       0x20 uart/i2cx.o
-                0x00005bd0                I2Cx_Check
+                0x00005be0       0x20 uart/i2cx.o
+                0x00005be0                I2Cx_Check
  .text.Usart1_DmaCb
-                0x00005bf0        0xc uart/usart1.o
-                0x00005bf0                Usart1_DmaCb
+                0x00005c00        0xc uart/usart1.o
+                0x00005c00                Usart1_DmaCb
  .text.Usart1_Init
-                0x00005bfc      0x158 uart/usart1.o
-                0x00005bfc                Usart1_Init
+                0x00005c0c      0x158 uart/usart1.o
+                0x00005c0c                Usart1_Init
  .text.SERCOM1_0_Handler
-                0x00005d54       0x58 uart/usart1.o
-                0x00005d54                SERCOM1_0_Handler
+                0x00005d64       0x58 uart/usart1.o
+                0x00005d64                SERCOM1_0_Handler
  .text.SERCOM1_1_Handler
-                0x00005dac       0x20 uart/usart1.o
-                0x00005dac                SERCOM1_1_Handler
+                0x00005dbc       0x20 uart/usart1.o
+                0x00005dbc                SERCOM1_1_Handler
  .text.SERCOM1_2_Handler
-                0x00005dcc       0x20 uart/usart1.o
-                0x00005dcc                SERCOM1_2_Handler
+                0x00005ddc       0x20 uart/usart1.o
+                0x00005ddc                SERCOM1_2_Handler
  .text.SERCOM1_3_Handler
-                0x00005dec       0x20 uart/usart1.o
-                0x00005dec                SERCOM1_3_Handler
+                0x00005dfc       0x20 uart/usart1.o
+                0x00005dfc                SERCOM1_3_Handler
  .text.Usart1_PutBfr
-                0x00005e0c       0x10 uart/usart1.o
-                0x00005e0c                Usart1_PutBfr
+                0x00005e1c       0x10 uart/usart1.o
+                0x00005e1c                Usart1_PutBfr
  .text.SERCOM2_0_Handler
-                0x00005e1c       0x58 uart/usart2.o
-                0x00005e1c                SERCOM2_0_Handler
+                0x00005e2c       0x58 uart/usart2.o
+                0x00005e2c                SERCOM2_0_Handler
  .text.SERCOM2_1_Handler
-                0x00005e74       0x40 uart/usart2.o
-                0x00005e74                SERCOM2_1_Handler
+                0x00005e84       0x40 uart/usart2.o
+                0x00005e84                SERCOM2_1_Handler
  .text.SERCOM2_2_Handler
-                0x00005eb4       0x20 uart/usart2.o
-                0x00005eb4                SERCOM2_2_Handler
+                0x00005ec4       0x20 uart/usart2.o
+                0x00005ec4                SERCOM2_2_Handler
  .text.SERCOM2_3_Handler
-                0x00005ed4       0x20 uart/usart2.o
-                0x00005ed4                SERCOM2_3_Handler
+                0x00005ee4       0x20 uart/usart2.o
+                0x00005ee4                SERCOM2_3_Handler
  .text.AppCalib_Default
-                0x00005ef4       0x58 appconfig.o
-                0x00005ef4                AppCalib_Default
+                0x00005f04       0x58 appconfig.o
+                0x00005f04                AppCalib_Default
  .text.AppConfig_Default
-                0x00005f4c      0x108 appconfig.o
-                0x00005f4c                AppConfig_Default
+                0x00005f5c      0x108 appconfig.o
+                0x00005f5c                AppConfig_Default
  .text.AppConfig_Get
-                0x00006054       0x1c appconfig.o
-                0x00006054                AppConfig_Get
+                0x00006064       0x1c appconfig.o
+                0x00006064                AppConfig_Get
  .text.AppConfig_GetPtr
-                0x00006070        0x8 appconfig.o
-                0x00006070                AppConfig_GetPtr
+                0x00006080        0x8 appconfig.o
+                0x00006080                AppConfig_GetPtr
  .text.AppConfig_Set
-                0x00006078       0x50 appconfig.o
-                0x00006078                AppConfig_Set
+                0x00006088       0x50 appconfig.o
+                0x00006088                AppConfig_Set
  .text.AppCalib_Set
-                0x000060c8       0x38 appconfig.o
-                0x000060c8                AppCalib_Set
+                0x000060d8       0x38 appconfig.o
+                0x000060d8                AppCalib_Set
  .text.AppLog_Default
-                0x00006100       0x90 appconfig.o
-                0x00006100                AppLog_Default
+                0x00006110       0x90 appconfig.o
+                0x00006110                AppLog_Default
  .text.AppConfig_CheckConfig
-                0x00006190       0xac appconfig.o
-                0x00006190                AppConfig_CheckConfig
+                0x000061a0       0xac appconfig.o
+                0x000061a0                AppConfig_CheckConfig
  .text.AppLog_Set
-                0x0000623c       0x3c appconfig.o
-                0x0000623c                AppLog_Set
+                0x0000624c       0x3c appconfig.o
+                0x0000624c                AppLog_Set
  .text.AppConfig_Init
-                0x00006278      0x178 appconfig.o
-                0x00006278                AppConfig_Init
+                0x00006288      0x178 appconfig.o
+                0x00006288                AppConfig_Init
  .text.atmel_start_init
-                0x000063f0        0x8 atmel_start.o
-                0x000063f0                atmel_start_init
+                0x00006400        0x8 atmel_start.o
+                0x00006400                atmel_start_init
  .text.Dummy_Handler
-                0x000063f8        0xc Device_Startup/startup_same51.o
-                0x000063f8                EIC_5_Handler
-                0x000063f8                SERCOM0_2_Handler
-                0x000063f8                EIC_13_Handler
-                0x000063f8                DAC_3_Handler
-                0x000063f8                TRNG_Handler
-                0x000063f8                TC2_Handler
-                0x000063f8                PDEC_2_Handler
-                0x000063f8                EIC_4_Handler
-                0x000063f8                AC_Handler
-                0x000063f8                SERCOM3_1_Handler
-                0x000063f8                SERCOM3_2_Handler
-                0x000063f8                PDEC_0_Handler
-                0x000063f8                QSPI_Handler
-                0x000063f8                EIC_3_Handler
-                0x000063f8                DAC_2_Handler
-                0x000063f8                SERCOM0_0_Handler
-                0x000063f8                RTC_Handler
-                0x000063f8                SERCOM4_0_Handler
-                0x000063f8                EIC_10_Handler
-                0x000063f8                SERCOM0_3_Handler
-                0x000063f8                EIC_11_Handler
-                0x000063f8                EIC_9_Handler
-                0x000063f8                OSC32KCTRL_Handler
-                0x000063f8                SUPC_1_Handler
-                0x000063f8                WDT_Handler
-                0x000063f8                EIC_8_Handler
-                0x000063f8                EIC_15_Handler
-                0x000063f8                SERCOM5_0_Handler
-                0x000063f8                TC1_Handler
-                0x000063f8                OSCCTRL_4_Handler
-                0x000063f8                SERCOM4_3_Handler
-                0x000063f8                EIC_12_Handler
-                0x000063f8                DMAC_4_Handler
-                0x000063f8                USB_0_Handler
-                0x000063f8                OSCCTRL_0_Handler
-                0x000063f8                EIC_0_Handler
-                0x000063f8                OSCCTRL_3_Handler
-                0x000063f8                SERCOM4_1_Handler
-                0x000063f8                TC3_Handler
-                0x000063f8                Dummy_Handler
-                0x000063f8                SERCOM5_1_Handler
-                0x000063f8                DMAC_2_Handler
-                0x000063f8                ADC0_0_Handler
-                0x000063f8                SERCOM0_1_Handler
-                0x000063f8                OSCCTRL_2_Handler
-                0x000063f8                ADC1_0_Handler
-                0x000063f8                USB_1_Handler
-                0x000063f8                PM_Handler
-                0x000063f8                DAC_4_Handler
-                0x000063f8                TCC3_2_Handler
-                0x000063f8                DMAC_1_Handler
-                0x000063f8                TCC4_0_Handler
-                0x000063f8                USB_3_Handler
-                0x000063f8                CAN1_Handler
-                0x000063f8                PDEC_1_Handler
-                0x000063f8                SERCOM5_3_Handler
-                0x000063f8                USB_2_Handler
-                0x000063f8                SDHC0_Handler
-                0x000063f8                I2S_Handler
-                0x000063f8                EIC_2_Handler
-                0x000063f8                PCC_Handler
-                0x000063f8                DAC_0_Handler
-                0x000063f8                EIC_6_Handler
-                0x000063f8                OSCCTRL_1_Handler
-                0x000063f8                PUKCC_Handler
-                0x000063f8                SERCOM3_0_Handler
-                0x000063f8                EIC_1_Handler
-                0x000063f8                SERCOM4_2_Handler
-                0x000063f8                EIC_7_Handler
-                0x000063f8                SERCOM5_2_Handler
-                0x000063f8                SERCOM3_3_Handler
-                0x000063f8                TCC3_1_Handler
-                0x000063f8                EIC_14_Handler
-                0x000063f8                DAC_1_Handler
-                0x000063f8                MCLK_Handler
-                0x000063f8                SUPC_0_Handler
-                0x000063f8                TC0_Handler
-                0x000063f8                DMAC_3_Handler
-                0x000063f8                TC5_Handler
-                0x000063f8                AES_Handler
-                0x000063f8                ICM_Handler
+                0x00006408        0xc Device_Startup/startup_same51.o
+                0x00006408                EIC_5_Handler
+                0x00006408                SERCOM0_2_Handler
+                0x00006408                EIC_13_Handler
+                0x00006408                DAC_3_Handler
+                0x00006408                TRNG_Handler
+                0x00006408                TC2_Handler
+                0x00006408                PDEC_2_Handler
+                0x00006408                EIC_4_Handler
+                0x00006408                AC_Handler
+                0x00006408                SERCOM3_1_Handler
+                0x00006408                SERCOM3_2_Handler
+                0x00006408                PDEC_0_Handler
+                0x00006408                QSPI_Handler
+                0x00006408                EIC_3_Handler
+                0x00006408                DAC_2_Handler
+                0x00006408                SERCOM0_0_Handler
+                0x00006408                RTC_Handler
+                0x00006408                SERCOM4_0_Handler
+                0x00006408                EIC_10_Handler
+                0x00006408                SERCOM0_3_Handler
+                0x00006408                EIC_11_Handler
+                0x00006408                EIC_9_Handler
+                0x00006408                OSC32KCTRL_Handler
+                0x00006408                SUPC_1_Handler
+                0x00006408                WDT_Handler
+                0x00006408                EIC_8_Handler
+                0x00006408                EIC_15_Handler
+                0x00006408                SERCOM5_0_Handler
+                0x00006408                TC1_Handler
+                0x00006408                OSCCTRL_4_Handler
+                0x00006408                SERCOM4_3_Handler
+                0x00006408                EIC_12_Handler
+                0x00006408                DMAC_4_Handler
+                0x00006408                USB_0_Handler
+                0x00006408                OSCCTRL_0_Handler
+                0x00006408                EIC_0_Handler
+                0x00006408                OSCCTRL_3_Handler
+                0x00006408                SERCOM4_1_Handler
+                0x00006408                TC3_Handler
+                0x00006408                Dummy_Handler
+                0x00006408                SERCOM5_1_Handler
+                0x00006408                DMAC_2_Handler
+                0x00006408                ADC0_0_Handler
+                0x00006408                SERCOM0_1_Handler
+                0x00006408                OSCCTRL_2_Handler
+                0x00006408                ADC1_0_Handler
+                0x00006408                USB_1_Handler
+                0x00006408                PM_Handler
+                0x00006408                DAC_4_Handler
+                0x00006408                TCC3_2_Handler
+                0x00006408                DMAC_1_Handler
+                0x00006408                TCC4_0_Handler
+                0x00006408                USB_3_Handler
+                0x00006408                CAN1_Handler
+                0x00006408                PDEC_1_Handler
+                0x00006408                SERCOM5_3_Handler
+                0x00006408                USB_2_Handler
+                0x00006408                SDHC0_Handler
+                0x00006408                I2S_Handler
+                0x00006408                EIC_2_Handler
+                0x00006408                PCC_Handler
+                0x00006408                DAC_0_Handler
+                0x00006408                EIC_6_Handler
+                0x00006408                OSCCTRL_1_Handler
+                0x00006408                PUKCC_Handler
+                0x00006408                SERCOM3_0_Handler
+                0x00006408                EIC_1_Handler
+                0x00006408                SERCOM4_2_Handler
+                0x00006408                EIC_7_Handler
+                0x00006408                SERCOM5_2_Handler
+                0x00006408                SERCOM3_3_Handler
+                0x00006408                TCC3_1_Handler
+                0x00006408                EIC_14_Handler
+                0x00006408                DAC_1_Handler
+                0x00006408                MCLK_Handler
+                0x00006408                SUPC_0_Handler
+                0x00006408                TC0_Handler
+                0x00006408                DMAC_3_Handler
+                0x00006408                TC5_Handler
+                0x00006408                AES_Handler
+                0x00006408                ICM_Handler
  .text.Dummy_Handler2
-                0x00006404        0xc Device_Startup/startup_same51.o
-                0x00006404                TCC1_3_Handler
-                0x00006404                TCC2_3_Handler
-                0x00006404                TCC2_1_Handler
-                0x00006404                TCC0_5_Handler
-                0x00006404                TCC0_6_Handler
-                0x00006404                TCC1_4_Handler
-                0x00006404                Dummy_Handler2
-                0x00006404                TCC2_2_Handler
-                0x00006404                TCC1_1_Handler
-                0x00006404                TCC1_2_Handler
-                0x00006404                TCC0_2_Handler
-                0x00006404                TCC0_1_Handler
-                0x00006404                TCC0_3_Handler
-                0x00006404                DebugMonitor_Handler
-                0x00006404                TCC0_4_Handler
+                0x00006414        0xc Device_Startup/startup_same51.o
+                0x00006414                TCC1_3_Handler
+                0x00006414                TCC2_3_Handler
+                0x00006414                TCC2_1_Handler
+                0x00006414                TCC0_5_Handler
+                0x00006414                TCC0_6_Handler
+                0x00006414                TCC1_4_Handler
+                0x00006414                Dummy_Handler2
+                0x00006414                TCC2_2_Handler
+                0x00006414                TCC1_1_Handler
+                0x00006414                TCC1_2_Handler
+                0x00006414                TCC0_2_Handler
+                0x00006414                TCC0_1_Handler
+                0x00006414                TCC0_3_Handler
+                0x00006414                DebugMonitor_Handler
+                0x00006414                TCC0_4_Handler
  .text.Dummy_Handler3
-                0x00006410        0xc Device_Startup/startup_same51.o
-                0x00006410                EVSYS_3_Handler
-                0x00006410                EVSYS_1_Handler
-                0x00006410                PAC_Handler
-                0x00006410                Dummy_Handler3
-                0x00006410                EVSYS_4_Handler
-                0x00006410                EVSYS_2_Handler
-                0x00006410                FREQM_Handler
-                0x00006410                EVSYS_0_Handler
+                0x00006420        0xc Device_Startup/startup_same51.o
+                0x00006420                EVSYS_3_Handler
+                0x00006420                EVSYS_1_Handler
+                0x00006420                PAC_Handler
+                0x00006420                Dummy_Handler3
+                0x00006420                EVSYS_4_Handler
+                0x00006420                EVSYS_2_Handler
+                0x00006420                FREQM_Handler
+                0x00006420                EVSYS_0_Handler
  .text.NonMaskableInt_Handler2
-                0x0000641c        0xc Device_Startup/startup_same51.o
-                0x0000641c                NonMaskableInt_Handler
-                0x0000641c                NonMaskableInt_Handler2
- .text.HardFault_Handler2
-                0x00006428        0x4 Device_Startup/startup_same51.o
-                0x00006428                HardFault_Handler2
-                0x00006428                HardFault_Handler
- .text.MemManagement_Handler2
                 0x0000642c        0xc Device_Startup/startup_same51.o
-                0x0000642c                MemManagement_Handler2
-                0x0000642c                MemManagement_Handler
+                0x0000642c                NonMaskableInt_Handler
+                0x0000642c                NonMaskableInt_Handler2
+ .text.HardFault_Handler2
+                0x00006438        0x4 Device_Startup/startup_same51.o
+                0x00006438                HardFault_Handler2
+                0x00006438                HardFault_Handler
+ .text.MemManagement_Handler2
+                0x0000643c        0xc Device_Startup/startup_same51.o
+                0x0000643c                MemManagement_Handler2
+                0x0000643c                MemManagement_Handler
  .text.BusFault_Handler2
-                0x00006438        0xc Device_Startup/startup_same51.o
-                0x00006438                BusFault_Handler
-                0x00006438                BusFault_Handler2
+                0x00006448        0xc Device_Startup/startup_same51.o
+                0x00006448                BusFault_Handler
+                0x00006448                BusFault_Handler2
  .text.UsageFault_Handler2
-                0x00006444        0xc Device_Startup/startup_same51.o
-                0x00006444                UsageFault_Handler2
-                0x00006444                UsageFault_Handler
+                0x00006454        0xc Device_Startup/startup_same51.o
+                0x00006454                UsageFault_Handler2
+                0x00006454                UsageFault_Handler
  .text.Reset_Handler
-                0x00006450       0x94 Device_Startup/startup_same51.o
-                0x00006450                Reset_Handler
+                0x00006460       0x94 Device_Startup/startup_same51.o
+                0x00006460                Reset_Handler
  .text._gpio_set_pin_function
-                0x000064e4       0x80 driver/stepdown.o
+                0x000064f4       0x80 driver/stepdown.o
  .text.StepDown_ChannelEnable_Ch1
-                0x00006564       0xb0 driver/stepdown.o
-                0x00006564                StepDown_ChannelEnable_Ch1
+                0x00006574       0xb0 driver/stepdown.o
+                0x00006574                StepDown_ChannelEnable_Ch1
  .text.StepDown_ChannelEnable_Ch4
-                0x00006614       0xac driver/stepdown.o
-                0x00006614                StepDown_ChannelEnable_Ch4
+                0x00006624       0xac driver/stepdown.o
+                0x00006624                StepDown_ChannelEnable_Ch4
  .text.StepDown_ChannelEnable_Ch2
-                0x000066c0       0xac driver/stepdown.o
-                0x000066c0                StepDown_ChannelEnable_Ch2
+                0x000066d0       0xac driver/stepdown.o
+                0x000066d0                StepDown_ChannelEnable_Ch2
  .text.StepDown_ChannelEnable_Ch3
-                0x0000676c       0xac driver/stepdown.o
-                0x0000676c                StepDown_ChannelEnable_Ch3
+                0x0000677c       0xac driver/stepdown.o
+                0x0000677c                StepDown_ChannelEnable_Ch3
  .text.StepDown_InitPwmChannel1
-                0x00006818       0x78 driver/stepdown.o
-                0x00006818                StepDown_InitPwmChannel1
+                0x00006828       0x78 driver/stepdown.o
+                0x00006828                StepDown_InitPwmChannel1
  .text.StepDown_InitPwmChannel2
-                0x00006890       0x78 driver/stepdown.o
-                0x00006890                StepDown_InitPwmChannel2
+                0x000068a0       0x78 driver/stepdown.o
+                0x000068a0                StepDown_InitPwmChannel2
  .text.StepDown_InitPwmChannel3
-                0x00006908       0x74 driver/stepdown.o
-                0x00006908                StepDown_InitPwmChannel3
+                0x00006918       0x74 driver/stepdown.o
+                0x00006918                StepDown_InitPwmChannel3
  .text.StepDown_InitPwmChannel4
-                0x0000697c       0x78 driver/stepdown.o
-                0x0000697c                StepDown_InitPwmChannel4
+                0x0000698c       0x78 driver/stepdown.o
+                0x0000698c                StepDown_InitPwmChannel4
  .text.StepDown_InitChannel1
-                0x000069f4      0x10c driver/stepdown.o
-                0x000069f4                StepDown_InitChannel1
+                0x00006a04      0x10c driver/stepdown.o
+                0x00006a04                StepDown_InitChannel1
  .text.StepDown_InitChannel2
-                0x00006b00       0xf0 driver/stepdown.o
-                0x00006b00                StepDown_InitChannel2
+                0x00006b10       0xf0 driver/stepdown.o
+                0x00006b10                StepDown_InitChannel2
  .text.StepDown_InitChannel3
-                0x00006bf0       0xf4 driver/stepdown.o
-                0x00006bf0                StepDown_InitChannel3
+                0x00006c00       0xf4 driver/stepdown.o
+                0x00006c00                StepDown_InitChannel3
  .text.StepDown_InitChannel4
-                0x00006ce4       0xf4 driver/stepdown.o
-                0x00006ce4                StepDown_InitChannel4
+                0x00006cf4       0xf4 driver/stepdown.o
+                0x00006cf4                StepDown_InitChannel4
  .text.Filter_LowPass
-                0x00006dd8       0x2c driver/stepdown.o
-                0x00006dd8                Filter_LowPass
+                0x00006de8       0x2c driver/stepdown.o
+                0x00006de8                Filter_LowPass
  .text.StepDown_IsClosed
-                0x00006e04       0x10 driver/stepdown.o
-                0x00006e04                StepDown_IsClosed
+                0x00006e14       0x10 driver/stepdown.o
+                0x00006e14                StepDown_IsClosed
  .text.StepDown_Close
-                0x00006e14       0x4c driver/stepdown.o
-                0x00006e14                StepDown_Close
+                0x00006e24       0x4c driver/stepdown.o
+                0x00006e24                StepDown_Close
  .text.StepDown_CheckLimits.part.6
-                0x00006e60      0x26c driver/stepdown.o
+                0x00006e70      0x26c driver/stepdown.o
  .text.TCC3_0_Handler
-                0x000070cc       0x88 driver/stepdown.o
-                0x000070cc                TCC3_0_Handler
+                0x000070dc       0x88 driver/stepdown.o
+                0x000070dc                TCC3_0_Handler
  .text.TCC1_0_Handler
-                0x00007154       0x88 driver/stepdown.o
-                0x00007154                TCC1_0_Handler
+                0x00007164       0x88 driver/stepdown.o
+                0x00007164                TCC1_0_Handler
  .text.TCC2_0_Handler
-                0x000071dc       0x88 driver/stepdown.o
-                0x000071dc                TCC2_0_Handler
+                0x000071ec       0x88 driver/stepdown.o
+                0x000071ec                TCC2_0_Handler
  .text.TCC0_0_Handler
-                0x00007264       0x88 driver/stepdown.o
-                0x00007264                TCC0_0_Handler
+                0x00007274       0x88 driver/stepdown.o
+                0x00007274                TCC0_0_Handler
  .text.Stepdown_SetCurrentCalc
-                0x000072ec      0x2b0 driver/stepdown.o
-                0x000072ec                Stepdown_SetCurrentCalc
+                0x000072fc      0x2b0 driver/stepdown.o
+                0x000072fc                Stepdown_SetCurrentCalc
  .text.Stepdown_SetCurrentCh1
-                0x0000759c       0x34 driver/stepdown.o
-                0x0000759c                Stepdown_SetCurrentCh1
+                0x000075ac       0x34 driver/stepdown.o
+                0x000075ac                Stepdown_SetCurrentCh1
  .text.Stepdown_SetCurrentCh2
-                0x000075d0       0x34 driver/stepdown.o
-                0x000075d0                Stepdown_SetCurrentCh2
+                0x000075e0       0x34 driver/stepdown.o
+                0x000075e0                Stepdown_SetCurrentCh2
  .text.Stepdown_SetCurrentCh3
-                0x00007604       0x34 driver/stepdown.o
-                0x00007604                Stepdown_SetCurrentCh3
+                0x00007614       0x34 driver/stepdown.o
+                0x00007614                Stepdown_SetCurrentCh3
  .text.Stepdown_SetCurrentCh4
-                0x00007638       0x34 driver/stepdown.o
-                0x00007638                Stepdown_SetCurrentCh4
+                0x00007648       0x34 driver/stepdown.o
+                0x00007648                Stepdown_SetCurrentCh4
  .text.Stepdown_SetCurrent
-                0x0000766c       0x88 driver/stepdown.o
-                0x0000766c                Stepdown_SetCurrent
+                0x0000767c       0x88 driver/stepdown.o
+                0x0000767c                Stepdown_SetCurrent
  .text.StepDown_Init
-                0x000076f4       0x8c driver/stepdown.o
-                0x000076f4                StepDown_Init
+                0x00007704       0x8c driver/stepdown.o
+                0x00007704                StepDown_Init
  .text.StepDown_Module_Update
-                0x00007780       0x30 driver/stepdown.o
-                0x00007780                StepDown_Module_Update
+                0x00007790       0x30 driver/stepdown.o
+                0x00007790                StepDown_Module_Update
  .text.StepDown_GetPower
-                0x000077b0        0xc driver/stepdown.o
-                0x000077b0                StepDown_GetPower
+                0x000077c0        0xc driver/stepdown.o
+                0x000077c0                StepDown_GetPower
  .text.StepDown_SleepCheck
-                0x000077bc       0x1c driver/stepdown.o
-                0x000077bc                StepDown_SleepCheck
+                0x000077cc       0x1c driver/stepdown.o
+                0x000077cc                StepDown_SleepCheck
  .text.StepDown_CheckCalibration
-                0x000077d8       0xb8 driver/stepdown.o
-                0x000077d8                StepDown_CheckCalibration
+                0x000077e8       0xb8 driver/stepdown.o
+                0x000077e8                StepDown_CheckCalibration
  .text.StepDown_Logging
-                0x00007890       0x74 driver/stepdown.o
-                0x00007890                StepDown_Logging
+                0x000078a0       0x74 driver/stepdown.o
+                0x000078a0                StepDown_Logging
  .text.StepDown_Timer
-                0x00007904      0x108 driver/stepdown.o
-                0x00007904                StepDown_Timer
+                0x00007914      0x108 driver/stepdown.o
+                0x00007914                StepDown_Timer
  .text.StepDown_Start
-                0x00007a0c      0x200 driver/stepdown.o
-                0x00007a0c                StepDown_Start
- *fill*         0x00007c0c        0x4 
+                0x00007a1c      0x200 driver/stepdown.o
+                0x00007a1c                StepDown_Start
+ *fill*         0x00007c1c        0x4 
  .text.StepDown_SetOutputs
-                0x00007c10      0x590 driver/stepdown.o
-                0x00007c10                StepDown_SetOutputs
+                0x00007c20      0x590 driver/stepdown.o
+                0x00007c20                StepDown_SetOutputs
  .text.StepDown_Task
-                0x000081a0      0x658 driver/stepdown.o
- .text.WD_Init  0x000087f8       0x48 driver_init.o
-                0x000087f8                WD_Init
+                0x000081b0      0x658 driver/stepdown.o
+ .text.WD_Init  0x00008808       0x48 driver_init.o
+                0x00008808                WD_Init
  .text.WD_Refresh
-                0x00008840       0x2c driver_init.o
-                0x00008840                WD_Refresh
+                0x00008850       0x2c driver_init.o
+                0x00008850                WD_Refresh
  .text.RAND_0_init
-                0x0000886c       0x34 driver_init.o
-                0x0000886c                RAND_0_init
+                0x0000887c       0x34 driver_init.o
+                0x0000887c                RAND_0_init
  .text.get_hw_id
-                0x000088a0       0xc8 driver_init.o
-                0x000088a0                get_hw_id
+                0x000088b0       0xc8 driver_init.o
+                0x000088b0                get_hw_id
  .text.get_device_id
-                0x00008968       0x8c driver_init.o
-                0x00008968                get_device_id
+                0x00008978       0x8c driver_init.o
+                0x00008978                get_device_id
  .text.system_init
-                0x000089f4      0x2f0 driver_init.o
-                0x000089f4                system_init
+                0x00008a04      0x2f0 driver_init.o
+                0x00008a04                system_init
  .text.atomic_enter_critical
-                0x00008ce4       0x10 hal/src/hal_atomic.o
-                0x00008ce4                atomic_enter_critical
+                0x00008cf4       0x10 hal/src/hal_atomic.o
+                0x00008cf4                atomic_enter_critical
  .text.atomic_leave_critical
-                0x00008cf4        0xc hal/src/hal_atomic.o
-                0x00008cf4                atomic_leave_critical
+                0x00008d04        0xc hal/src/hal_atomic.o
+                0x00008d04                atomic_leave_critical
  .text.flash_ready
-                0x00008d00        0x8 hal/src/hal_flash.o
+                0x00008d10        0x8 hal/src/hal_flash.o
  .text.flash_error
-                0x00008d08        0x8 hal/src/hal_flash.o
+                0x00008d18        0x8 hal/src/hal_flash.o
  .text.flash_init
-                0x00008d10       0x20 hal/src/hal_flash.o
-                0x00008d10                flash_init
+                0x00008d20       0x20 hal/src/hal_flash.o
+                0x00008d20                flash_init
  .text.flash_write_page_erase
-                0x00008d30       0xb0 hal/src/hal_flash.o
-                0x00008d30                flash_write_page_erase
+                0x00008d40       0xb0 hal/src/hal_flash.o
+                0x00008d40                flash_write_page_erase
  .text.flash_check_erase
-                0x00008de0       0x14 hal/src/hal_flash.o
-                0x00008de0                flash_check_erase
+                0x00008df0       0x14 hal/src/hal_flash.o
+                0x00008df0                flash_check_erase
  .text.i2c_m_sync_write
-                0x00008df4       0x30 hal/src/hal_i2c_m_sync.o
+                0x00008e04       0x30 hal/src/hal_i2c_m_sync.o
  .text.i2c_m_sync_read
-                0x00008e24       0x30 hal/src/hal_i2c_m_sync.o
+                0x00008e34       0x30 hal/src/hal_i2c_m_sync.o
  .text.i2c_m_sync_init
-                0x00008e54       0x20 hal/src/hal_i2c_m_sync.o
-                0x00008e54                i2c_m_sync_init
+                0x00008e64       0x20 hal/src/hal_i2c_m_sync.o
+                0x00008e64                i2c_m_sync_init
  .text.i2c_m_sync_deinit
-                0x00008e74       0x14 hal/src/hal_i2c_m_sync.o
-                0x00008e74                i2c_m_sync_deinit
+                0x00008e84       0x14 hal/src/hal_i2c_m_sync.o
+                0x00008e84                i2c_m_sync_deinit
  .text.i2c_m_sync_enable
-                0x00008e88        0x8 hal/src/hal_i2c_m_sync.o
-                0x00008e88                i2c_m_sync_enable
+                0x00008e98        0x8 hal/src/hal_i2c_m_sync.o
+                0x00008e98                i2c_m_sync_enable
  .text.i2c_m_sync_disable
-                0x00008e90        0x8 hal/src/hal_i2c_m_sync.o
-                0x00008e90                i2c_m_sync_disable
+                0x00008ea0        0x8 hal/src/hal_i2c_m_sync.o
+                0x00008ea0                i2c_m_sync_disable
  .text.i2c_m_sync_set_slaveaddr
-                0x00008e98       0x10 hal/src/hal_i2c_m_sync.o
-                0x00008e98                i2c_m_sync_set_slaveaddr
+                0x00008ea8       0x10 hal/src/hal_i2c_m_sync.o
+                0x00008ea8                i2c_m_sync_set_slaveaddr
  .text.i2c_m_sync_cmd_writeseq
-                0x00008ea8       0x24 hal/src/hal_i2c_m_sync.o
-                0x00008ea8                i2c_m_sync_cmd_writeseq
+                0x00008eb8       0x24 hal/src/hal_i2c_m_sync.o
+                0x00008eb8                i2c_m_sync_cmd_writeseq
  .text.i2c_m_sync_get_io_descriptor
-                0x00008ecc        0x8 hal/src/hal_i2c_m_sync.o
-                0x00008ecc                i2c_m_sync_get_io_descriptor
+                0x00008edc        0x8 hal/src/hal_i2c_m_sync.o
+                0x00008edc                i2c_m_sync_get_io_descriptor
  .text._rand_sync_read_data
-                0x00008ed4       0x48 hal/src/hal_rand_sync.o
+                0x00008ee4       0x48 hal/src/hal_rand_sync.o
  .text.rand_sync_init
-                0x00008f1c        0x8 hal/src/hal_rand_sync.o
-                0x00008f1c                rand_sync_init
+                0x00008f2c        0x8 hal/src/hal_rand_sync.o
+                0x00008f2c                rand_sync_init
  .text.rand_sync_enable
-                0x00008f24        0x8 hal/src/hal_rand_sync.o
-                0x00008f24                rand_sync_enable
+                0x00008f34        0x8 hal/src/hal_rand_sync.o
+                0x00008f34                rand_sync_enable
  .text.rand_sync_read32
-                0x00008f2c        0xc hal/src/hal_rand_sync.o
-                0x00008f2c                rand_sync_read32
- .text._sbrk    0x00008f38       0x1c hal/utils/src/utils_syscalls.o
-                0x00008f38                _sbrk
+                0x00008f3c        0xc hal/src/hal_rand_sync.o
+                0x00008f3c                rand_sync_read32
+ .text._sbrk    0x00008f48       0x1c hal/utils/src/utils_syscalls.o
+                0x00008f48                _sbrk
  .text.CAN0_Handler
-                0x00008f54       0x6c hpl/can/hpl_can.o
-                0x00008f54                CAN0_Handler
+                0x00008f64       0x6c hpl/can/hpl_can.o
+                0x00008f64                CAN0_Handler
  .text._init_chip
-                0x00008fc0       0x44 hpl/core/hpl_init.o
-                0x00008fc0                _init_chip
+                0x00008fd0       0x44 hpl/core/hpl_init.o
+                0x00008fd0                _init_chip
  .text._gclk_init_generators_by_fref
-                0x00009004       0x50 hpl/gclk/hpl_gclk.o
-                0x00009004                _gclk_init_generators_by_fref
+                0x00009014       0x50 hpl/gclk/hpl_gclk.o
+                0x00009014                _gclk_init_generators_by_fref
  .text._mclk_init
-                0x00009054        0xc hpl/mclk/hpl_mclk.o
-                0x00009054                _mclk_init
+                0x00009064        0xc hpl/mclk/hpl_mclk.o
+                0x00009064                _mclk_init
  .text._flash_program
-                0x00009060       0x40 hpl/nvmctrl/hpl_nvmctrl.o
+                0x00009070       0x40 hpl/nvmctrl/hpl_nvmctrl.o
  .text._user_row_write_exec
-                0x000090a0       0x88 hpl/nvmctrl/hpl_nvmctrl.o
+                0x000090b0       0x88 hpl/nvmctrl/hpl_nvmctrl.o
  .text._flash_init
-                0x00009128       0x54 hpl/nvmctrl/hpl_nvmctrl.o
-                0x00009128                _flash_init
+                0x00009138       0x54 hpl/nvmctrl/hpl_nvmctrl.o
+                0x00009138                _flash_init
  .text._flash_get_page_size
-                0x0000917c        0x8 hpl/nvmctrl/hpl_nvmctrl.o
-                0x0000917c                _flash_get_page_size
+                0x0000918c        0x8 hpl/nvmctrl/hpl_nvmctrl.o
+                0x0000918c                _flash_get_page_size
  .text._flash_get_total_pages
-                0x00009184        0x8 hpl/nvmctrl/hpl_nvmctrl.o
-                0x00009184                _flash_get_total_pages
+                0x00009194        0x8 hpl/nvmctrl/hpl_nvmctrl.o
+                0x00009194                _flash_get_total_pages
  .text._flash_erase_block_addr
-                0x0000918c       0x1c hpl/nvmctrl/hpl_nvmctrl.o
-                0x0000918c                _flash_erase_block_addr
+                0x0000919c       0x1c hpl/nvmctrl/hpl_nvmctrl.o
+                0x0000919c                _flash_erase_block_addr
  .text._flash_write_page_addr
-                0x000091a8       0x14 hpl/nvmctrl/hpl_nvmctrl.o
-                0x000091a8                _flash_write_page_addr
+                0x000091b8       0x14 hpl/nvmctrl/hpl_nvmctrl.o
+                0x000091b8                _flash_write_page_addr
  .text._flash_is_locked
-                0x000091bc       0x18 hpl/nvmctrl/hpl_nvmctrl.o
-                0x000091bc                _flash_is_locked
+                0x000091cc       0x18 hpl/nvmctrl/hpl_nvmctrl.o
+                0x000091cc                _flash_is_locked
  .text.NVMCTRL_1_Handler
-                0x000091d4       0x30 hpl/nvmctrl/hpl_nvmctrl.o
-                0x000091d4                NVMCTRL_1_Handler
+                0x000091e4       0x30 hpl/nvmctrl/hpl_nvmctrl.o
+                0x000091e4                NVMCTRL_1_Handler
  .text.NVMCTRL_0_Handler
-                0x00009204        0x8 hpl/nvmctrl/hpl_nvmctrl.o
-                0x00009204                NVMCTRL_0_Handler
+                0x00009214        0x8 hpl/nvmctrl/hpl_nvmctrl.o
+                0x00009214                NVMCTRL_0_Handler
  .text._user_area_read
-                0x0000920c       0x68 hpl/nvmctrl/hpl_nvmctrl.o
-                0x0000920c                _user_area_read
+                0x0000921c       0x68 hpl/nvmctrl/hpl_nvmctrl.o
+                0x0000921c                _user_area_read
  .text._user_area_write
-                0x00009274       0x7c hpl/nvmctrl/hpl_nvmctrl.o
-                0x00009274                _user_area_write
+                0x00009284       0x7c hpl/nvmctrl/hpl_nvmctrl.o
+                0x00009284                _user_area_write
  .text._osc32kctrl_init_sources
-                0x000092f0       0x14 hpl/osc32kctrl/hpl_osc32kctrl.o
-                0x000092f0                _osc32kctrl_init_sources
+                0x00009300       0x14 hpl/osc32kctrl/hpl_osc32kctrl.o
+                0x00009300                _osc32kctrl_init_sources
  .text._oscctrl_init_sources
-                0x00009304       0x18 hpl/oscctrl/hpl_oscctrl.o
-                0x00009304                _oscctrl_init_sources
+                0x00009314       0x18 hpl/oscctrl/hpl_oscctrl.o
+                0x00009314                _oscctrl_init_sources
  .text._oscctrl_init_referenced_generators
-                0x0000931c       0x6c hpl/oscctrl/hpl_oscctrl.o
-                0x0000931c                _oscctrl_init_referenced_generators
+                0x0000932c       0x6c hpl/oscctrl/hpl_oscctrl.o
+                0x0000932c                _oscctrl_init_referenced_generators
  .text.RAMECC_Handler
-                0x00009388       0x3c hpl/ramecc/hpl_ramecc.o
-                0x00009388                RAMECC_Handler
+                0x00009398       0x3c hpl/ramecc/hpl_ramecc.o
+                0x00009398                RAMECC_Handler
  .text._get_i2cm_index
-                0x000093c4       0x48 hpl/sercom/hpl_sercom.o
+                0x000093d4       0x48 hpl/sercom/hpl_sercom.o
  .text._sercom_i2c_sync_wait_bus
-                0x0000940c       0x60 hpl/sercom/hpl_sercom.o
+                0x0000941c       0x60 hpl/sercom/hpl_sercom.o
  .text._i2c_m_sync_init_impl
-                0x0000946c       0xb4 hpl/sercom/hpl_sercom.o
+                0x0000947c       0xb4 hpl/sercom/hpl_sercom.o
  .text._i2c_m_sync_init
-                0x00009520        0xc hpl/sercom/hpl_sercom.o
-                0x00009520                _i2c_m_sync_init
+                0x00009530        0xc hpl/sercom/hpl_sercom.o
+                0x00009530                _i2c_m_sync_init
  .text._i2c_m_sync_deinit
-                0x0000952c       0x24 hpl/sercom/hpl_sercom.o
-                0x0000952c                _i2c_m_sync_deinit
+                0x0000953c       0x24 hpl/sercom/hpl_sercom.o
+                0x0000953c                _i2c_m_sync_deinit
  .text._i2c_m_sync_enable
-                0x00009550       0x48 hpl/sercom/hpl_sercom.o
-                0x00009550                _i2c_m_sync_enable
+                0x00009560       0x48 hpl/sercom/hpl_sercom.o
+                0x00009560                _i2c_m_sync_enable
  .text._i2c_m_sync_disable
-                0x00009598       0x14 hpl/sercom/hpl_sercom.o
-                0x00009598                _i2c_m_sync_disable
+                0x000095a8       0x14 hpl/sercom/hpl_sercom.o
+                0x000095a8                _i2c_m_sync_disable
  .text._i2c_m_sync_transfer
-                0x000095ac      0x4d0 hpl/sercom/hpl_sercom.o
-                0x000095ac                _i2c_m_sync_transfer
+                0x000095bc      0x4d0 hpl/sercom/hpl_sercom.o
+                0x000095bc                _i2c_m_sync_transfer
  .text._rand_sync_init
-                0x00009a7c       0x30 hpl/trng/hpl_trng.o
-                0x00009a7c                _rand_sync_init
+                0x00009a8c       0x30 hpl/trng/hpl_trng.o
+                0x00009a8c                _rand_sync_init
  .text._rand_sync_enable
-                0x00009aac       0x10 hpl/trng/hpl_trng.o
-                0x00009aac                _rand_sync_enable
+                0x00009abc       0x10 hpl/trng/hpl_trng.o
+                0x00009abc                _rand_sync_enable
  .text._rand_sync_read_one
-                0x00009abc        0xc hpl/trng/hpl_trng.o
-                0x00009abc                _rand_sync_read_one
+                0x00009acc        0xc hpl/trng/hpl_trng.o
+                0x00009acc                _rand_sync_read_one
  .text._wdt_init
-                0x00009ac8       0x44 hpl/wdt/hpl_wdt.o
-                0x00009ac8                _wdt_init
+                0x00009ad8       0x44 hpl/wdt/hpl_wdt.o
+                0x00009ad8                _wdt_init
  .text._wdt_set_timeout_period
-                0x00009b0c       0xc8 hpl/wdt/hpl_wdt.o
-                0x00009b0c                _wdt_set_timeout_period
+                0x00009b1c       0xc8 hpl/wdt/hpl_wdt.o
+                0x00009b1c                _wdt_set_timeout_period
  .text._wdt_enable
-                0x00009bd4       0x14 hpl/wdt/hpl_wdt.o
-                0x00009bd4                _wdt_enable
+                0x00009be4       0x14 hpl/wdt/hpl_wdt.o
+                0x00009be4                _wdt_enable
  .text.IziPlus_Timer100ms
-                0x00009be8       0x70 izilink/iziplus_driver.o
-                0x00009be8                IziPlus_Timer100ms
+                0x00009bf8       0x70 izilink/iziplus_driver.o
+                0x00009bf8                IziPlus_Timer100ms
  .text.IziPlus_Init
-                0x00009c58       0xb8 izilink/iziplus_driver.o
-                0x00009c58                IziPlus_Init
+                0x00009c68       0xb8 izilink/iziplus_driver.o
+                0x00009c68                IziPlus_Init
  .text.IziPlus_LightDataOk
-                0x00009d10       0x1c izilink/iziplus_driver.o
-                0x00009d10                IziPlus_LightDataOk
+                0x00009d20       0x1c izilink/iziplus_driver.o
+                0x00009d20                IziPlus_LightDataOk
  .text.iziplus_data_get_panid
-                0x00009d2c       0x18 izilink/iziplus_driver.o
-                0x00009d2c                iziplus_data_get_panid
+                0x00009d3c       0x18 izilink/iziplus_driver.o
+                0x00009d3c                iziplus_data_get_panid
  .text.IziPlus_ContactReport
-                0x00009d44       0x60 izilink/iziplus_driver.o
-                0x00009d44                IziPlus_ContactReport
+                0x00009d54       0x60 izilink/iziplus_driver.o
+                0x00009d54                IziPlus_ContactReport
  .text.IziPlus_HandleRx
-                0x00009da4      0xfd8 izilink/iziplus_driver.o
-                0x00009da4                IziPlus_HandleRx
+                0x00009db4     0x1010 izilink/iziplus_driver.o
+                0x00009db4                IziPlus_HandleRx
  .text.IziPlus_HandleRxIdle
-                0x0000ad7c       0xa0 izilink/iziplus_driver.o
-                0x0000ad7c                IziPlus_HandleRxIdle
+                0x0000adc4       0xa0 izilink/iziplus_driver.o
+                0x0000adc4                IziPlus_HandleRxIdle
  .text.IziPlus_IdentifyLocal
-                0x0000ae1c       0x10 izilink/iziplus_driver.o
-                0x0000ae1c                IziPlus_IdentifyLocal
+                0x0000ae64       0x10 izilink/iziplus_driver.o
+                0x0000ae64                IziPlus_IdentifyLocal
  .text.IziPlus_Powerup
-                0x0000ae2c      0x10c izilink/iziplus_driver.o
-                0x0000ae2c                IziPlus_Powerup
+                0x0000ae74      0x10c izilink/iziplus_driver.o
+                0x0000ae74                IziPlus_Powerup
  .text.IziPlus_Task
-                0x0000af38      0x318 izilink/iziplus_driver.o
+                0x0000af80      0x318 izilink/iziplus_driver.o
  .text.IziPlus_Module_SetConfigValue.part.3
-                0x0000b250       0xac izilink/iziplus_module_def.o
+                0x0000b298       0xac izilink/iziplus_module_def.o
  .text.IziPlus_Module_Overrule_Ch1234.part.5
-                0x0000b2fc       0x38 izilink/iziplus_module_def.o
+                0x0000b344       0x38 izilink/iziplus_module_def.o
  .text.IziPlus_Module_InitReady
-                0x0000b334        0xc izilink/iziplus_module_def.o
-                0x0000b334                IziPlus_Module_InitReady
+                0x0000b37c        0xc izilink/iziplus_module_def.o
+                0x0000b37c                IziPlus_Module_InitReady
  .text.IziPlus_Module_Fixture_CC4
-                0x0000b340       0x68 izilink/iziplus_module_def.o
-                0x0000b340                IziPlus_Module_Fixture_CC4
+                0x0000b388       0x68 izilink/iziplus_module_def.o
+                0x0000b388                IziPlus_Module_Fixture_CC4
  .text.IziPlus_Module_SetFixtureParameters
-                0x0000b3a8       0x64 izilink/iziplus_module_def.o
-                0x0000b3a8                IziPlus_Module_SetFixtureParameters
+                0x0000b3f0       0x64 izilink/iziplus_module_def.o
+                0x0000b3f0                IziPlus_Module_SetFixtureParameters
  .text.IziPlus_Module_Update
-                0x0000b40c       0xc8 izilink/iziplus_module_def.o
-                0x0000b40c                IziPlus_Module_Update
+                0x0000b454       0xc8 izilink/iziplus_module_def.o
+                0x0000b454                IziPlus_Module_Update
  .text.IziPlus_Module_Init
-                0x0000b4d4       0xac izilink/iziplus_module_def.o
-                0x0000b4d4                IziPlus_Module_Init
+                0x0000b51c       0xac izilink/iziplus_module_def.o
+                0x0000b51c                IziPlus_Module_Init
  .text.IziPlus_Module_TemperatureCheck
-                0x0000b580       0x84 izilink/iziplus_module_def.o
-                0x0000b580                IziPlus_Module_TemperatureCheck
+                0x0000b5c8       0x84 izilink/iziplus_module_def.o
+                0x0000b5c8                IziPlus_Module_TemperatureCheck
  .text.IziPlus_Module_TempLimit
-                0x0000b604       0x34 izilink/iziplus_module_def.o
-                0x0000b604                IziPlus_Module_TempLimit
+                0x0000b64c       0x34 izilink/iziplus_module_def.o
+                0x0000b64c                IziPlus_Module_TempLimit
  .text.IziPlus_Module_PowerCheck
-                0x0000b638       0xa4 izilink/iziplus_module_def.o
-                0x0000b638                IziPlus_Module_PowerCheck
+                0x0000b680       0xa4 izilink/iziplus_module_def.o
+                0x0000b680                IziPlus_Module_PowerCheck
  .text.IziPlus_Module_Timer100ms
-                0x0000b6dc      0x4cc izilink/iziplus_module_def.o
-                0x0000b6dc                IziPlus_Module_Timer100ms
+                0x0000b724      0x4cc izilink/iziplus_module_def.o
+                0x0000b724                IziPlus_Module_Timer100ms
  .text.IziPlus_Module_IsSafetyOff_Ch1
-                0x0000bba8       0x14 izilink/iziplus_module_def.o
-                0x0000bba8                IziPlus_Module_IsSafetyOff_Ch1
+                0x0000bbf0       0x14 izilink/iziplus_module_def.o
+                0x0000bbf0                IziPlus_Module_IsSafetyOff_Ch1
  .text.IziPlus_Module_IsSafetyOff_Ch2
-                0x0000bbbc       0x14 izilink/iziplus_module_def.o
-                0x0000bbbc                IziPlus_Module_IsSafetyOff_Ch2
+                0x0000bc04       0x14 izilink/iziplus_module_def.o
+                0x0000bc04                IziPlus_Module_IsSafetyOff_Ch2
  .text.IziPlus_Module_IsSafetyOff_Ch3
-                0x0000bbd0       0x14 izilink/iziplus_module_def.o
-                0x0000bbd0                IziPlus_Module_IsSafetyOff_Ch3
+                0x0000bc18       0x14 izilink/iziplus_module_def.o
+                0x0000bc18                IziPlus_Module_IsSafetyOff_Ch3
  .text.IziPlus_Module_IsSafetyOff_Ch4
-                0x0000bbe4       0x14 izilink/iziplus_module_def.o
-                0x0000bbe4                IziPlus_Module_IsSafetyOff_Ch4
+                0x0000bc2c       0x14 izilink/iziplus_module_def.o
+                0x0000bc2c                IziPlus_Module_IsSafetyOff_Ch4
  .text.IziPlus_Module_IsSafetyOff_Chx
-                0x0000bbf8       0x20 izilink/iziplus_module_def.o
-                0x0000bbf8                IziPlus_Module_IsSafetyOff_Chx
+                0x0000bc40       0x20 izilink/iziplus_module_def.o
+                0x0000bc40                IziPlus_Module_IsSafetyOff_Chx
  .text.IziPlus_Module_SafetyOff_Chx
-                0x0000bc18       0x20 izilink/iziplus_module_def.o
-                0x0000bc18                IziPlus_Module_SafetyOff_Chx
+                0x0000bc60       0x20 izilink/iziplus_module_def.o
+                0x0000bc60                IziPlus_Module_SafetyOff_Chx
  .text.IziPlus_Module_IdentifySync
-                0x0000bc38        0xc izilink/iziplus_module_def.o
-                0x0000bc38                IziPlus_Module_IdentifySync
+                0x0000bc80        0xc izilink/iziplus_module_def.o
+                0x0000bc80                IziPlus_Module_IdentifySync
  .text.IziPlus_Module_IsIdentifying
-                0x0000bc44       0x10 izilink/iziplus_module_def.o
-                0x0000bc44                IziPlus_Module_IsIdentifying
+                0x0000bc8c       0x10 izilink/iziplus_module_def.o
+                0x0000bc8c                IziPlus_Module_IsIdentifying
  .text.IziPlus_Module_GetCpuState
-                0x0000bc54        0xc izilink/iziplus_module_def.o
-                0x0000bc54                IziPlus_Module_GetCpuState
+                0x0000bc9c        0xc izilink/iziplus_module_def.o
+                0x0000bc9c                IziPlus_Module_GetCpuState
  .text.IziPlus_Module_MonitorValue
-                0x0000bc60      0x3a4 izilink/iziplus_module_def.o
-                0x0000bc60                IziPlus_Module_MonitorValue
+                0x0000bca8      0x3a4 izilink/iziplus_module_def.o
+                0x0000bca8                IziPlus_Module_MonitorValue
  .text.IziPlus_Module_GetMonitor
-                0x0000c004       0x68 izilink/iziplus_module_def.o
-                0x0000c004                IziPlus_Module_GetMonitor
+                0x0000c04c       0x68 izilink/iziplus_module_def.o
+                0x0000c04c                IziPlus_Module_GetMonitor
  .text.IziPlus_Module_SetConfigByIndex
-                0x0000c06c       0x84 izilink/iziplus_module_def.o
-                0x0000c06c                IziPlus_Module_SetConfigByIndex
+                0x0000c0b4       0x84 izilink/iziplus_module_def.o
+                0x0000c0b4                IziPlus_Module_SetConfigByIndex
  .text.IziPlus_Module_ConfigValue
-                0x0000c0f0       0xb0 izilink/iziplus_module_def.o
-                0x0000c0f0                IziPlus_Module_ConfigValue
+                0x0000c138       0xb0 izilink/iziplus_module_def.o
+                0x0000c138                IziPlus_Module_ConfigValue
  .text.IziPlus_Module_GetConfig
-                0x0000c1a0       0x38 izilink/iziplus_module_def.o
-                0x0000c1a0                IziPlus_Module_GetConfig
+                0x0000c1e8       0x38 izilink/iziplus_module_def.o
+                0x0000c1e8                IziPlus_Module_GetConfig
  .text.IziPlus_Module_SetIdentify
-                0x0000c1d8       0x80 izilink/iziplus_module_def.o
-                0x0000c1d8                IziPlus_Module_SetIdentify
+                0x0000c220       0x80 izilink/iziplus_module_def.o
+                0x0000c220                IziPlus_Module_SetIdentify
  .text.IziPlus_Module_GetDim
-                0x0000c258       0xe8 izilink/iziplus_module_def.o
-                0x0000c258                IziPlus_Module_GetDim
+                0x0000c2a0       0xe8 izilink/iziplus_module_def.o
+                0x0000c2a0                IziPlus_Module_GetDim
  .text.IziPlus_Module_GetChannelAmount
-                0x0000c340        0xc izilink/iziplus_module_def.o
-                0x0000c340                IziPlus_Module_GetChannelAmount
+                0x0000c388        0xc izilink/iziplus_module_def.o
+                0x0000c388                IziPlus_Module_GetChannelAmount
  .text.IziPlus_Module_GetChannelAmountTemp
-                0x0000c34c       0x30 izilink/iziplus_module_def.o
-                0x0000c34c                IziPlus_Module_GetChannelAmountTemp
+                0x0000c394       0x30 izilink/iziplus_module_def.o
+                0x0000c394                IziPlus_Module_GetChannelAmountTemp
  .text.IziPlus_Module_GetHwRevision
-                0x0000c37c        0x8 izilink/iziplus_module_def.o
-                0x0000c37c                IziPlus_Module_GetHwRevision
+                0x0000c3c4        0x8 izilink/iziplus_module_def.o
+                0x0000c3c4                IziPlus_Module_GetHwRevision
  .text.IziPlus_Module_GetVariant
-                0x0000c384        0x8 izilink/iziplus_module_def.o
-                0x0000c384                IziPlus_Module_GetVariant
+                0x0000c3cc        0x8 izilink/iziplus_module_def.o
+                0x0000c3cc                IziPlus_Module_GetVariant
  .text.IziPlus_Module_GetAppVersion
-                0x0000c38c       0x1c izilink/iziplus_module_def.o
-                0x0000c38c                IziPlus_Module_GetAppVersion
+                0x0000c3d4       0x1c izilink/iziplus_module_def.o
+                0x0000c3d4                IziPlus_Module_GetAppVersion
  .text.IziPlus_Module_GetBootVersion
-                0x0000c3a8       0x1c izilink/iziplus_module_def.o
-                0x0000c3a8                IziPlus_Module_GetBootVersion
+                0x0000c3f0       0x1c izilink/iziplus_module_def.o
+                0x0000c3f0                IziPlus_Module_GetBootVersion
  .text.IziPlus_Module_GetImageVersion
-                0x0000c3c4       0x1c izilink/iziplus_module_def.o
-                0x0000c3c4                IziPlus_Module_GetImageVersion
+                0x0000c40c       0x1c izilink/iziplus_module_def.o
+                0x0000c40c                IziPlus_Module_GetImageVersion
  .text.IziPlus_Module_GetTypedefVersion
-                0x0000c3e0       0x14 izilink/iziplus_module_def.o
-                0x0000c3e0                IziPlus_Module_GetTypedefVersion
+                0x0000c428       0x14 izilink/iziplus_module_def.o
+                0x0000c428                IziPlus_Module_GetTypedefVersion
  .text.IziPlus_Module_GetLedtableVersion
-                0x0000c3f4        0x8 izilink/iziplus_module_def.o
-                0x0000c3f4                IziPlus_Module_GetLedtableVersion
+                0x0000c43c        0x8 izilink/iziplus_module_def.o
+                0x0000c43c                IziPlus_Module_GetLedtableVersion
  .text.IziPlus_Module_GetMemoryVersion
-                0x0000c3fc        0x4 izilink/iziplus_module_def.o
-                0x0000c3fc                IziPlus_Module_GetMemoryVersion
+                0x0000c444        0x4 izilink/iziplus_module_def.o
+                0x0000c444                IziPlus_Module_GetMemoryVersion
  .text.IziPlus_Module_IsOverruled
-                0x0000c400       0x14 izilink/iziplus_module_def.o
-                0x0000c400                IziPlus_Module_IsOverruled
+                0x0000c448       0x14 izilink/iziplus_module_def.o
+                0x0000c448                IziPlus_Module_IsOverruled
  .text.IziPlus_Module_Test
-                0x0000c414       0x50 izilink/iziplus_module_def.o
-                0x0000c414                IziPlus_Module_Test
+                0x0000c45c       0x50 izilink/iziplus_module_def.o
+                0x0000c45c                IziPlus_Module_Test
  .text.IziPlus_Module_Overrule_Chx
-                0x0000c464       0x34 izilink/iziplus_module_def.o
-                0x0000c464                IziPlus_Module_Overrule_Chx
+                0x0000c4ac       0x34 izilink/iziplus_module_def.o
+                0x0000c4ac                IziPlus_Module_Overrule_Chx
  .text.IziPlus_Module_Overrule_Ch1234
-                0x0000c498       0x2c izilink/iziplus_module_def.o
-                0x0000c498                IziPlus_Module_Overrule_Ch1234
+                0x0000c4e0       0x2c izilink/iziplus_module_def.o
+                0x0000c4e0                IziPlus_Module_Overrule_Ch1234
  .text.IziPlus_NoComCheck
-                0x0000c4c4       0xe0 izilink/iziplus_module_def.o
-                0x0000c4c4                IziPlus_NoComCheck
+                0x0000c50c       0xe0 izilink/iziplus_module_def.o
+                0x0000c50c                IziPlus_NoComCheck
  .text.IziInput_Init
-                0x0000c5a4        0x4 izilink/izi_input.o
-                0x0000c5a4                IziInput_Init
+                0x0000c5ec        0x4 izilink/izi_input.o
+                0x0000c5ec                IziInput_Init
  .text.IziInput_10ms
-                0x0000c5a8      0x334 izilink/izi_input.o
-                0x0000c5a8                IziInput_10ms
+                0x0000c5f0      0x334 izilink/izi_input.o
+                0x0000c5f0                IziInput_10ms
  .text.IziInput_GetExtInput
-                0x0000c8dc        0xc izilink/izi_input.o
-                0x0000c8dc                IziInput_GetExtInput
+                0x0000c924        0xc izilink/izi_input.o
+                0x0000c924                IziInput_GetExtInput
  .text.__NVIC_SystemReset
-                0x0000c8e8       0x24 main.o
+                0x0000c930       0x24 main.o
  .text.vApplicationStackOverflowHook
-                0x0000c90c        0xc main.o
-                0x0000c90c                vApplicationStackOverflowHook
+                0x0000c954        0xc main.o
+                0x0000c954                vApplicationStackOverflowHook
  .text.vApplicationIdleHook
-                0x0000c918       0x60 main.o
-                0x0000c918                vApplicationIdleHook
+                0x0000c960       0x60 main.o
+                0x0000c960                vApplicationIdleHook
  .text.print_resetcause
-                0x0000c978       0xd4 main.o
-                0x0000c978                print_resetcause
+                0x0000c9c0       0xd4 main.o
+                0x0000c9c0                print_resetcause
  .text.ReportStackSize
-                0x0000ca4c       0x30 main.o
-                0x0000ca4c                ReportStackSize
+                0x0000ca94       0x30 main.o
+                0x0000ca94                ReportStackSize
  .text.startup.main
-                0x0000ca7c       0xd8 main.o
-                0x0000ca7c                main
+                0x0000cac4       0xd8 main.o
+                0x0000cac4                main
  .text.Analog_125ms
-                0x0000cb54      0x11c misc/analog.o
-                0x0000cb54                Analog_125ms
+                0x0000cb9c      0x11c misc/analog.o
+                0x0000cb9c                Analog_125ms
  .text.Analog_Apply_Gain_Correction.part.0
-                0x0000cc70       0x30 misc/analog.o
+                0x0000ccb8       0x30 misc/analog.o
  .text.Analog_Apply_Gain_Correction2.part.1
-                0x0000cca0       0x30 misc/analog.o
+                0x0000cce8       0x30 misc/analog.o
  .text.Analog_Init
-                0x0000ccd0      0x438 misc/analog.o
-                0x0000ccd0                Analog_Init
+                0x0000cd18      0x438 misc/analog.o
+                0x0000cd18                Analog_Init
  .text.Analog_Ready
-                0x0000d108       0x10 misc/analog.o
-                0x0000d108                Analog_Ready
+                0x0000d150       0x10 misc/analog.o
+                0x0000d150                Analog_Ready
  .text.ADC1_1_Handler
-                0x0000d118      0x12c misc/analog.o
-                0x0000d118                ADC1_1_Handler
+                0x0000d160      0x12c misc/analog.o
+                0x0000d160                ADC1_1_Handler
  .text.ADC0_1_Handler
-                0x0000d244      0x12c misc/analog.o
-                0x0000d244                ADC0_1_Handler
+                0x0000d28c      0x12c misc/analog.o
+                0x0000d28c                ADC0_1_Handler
  .text.Analog_GetSupplyVoltage
-                0x0000d370       0x28 misc/analog.o
-                0x0000d370                Analog_GetSupplyVoltage
+                0x0000d3b8       0x28 misc/analog.o
+                0x0000d3b8                Analog_GetSupplyVoltage
  .text.Analog_GetSupplyVoltageRaw
-                0x0000d398        0xc misc/analog.o
-                0x0000d398                Analog_GetSupplyVoltageRaw
+                0x0000d3e0        0xc misc/analog.o
+                0x0000d3e0                Analog_GetSupplyVoltageRaw
  .text.Adc_GetTemperature
-                0x0000d3a4       0x24 misc/analog.o
-                0x0000d3a4                Adc_GetTemperature
+                0x0000d3ec       0x24 misc/analog.o
+                0x0000d3ec                Adc_GetTemperature
  .text.Adc_GetTemperatureRaw
-                0x0000d3c8       0x1c misc/analog.o
-                0x0000d3c8                Adc_GetTemperatureRaw
+                0x0000d410       0x1c misc/analog.o
+                0x0000d410                Adc_GetTemperatureRaw
  .text.Adc_GetTemperatureMax
-                0x0000d3e4        0xc misc/analog.o
-                0x0000d3e4                Adc_GetTemperatureMax
+                0x0000d42c        0xc misc/analog.o
+                0x0000d42c                Adc_GetTemperatureMax
  .text.Adc_GetNtc
-                0x0000d3f0       0x18 misc/analog.o
-                0x0000d3f0                Adc_GetNtc
+                0x0000d438       0x18 misc/analog.o
+                0x0000d438                Adc_GetNtc
  .text.Adc_GetNtcMax
-                0x0000d408        0xc misc/analog.o
-                0x0000d408                Adc_GetNtcMax
+                0x0000d450        0xc misc/analog.o
+                0x0000d450                Adc_GetNtcMax
  .text.Adc_GetNtcRaw
-                0x0000d414        0xc misc/analog.o
-                0x0000d414                Adc_GetNtcRaw
+                0x0000d45c        0xc misc/analog.o
+                0x0000d45c                Adc_GetNtcRaw
  .text.Adc_GetNtc2
-                0x0000d420       0x18 misc/analog.o
-                0x0000d420                Adc_GetNtc2
+                0x0000d468       0x18 misc/analog.o
+                0x0000d468                Adc_GetNtc2
  .text.Adc_GetNtc2Max
-                0x0000d438        0xc misc/analog.o
-                0x0000d438                Adc_GetNtc2Max
+                0x0000d480        0xc misc/analog.o
+                0x0000d480                Adc_GetNtc2Max
  .text.Adc_GetVled1Raw
-                0x0000d444        0xc misc/analog.o
-                0x0000d444                Adc_GetVled1Raw
+                0x0000d48c        0xc misc/analog.o
+                0x0000d48c                Adc_GetVled1Raw
  .text.Adc_GetVled1
-                0x0000d450       0x28 misc/analog.o
-                0x0000d450                Adc_GetVled1
+                0x0000d498       0x28 misc/analog.o
+                0x0000d498                Adc_GetVled1
  .text.Adc_GetVled1LastRaw
-                0x0000d478        0xc misc/analog.o
-                0x0000d478                Adc_GetVled1LastRaw
+                0x0000d4c0        0xc misc/analog.o
+                0x0000d4c0                Adc_GetVled1LastRaw
  .text.Adc_GetVled2Raw
-                0x0000d484        0xc misc/analog.o
-                0x0000d484                Adc_GetVled2Raw
+                0x0000d4cc        0xc misc/analog.o
+                0x0000d4cc                Adc_GetVled2Raw
  .text.Adc_GetVled2
-                0x0000d490       0x28 misc/analog.o
-                0x0000d490                Adc_GetVled2
+                0x0000d4d8       0x28 misc/analog.o
+                0x0000d4d8                Adc_GetVled2
  .text.Adc_GetVled2LastRaw
-                0x0000d4b8        0xc misc/analog.o
-                0x0000d4b8                Adc_GetVled2LastRaw
+                0x0000d500        0xc misc/analog.o
+                0x0000d500                Adc_GetVled2LastRaw
  .text.Adc_GetVled3Raw
-                0x0000d4c4        0xc misc/analog.o
-                0x0000d4c4                Adc_GetVled3Raw
+                0x0000d50c        0xc misc/analog.o
+                0x0000d50c                Adc_GetVled3Raw
  .text.Adc_GetVled3
-                0x0000d4d0       0x28 misc/analog.o
-                0x0000d4d0                Adc_GetVled3
+                0x0000d518       0x28 misc/analog.o
+                0x0000d518                Adc_GetVled3
  .text.Adc_GetVled3LastRaw
-                0x0000d4f8        0xc misc/analog.o
-                0x0000d4f8                Adc_GetVled3LastRaw
+                0x0000d540        0xc misc/analog.o
+                0x0000d540                Adc_GetVled3LastRaw
  .text.Adc_GetVled4Raw
-                0x0000d504        0xc misc/analog.o
-                0x0000d504                Adc_GetVled4Raw
+                0x0000d54c        0xc misc/analog.o
+                0x0000d54c                Adc_GetVled4Raw
  .text.Adc_GetVled4
-                0x0000d510       0x28 misc/analog.o
-                0x0000d510                Adc_GetVled4
+                0x0000d558       0x28 misc/analog.o
+                0x0000d558                Adc_GetVled4
  .text.Adc_GetVled4LastRaw
-                0x0000d538        0xc misc/analog.o
-                0x0000d538                Adc_GetVled4LastRaw
+                0x0000d580        0xc misc/analog.o
+                0x0000d580                Adc_GetVled4LastRaw
  .text.State_SetError.part.0
-                0x0000d544       0x1c misc/state.o
+                0x0000d58c       0x1c misc/state.o
  .text.State_SetWarning.part.2
-                0x0000d560       0x20 misc/state.o
+                0x0000d5a8       0x20 misc/state.o
  .text.State_SetError
-                0x0000d580       0x10 misc/state.o
-                0x0000d580                State_SetError
+                0x0000d5c8       0x10 misc/state.o
+                0x0000d5c8                State_SetError
  .text.State_ClearError
-                0x0000d590       0x1c misc/state.o
-                0x0000d590                State_ClearError
+                0x0000d5d8       0x1c misc/state.o
+                0x0000d5d8                State_ClearError
  .text.State_GetHighestError
-                0x0000d5ac       0x28 misc/state.o
-                0x0000d5ac                State_GetHighestError
+                0x0000d5f4       0x28 misc/state.o
+                0x0000d5f4                State_GetHighestError
  .text.State_SetWarning
-                0x0000d5d4       0x10 misc/state.o
-                0x0000d5d4                State_SetWarning
+                0x0000d61c       0x10 misc/state.o
+                0x0000d61c                State_SetWarning
  .text.State_ClearWarning
-                0x0000d5e4       0x2c misc/state.o
-                0x0000d5e4                State_ClearWarning
+                0x0000d62c       0x2c misc/state.o
+                0x0000d62c                State_ClearWarning
  .text.State_IsWarningActive
-                0x0000d610       0x18 misc/state.o
-                0x0000d610                State_IsWarningActive
- .text.State_GetHighestWarning
-                0x0000d628       0x30 misc/state.o
-                0x0000d628                State_GetHighestWarning
- .text.State_SetStartInfo
                 0x0000d658       0x18 misc/state.o
-                0x0000d658                State_SetStartInfo
+                0x0000d658                State_IsWarningActive
+ .text.State_GetHighestWarning
+                0x0000d670       0x30 misc/state.o
+                0x0000d670                State_GetHighestWarning
+ .text.State_SetStartInfo
+                0x0000d6a0       0x18 misc/state.o
+                0x0000d6a0                State_SetStartInfo
  .text.State_ClearStartInfo
-                0x0000d670       0x2c misc/state.o
-                0x0000d670                State_ClearStartInfo
+                0x0000d6b8       0x2c misc/state.o
+                0x0000d6b8                State_ClearStartInfo
  .text.State_SetAttentionInfo
-                0x0000d69c       0x28 misc/state.o
-                0x0000d69c                State_SetAttentionInfo
+                0x0000d6e4       0x28 misc/state.o
+                0x0000d6e4                State_SetAttentionInfo
  .text.State_ClearAttentionInfo
-                0x0000d6c4        0xc misc/state.o
-                0x0000d6c4                State_ClearAttentionInfo
+                0x0000d70c        0xc misc/state.o
+                0x0000d70c                State_ClearAttentionInfo
  .text.State_SetLed
-                0x0000d6d0      0x10c misc/state.o
-                0x0000d6d0                State_SetLed
+                0x0000d718      0x10c misc/state.o
+                0x0000d718                State_SetLed
  .text.State_Blink
-                0x0000d7dc       0xb8 misc/state.o
-                0x0000d7dc                State_Blink
+                0x0000d824       0xb8 misc/state.o
+                0x0000d824                State_Blink
  .text.State_Timer200ms
-                0x0000d894      0x28c misc/state.o
-                0x0000d894                State_Timer200ms
+                0x0000d8dc      0x28c misc/state.o
+                0x0000d8dc                State_Timer200ms
  .text.TC4_Handler
-                0x0000db20      0x12c misc/state.o
-                0x0000db20                TC4_Handler
+                0x0000db68      0x12c misc/state.o
+                0x0000db68                TC4_Handler
  .text.State_TimerSync
-                0x0000dc4c       0x88 misc/state.o
-                0x0000dc4c                State_TimerSync
+                0x0000dc94       0x88 misc/state.o
+                0x0000dc94                State_TimerSync
  .text.State_Init
-                0x0000dcd4       0xcc misc/state.o
-                0x0000dcd4                State_Init
+                0x0000dd1c       0xcc misc/state.o
+                0x0000dd1c                State_Init
  .text.State_ComToggle
-                0x0000dda0       0x64 misc/state.o
-                0x0000dda0                State_ComToggle
+                0x0000dde8       0x64 misc/state.o
+                0x0000dde8                State_ComToggle
  .text.State_ComToggleNoData
-                0x0000de04       0x70 misc/state.o
-                0x0000de04                State_ComToggleNoData
+                0x0000de4c       0x6c misc/state.o
+                0x0000de4c                State_ComToggleNoData
  .text.State_ComToggleTempNetwork
-                0x0000de74       0x6c misc/state.o
-                0x0000de74                State_ComToggleTempNetwork
+                0x0000deb8       0x64 misc/state.o
+                0x0000deb8                State_ComToggleTempNetwork
  .text.State_ResetToggleData_Show
-                0x0000dee0       0x10 misc/state.o
-                0x0000dee0                State_ResetToggleData_Show
+                0x0000df1c       0x10 misc/state.o
+                0x0000df1c                State_ResetToggleData_Show
  .text.TCC4_1_Handler
-                0x0000def0       0x34 misc/timing.o
-                0x0000def0                TCC4_1_Handler
+                0x0000df2c       0x34 misc/timing.o
+                0x0000df2c                TCC4_1_Handler
  .text.TCC4_2_Handler
-                0x0000df24       0x34 misc/timing.o
-                0x0000df24                TCC4_2_Handler
+                0x0000df60       0x34 misc/timing.o
+                0x0000df60                TCC4_2_Handler
  .text.timing_init
-                0x0000df58       0x9c misc/timing.o
-                0x0000df58                timing_init
+                0x0000df94       0x9c misc/timing.o
+                0x0000df94                timing_init
  .text.vListInitialise
-                0x0000dff4       0x18 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/list.o
-                0x0000dff4                vListInitialise
+                0x0000e030       0x18 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/list.o
+                0x0000e030                vListInitialise
  .text.vListInitialiseItem
-                0x0000e00c        0x8 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/list.o
-                0x0000e00c                vListInitialiseItem
+                0x0000e048        0x8 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/list.o
+                0x0000e048                vListInitialiseItem
  .text.vListInsertEnd
-                0x0000e014       0x20 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/list.o
-                0x0000e014                vListInsertEnd
+                0x0000e050       0x20 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/list.o
+                0x0000e050                vListInsertEnd
  .text.vListInsert
-                0x0000e034       0x34 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/list.o
-                0x0000e034                vListInsert
+                0x0000e070       0x34 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/list.o
+                0x0000e070                vListInsert
  .text.uxListRemove
-                0x0000e068       0x28 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/list.o
-                0x0000e068                uxListRemove
+                0x0000e0a4       0x28 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/list.o
+                0x0000e0a4                uxListRemove
  .text.prvTaskExitError
-                0x0000e090       0x40 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/portable/GCC/ARM_CM4F/port.o
+                0x0000e0cc       0x40 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/portable/GCC/ARM_CM4F/port.o
  .text.unlikely.prvPortStartFirstTask
-                0x0000e0d0       0x28 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/portable/GCC/ARM_CM4F/port.o
+                0x0000e10c       0x28 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/portable/GCC/ARM_CM4F/port.o
  .text.unlikely.vPortEnableVFP
-                0x0000e0f8       0x14 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/portable/GCC/ARM_CM4F/port.o
+                0x0000e134       0x14 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/portable/GCC/ARM_CM4F/port.o
  .text.pxPortInitialiseStack
-                0x0000e10c       0x2c thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/portable/GCC/ARM_CM4F/port.o
-                0x0000e10c                pxPortInitialiseStack
- *fill*         0x0000e138        0x8 
+                0x0000e148       0x2c thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/portable/GCC/ARM_CM4F/port.o
+                0x0000e148                pxPortInitialiseStack
+ *fill*         0x0000e174        0xc 
  .text.SVCall_Handler
-                0x0000e140       0x24 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/portable/GCC/ARM_CM4F/port.o
-                0x0000e140                SVCall_Handler
+                0x0000e180       0x24 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/portable/GCC/ARM_CM4F/port.o
+                0x0000e180                SVCall_Handler
  .text.vPortEnterCritical
-                0x0000e164       0x44 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/portable/GCC/ARM_CM4F/port.o
-                0x0000e164                vPortEnterCritical
+                0x0000e1a4       0x44 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/portable/GCC/ARM_CM4F/port.o
+                0x0000e1a4                vPortEnterCritical
  .text.vPortExitCritical
-                0x0000e1a8       0x28 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/portable/GCC/ARM_CM4F/port.o
-                0x0000e1a8                vPortExitCritical
+                0x0000e1e8       0x28 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/portable/GCC/ARM_CM4F/port.o
+                0x0000e1e8                vPortExitCritical
  .text.PendSV_Handler
-                0x0000e1d0       0x64 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/portable/GCC/ARM_CM4F/port.o
-                0x0000e1d0                PendSV_Handler
+                0x0000e210       0x64 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/portable/GCC/ARM_CM4F/port.o
+                0x0000e210                PendSV_Handler
  .text.SysTick_Handler
-                0x0000e234       0x30 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/portable/GCC/ARM_CM4F/port.o
-                0x0000e234                SysTick_Handler
+                0x0000e274       0x30 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/portable/GCC/ARM_CM4F/port.o
+                0x0000e274                SysTick_Handler
  .text.vPortSetupTimerInterrupt
-                0x0000e264       0x2c thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/portable/GCC/ARM_CM4F/port.o
-                0x0000e264                vPortSetupTimerInterrupt
+                0x0000e2a4       0x2c thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/portable/GCC/ARM_CM4F/port.o
+                0x0000e2a4                vPortSetupTimerInterrupt
  .text.xPortStartScheduler
-                0x0000e290      0x120 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/portable/GCC/ARM_CM4F/port.o
-                0x0000e290                xPortStartScheduler
+                0x0000e2d0      0x120 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/portable/GCC/ARM_CM4F/port.o
+                0x0000e2d0                xPortStartScheduler
  .text.vPortValidateInterruptPriority
-                0x0000e3b0       0x58 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/portable/GCC/ARM_CM4F/port.o
-                0x0000e3b0                vPortValidateInterruptPriority
+                0x0000e3f0       0x58 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/portable/GCC/ARM_CM4F/port.o
+                0x0000e3f0                vPortValidateInterruptPriority
  .text.pvPortMalloc
-                0x0000e408       0x64 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/portable/MemMang/heap_1.o
-                0x0000e408                pvPortMalloc
+                0x0000e448       0x64 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/portable/MemMang/heap_1.o
+                0x0000e448                pvPortMalloc
  .text.vPortFree
-                0x0000e46c       0x18 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/portable/MemMang/heap_1.o
-                0x0000e46c                vPortFree
+                0x0000e4ac       0x18 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/portable/MemMang/heap_1.o
+                0x0000e4ac                vPortFree
  .text.xPortGetFreeHeapSize
-                0x0000e484       0x14 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/portable/MemMang/heap_1.o
-                0x0000e484                xPortGetFreeHeapSize
+                0x0000e4c4       0x14 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/portable/MemMang/heap_1.o
+                0x0000e4c4                xPortGetFreeHeapSize
  .text.unlikely.prvCopyDataToQueue
-                0x0000e498       0x74 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/queue.o
+                0x0000e4d8       0x74 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/queue.o
  .text.unlikely.prvCopyDataFromQueue
-                0x0000e50c       0x2c thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/queue.o
+                0x0000e54c       0x2c thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/queue.o
  .text.xQueueGenericReset.part.1
-                0x0000e538       0x14 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/queue.o
+                0x0000e578       0x14 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/queue.o
  .text.prvNotifyQueueSetContainer
-                0x0000e54c       0x80 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/queue.o
+                0x0000e58c       0x80 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/queue.o
  .text.prvUnlockQueue
-                0x0000e5cc       0xbc thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/queue.o
+                0x0000e60c       0xbc thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/queue.o
  .text.xQueueGenericReset
-                0x0000e688       0x94 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/queue.o
-                0x0000e688                xQueueGenericReset
+                0x0000e6c8       0x94 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/queue.o
+                0x0000e6c8                xQueueGenericReset
  .text.xQueueGenericCreate
-                0x0000e71c       0x58 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/queue.o
-                0x0000e71c                xQueueGenericCreate
+                0x0000e75c       0x58 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/queue.o
+                0x0000e75c                xQueueGenericCreate
  .text.xQueueGenericSend
-                0x0000e774      0x1c8 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/queue.o
-                0x0000e774                xQueueGenericSend
+                0x0000e7b4      0x1c8 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/queue.o
+                0x0000e7b4                xQueueGenericSend
  .text.xQueueGenericSendFromISR
-                0x0000e93c       0xe8 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/queue.o
-                0x0000e93c                xQueueGenericSendFromISR
+                0x0000e97c       0xe8 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/queue.o
+                0x0000e97c                xQueueGenericSendFromISR
  .text.xQueueGiveFromISR
-                0x0000ea24       0xcc thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/queue.o
-                0x0000ea24                xQueueGiveFromISR
+                0x0000ea64       0xcc thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/queue.o
+                0x0000ea64                xQueueGiveFromISR
  .text.xQueueReceive
-                0x0000eaf0      0x190 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/queue.o
-                0x0000eaf0                xQueueReceive
+                0x0000eb30      0x190 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/queue.o
+                0x0000eb30                xQueueReceive
  .text.xQueueSemaphoreTake
-                0x0000ec80      0x1cc thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/queue.o
-                0x0000ec80                xQueueSemaphoreTake
+                0x0000ecc0      0x1cc thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/queue.o
+                0x0000ecc0                xQueueSemaphoreTake
  .text.vQueueWaitForMessageRestricted
-                0x0000ee4c       0x58 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/queue.o
-                0x0000ee4c                vQueueWaitForMessageRestricted
+                0x0000ee8c       0x58 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/queue.o
+                0x0000ee8c                vQueueWaitForMessageRestricted
  .text.prvIdleTask
-                0x0000eea4       0x2c thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
+                0x0000eee4       0x2c thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
  .text.prvResetNextTaskUnblockTime.part.1
-                0x0000eed0       0x18 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
+                0x0000ef10       0x18 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
  .text.prvAddCurrentTaskToDelayedList
-                0x0000eee8       0x80 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
+                0x0000ef28       0x80 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
  .text.eTaskGetState.part.4
-                0x0000ef68       0x14 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
+                0x0000efa8       0x14 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
  .text.xTaskCreate
-                0x0000ef7c      0x1c0 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
-                0x0000ef7c                xTaskCreate
+                0x0000efbc      0x1c0 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
+                0x0000efbc                xTaskCreate
  .text.eTaskGetState
-                0x0000f13c       0x60 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
-                0x0000f13c                eTaskGetState
+                0x0000f17c       0x60 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
+                0x0000f17c                eTaskGetState
  .text.vTaskStartScheduler
-                0x0000f19c       0x84 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
-                0x0000f19c                vTaskStartScheduler
+                0x0000f1dc       0x84 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
+                0x0000f1dc                vTaskStartScheduler
  .text.vTaskSuspendAll
-                0x0000f220       0x14 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
-                0x0000f220                vTaskSuspendAll
+                0x0000f260       0x14 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
+                0x0000f260                vTaskSuspendAll
  .text.xTaskGetTickCount
-                0x0000f234        0xc thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
-                0x0000f234                xTaskGetTickCount
+                0x0000f274        0xc thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
+                0x0000f274                xTaskGetTickCount
  .text.xTaskGetTickCountFromISR
-                0x0000f240       0x18 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
-                0x0000f240                xTaskGetTickCountFromISR
+                0x0000f280       0x18 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
+                0x0000f280                xTaskGetTickCountFromISR
  .text.xTaskIncrementTick
-                0x0000f258      0x124 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
-                0x0000f258                xTaskIncrementTick
+                0x0000f298      0x124 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
+                0x0000f298                xTaskIncrementTick
  .text.xTaskResumeAll
-                0x0000f37c      0x104 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
-                0x0000f37c                xTaskResumeAll
+                0x0000f3bc      0x104 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
+                0x0000f3bc                xTaskResumeAll
  .text.vTaskDelay
-                0x0000f480       0x58 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
-                0x0000f480                vTaskDelay
+                0x0000f4c0       0x58 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
+                0x0000f4c0                vTaskDelay
  .text.vTaskSwitchContext
-                0x0000f4d8       0x94 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
-                0x0000f4d8                vTaskSwitchContext
+                0x0000f518       0x94 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
+                0x0000f518                vTaskSwitchContext
  .text.vTaskPlaceOnEventList
-                0x0000f56c       0x3c thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
-                0x0000f56c                vTaskPlaceOnEventList
+                0x0000f5ac       0x3c thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
+                0x0000f5ac                vTaskPlaceOnEventList
  .text.vTaskPlaceOnEventListRestricted
-                0x0000f5a8       0x48 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
-                0x0000f5a8                vTaskPlaceOnEventListRestricted
+                0x0000f5e8       0x48 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
+                0x0000f5e8                vTaskPlaceOnEventListRestricted
  .text.xTaskRemoveFromEventList
-                0x0000f5f0       0x7c thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
-                0x0000f5f0                xTaskRemoveFromEventList
+                0x0000f630       0x7c thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
+                0x0000f630                xTaskRemoveFromEventList
  .text.vTaskInternalSetTimeOutState
-                0x0000f66c       0x14 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
-                0x0000f66c                vTaskInternalSetTimeOutState
+                0x0000f6ac       0x14 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
+                0x0000f6ac                vTaskInternalSetTimeOutState
  .text.xTaskCheckForTimeOut
-                0x0000f680       0x9c thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
-                0x0000f680                xTaskCheckForTimeOut
+                0x0000f6c0       0x9c thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
+                0x0000f6c0                xTaskCheckForTimeOut
  .text.vTaskMissedYield
-                0x0000f71c       0x10 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
-                0x0000f71c                vTaskMissedYield
+                0x0000f75c       0x10 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
+                0x0000f75c                vTaskMissedYield
  .text.vTaskGetInfo
-                0x0000f72c       0xa0 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
-                0x0000f72c                vTaskGetInfo
+                0x0000f76c       0xa0 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
+                0x0000f76c                vTaskGetInfo
  .text.xTaskGetSchedulerState
-                0x0000f7cc       0x20 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
-                0x0000f7cc                xTaskGetSchedulerState
+                0x0000f80c       0x20 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
+                0x0000f80c                xTaskGetSchedulerState
  .text.xTaskPriorityInherit
-                0x0000f7ec       0x90 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
-                0x0000f7ec                xTaskPriorityInherit
+                0x0000f82c       0x90 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
+                0x0000f82c                xTaskPriorityInherit
  .text.xTaskPriorityDisinherit
-                0x0000f87c       0x8c thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
-                0x0000f87c                xTaskPriorityDisinherit
+                0x0000f8bc       0x8c thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
+                0x0000f8bc                xTaskPriorityDisinherit
  .text.vTaskPriorityDisinheritAfterTimeout
-                0x0000f908       0xa0 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
-                0x0000f908                vTaskPriorityDisinheritAfterTimeout
+                0x0000f948       0xa0 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
+                0x0000f948                vTaskPriorityDisinheritAfterTimeout
  .text.pvTaskIncrementMutexHeldCount
-                0x0000f9a8       0x1c thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
-                0x0000f9a8                pvTaskIncrementMutexHeldCount
+                0x0000f9e8       0x1c thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
+                0x0000f9e8                pvTaskIncrementMutexHeldCount
  .text.prvCheckForValidListAndQueue
-                0x0000f9c4       0x54 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/timers.o
+                0x0000fa04       0x54 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/timers.o
  .text.prvInsertTimerInActiveList
-                0x0000fa18       0x44 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/timers.o
+                0x0000fa58       0x44 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/timers.o
  .text.xTimerCreateTimerTask
-                0x0000fa5c       0x50 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/timers.o
-                0x0000fa5c                xTimerCreateTimerTask
+                0x0000fa9c       0x50 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/timers.o
+                0x0000fa9c                xTimerCreateTimerTask
  .text.xTimerCreate
-                0x0000faac       0x54 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/timers.o
-                0x0000faac                xTimerCreate
+                0x0000faec       0x54 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/timers.o
+                0x0000faec                xTimerCreate
  .text.xTimerGenericCommand
-                0x0000fb00       0x74 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/timers.o
-                0x0000fb00                xTimerGenericCommand
+                0x0000fb40       0x74 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/timers.o
+                0x0000fb40                xTimerGenericCommand
  .text.prvSwitchTimerLists
-                0x0000fb74       0x94 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/timers.o
+                0x0000fbb4       0x94 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/timers.o
  .text.prvTimerTask
-                0x0000fc08      0x1d4 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/timers.o
- .text.Crc16    0x0000fddc       0x3c C:\projects\trunk\Izi-Lib-sam\Release\libIZI-Lib-sam.a(crc.o)
-                0x0000fddc                Crc16
+                0x0000fc48      0x1d4 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/timers.o
+ .text.Crc16    0x0000fe1c       0x3c C:\projects\trunk\Izi-Lib-sam\Release\libIZI-Lib-sam.a(crc.o)
+                0x0000fe1c                Crc16
  .text.Crc16Fast
-                0x0000fe18       0x28 C:\projects\trunk\Izi-Lib-sam\Release\libIZI-Lib-sam.a(crc.o)
-                0x0000fe18                Crc16Fast
- .text          0x0000fe40       0x30 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7e-m\libgcc.a(_aeabi_uldivmod.o)
-                0x0000fe40                __aeabi_uldivmod
- .text          0x0000fe70      0x2dc c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7e-m\libgcc.a(_udivmoddi4.o)
-                0x0000fe70                __udivmoddi4
- .text          0x0001014c        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7e-m\libgcc.a(_dvmd_tls.o)
-                0x0001014c                __aeabi_idiv0
-                0x0001014c                __aeabi_ldiv0
+                0x0000fe58       0x28 C:\projects\trunk\Izi-Lib-sam\Release\libIZI-Lib-sam.a(crc.o)
+                0x0000fe58                Crc16Fast
+ .text          0x0000fe80       0x30 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7e-m\libgcc.a(_aeabi_uldivmod.o)
+                0x0000fe80                __aeabi_uldivmod
+ .text          0x0000feb0      0x2dc c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7e-m\libgcc.a(_udivmoddi4.o)
+                0x0000feb0                __udivmoddi4
+ .text          0x0001018c        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7e-m\libgcc.a(_dvmd_tls.o)
+                0x0001018c                __aeabi_idiv0
+                0x0001018c                __aeabi_ldiv0
  .text.__libc_init_array
-                0x00010150       0x48 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-init.o)
-                0x00010150                __libc_init_array
- .text.memcmp   0x00010198       0x1e c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-memcmp.o)
-                0x00010198                memcmp
- .text.memcpy   0x000101b6       0x16 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-memcpy-stub.o)
-                0x000101b6                memcpy
- .text.memset   0x000101cc       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-memset.o)
-                0x000101cc                memset
- .text.sprintf  0x000101dc       0x48 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-sprintf.o)
-                0x000101dc                siprintf
-                0x000101dc                sprintf
- .text          0x00010224       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-strlen.o)
-                0x00010224                strlen
- .text.strncpy  0x00010234       0x2a c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-strncpy.o)
-                0x00010234                strncpy
- *fill*         0x0001025e        0x2 
+                0x00010190       0x48 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-init.o)
+                0x00010190                __libc_init_array
+ .text.memcmp   0x000101d8       0x1e c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-memcmp.o)
+                0x000101d8                memcmp
+ .text.memcpy   0x000101f6       0x16 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-memcpy-stub.o)
+                0x000101f6                memcpy
+ .text.memset   0x0001020c       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-memset.o)
+                0x0001020c                memset
+ .text.sprintf  0x0001021c       0x48 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-sprintf.o)
+                0x0001021c                siprintf
+                0x0001021c                sprintf
+ .text          0x00010264       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-strlen.o)
+                0x00010264                strlen
+ .text.strncpy  0x00010274       0x2a c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-strncpy.o)
+                0x00010274                strncpy
+ *fill*         0x0001029e        0x2 
  .text._malloc_r
-                0x00010260       0xbc c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-nano-mallocr.o)
-                0x00010260                _malloc_r
+                0x000102a0       0xbc c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-nano-mallocr.o)
+                0x000102a0                _malloc_r
  .text.__ssputs_r
-                0x0001031c       0xb6 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-nano-svfprintf.o)
-                0x0001031c                __ssputs_r
- *fill*         0x000103d2        0x2 
+                0x0001035c       0xb6 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-nano-svfprintf.o)
+                0x0001035c                __ssputs_r
+ *fill*         0x00010412        0x2 
  .text._svfprintf_r
-                0x000103d4      0x1e8 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-nano-svfprintf.o)
-                0x000103d4                _svfiprintf_r
-                0x000103d4                _svfprintf_r
+                0x00010414      0x1e8 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-nano-svfprintf.o)
+                0x00010414                _svfiprintf_r
+                0x00010414                _svfprintf_r
  .text._printf_common
-                0x000105bc       0xec c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-nano-vfprintf_i.o)
-                0x000105bc                _printf_common
+                0x000105fc       0xec c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-nano-vfprintf_i.o)
+                0x000105fc                _printf_common
  .text._printf_i
-                0x000106a8      0x240 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-nano-vfprintf_i.o)
-                0x000106a8                _printf_i
- .text._sbrk_r  0x000108e8       0x20 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-sbrkr.o)
-                0x000108e8                _sbrk_r
- *fill*         0x00010908        0x8 
- .text          0x00010910       0xa0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-memchr.o)
-                0x00010910                memchr
- .text.memmove  0x000109b0       0x34 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-memmove.o)
-                0x000109b0                memmove
+                0x000106e8      0x240 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-nano-vfprintf_i.o)
+                0x000106e8                _printf_i
+ .text._sbrk_r  0x00010928       0x20 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-sbrkr.o)
+                0x00010928                _sbrk_r
+ *fill*         0x00010948        0x8 
+ .text          0x00010950       0xa0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-memchr.o)
+                0x00010950                memchr
+ .text.memmove  0x000109f0       0x34 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-memmove.o)
+                0x000109f0                memmove
  .text.__malloc_lock
-                0x000109e4        0x2 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-mlock.o)
-                0x000109e4                __malloc_lock
+                0x00010a24        0x2 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-mlock.o)
+                0x00010a24                __malloc_lock
  .text.__malloc_unlock
-                0x000109e6        0x2 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-mlock.o)
-                0x000109e6                __malloc_unlock
- .text._free_r  0x000109e8       0x9c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-nano-freer.o)
-                0x000109e8                _free_r
+                0x00010a26        0x2 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-mlock.o)
+                0x00010a26                __malloc_unlock
+ .text._free_r  0x00010a28       0x9c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-nano-freer.o)
+                0x00010a28                _free_r
  .text._realloc_r
-                0x00010a84       0x4c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-nano-reallocr.o)
-                0x00010a84                _realloc_r
+                0x00010ac4       0x4c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-nano-reallocr.o)
+                0x00010ac4                _realloc_r
  .text._malloc_usable_size_r
-                0x00010ad0       0x12 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-nano-msizer.o)
-                0x00010ad0                _malloc_usable_size_r
+                0x00010b10       0x12 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-nano-msizer.o)
+                0x00010b10                _malloc_usable_size_r
  *(.glue_7t)
- .glue_7t       0x00010ae2        0x0 linker stubs
+ .glue_7t       0x00010b22        0x0 linker stubs
  *(.glue_7)
- .glue_7        0x00010ae2        0x0 linker stubs
+ .glue_7        0x00010b22        0x0 linker stubs
  *(.rodata .rodata* .gnu.linkonce.r.*)
- *fill*         0x00010ae2        0x2 
+ *fill*         0x00010b22        0x2 
  .rodata.str1.4
-                0x00010ae4        0xa izilink/slave/iziplus_dataframe.o
- *fill*         0x00010aee        0x2 
- .rodata        0x00010af0       0x10 powerline/dcbm1_driver.o
-                0x00010af0                csel_rates
- .rodata        0x00010b00      0x648 driver/stepdown.o
-                0x00010b00                random_table
-                0x00010b20                dmxTable
-                0x00011128                random_table2
+                0x00010b24        0xa izilink/slave/iziplus_dataframe.o
+ *fill*         0x00010b2e        0x2 
+ .rodata        0x00010b30       0x10 powerline/dcbm1_driver.o
+                0x00010b30                csel_rates
+ .rodata        0x00010b40      0x648 driver/stepdown.o
+                0x00010b40                random_table
+                0x00010b60                dmxTable
+                0x00011168                random_table2
  .rodata.str1.4
-                0x00011148        0x9 driver/stepdown.o
- *fill*         0x00011151        0x3 
- .rodata        0x00011154       0x30 hpl/sercom/hpl_sercom.o
+                0x00011188        0x9 driver/stepdown.o
+ *fill*         0x00011191        0x3 
+ .rodata        0x00011194       0x30 hpl/sercom/hpl_sercom.o
  .rodata.str1.4
-                0x00011184       0x3f izilink/iziplus_driver.o
- *fill*         0x000111c3        0x1 
- .rodata        0x000111c4      0x428 izilink/iziplus_module_def.o
-                0x0001158c                CfgSwap_table
+                0x000111c4       0x3f izilink/iziplus_driver.o
+ *fill*         0x00011203        0x1 
+ .rodata        0x00011204      0x428 izilink/iziplus_module_def.o
+                0x000115cc                CfgSwap_table
  .rodata.str1.4
-                0x000115ec        0xe izilink/iziplus_module_def.o
- *fill*         0x000115fa        0x2 
+                0x0001162c        0xe izilink/iziplus_module_def.o
+ *fill*         0x0001163a        0x2 
  .rodata.str1.4
-                0x000115fc       0x60 izilink/izi_input.o
+                0x0001163c       0x60 izilink/izi_input.o
  .rodata.str1.4
-                0x0001165c       0xde main.o
- *fill*         0x0001173a        0x2 
- .rodata        0x0001173c      0x21c misc/analog.o
-                0x0001173c                ntc_table
-                0x0001193c                adc_filters
-                0x00011944                adc_channels
-                0x0001194c                adc2_filters
-                0x00011950                adc2_channels
-                0x00011954                g_Adc_12bitFullRange
+                0x0001169c       0xde main.o
+ *fill*         0x0001177a        0x2 
+ .rodata        0x0001177c      0x21c misc/analog.o
+                0x0001177c                ntc_table
+                0x0001197c                adc_filters
+                0x00011984                adc_channels
+                0x0001198c                adc2_filters
+                0x00011990                adc2_channels
+                0x00011994                g_Adc_12bitFullRange
  .rodata.str1.4
-                0x00011958        0xd misc/analog.o
- *fill*         0x00011965        0x3 
- .rodata        0x00011968       0x33 misc/state.o
-                0x00011968                color_table
- *fill*         0x0001199b        0x1 
+                0x00011998        0xd misc/analog.o
+ *fill*         0x000119a5        0x3 
+ .rodata        0x000119a8       0x33 misc/state.o
+                0x000119a8                color_table
+ *fill*         0x000119db        0x1 
  .rodata.str1.4
-                0x0001199c      0x25b misc/state.o
+                0x000119dc      0x25b misc/state.o
                                 0x25f (size before relaxing)
- *fill*         0x00011bf7        0x1 
+ *fill*         0x00011c37        0x1 
  .rodata.str1.4
-                0x00011bf8       0x17 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
- *fill*         0x00011c0f        0x1 
+                0x00011c38       0x17 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/tasks.o
+ *fill*         0x00011c4f        0x1 
  .rodata.str1.4
-                0x00011c10        0x8 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/timers.o
- .rodata        0x00011c18      0x200 C:\projects\trunk\Izi-Lib-sam\Release\libIZI-Lib-sam.a(crc.o)
-                0x00011c18                crc16Table
+                0x00011c50        0x8 thirdparty/RTOS/freertos/FreeRTOSV10.0.0/Source/timers.o
+ .rodata        0x00011c58      0x200 C:\projects\trunk\Izi-Lib-sam\Release\libIZI-Lib-sam.a(crc.o)
+                0x00011c58                crc16Table
  .rodata.__sf_fake_stderr
-                0x00011e18       0x20 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-findfp.o)
-                0x00011e18                __sf_fake_stderr
- .rodata.__sf_fake_stdin
-                0x00011e38       0x20 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-findfp.o)
-                0x00011e38                __sf_fake_stdin
- .rodata.__sf_fake_stdout
                 0x00011e58       0x20 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-findfp.o)
-                0x00011e58                __sf_fake_stdout
+                0x00011e58                __sf_fake_stderr
+ .rodata.__sf_fake_stdin
+                0x00011e78       0x20 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-findfp.o)
+                0x00011e78                __sf_fake_stdin
+ .rodata.__sf_fake_stdout
+                0x00011e98       0x20 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-findfp.o)
+                0x00011e98                __sf_fake_stdout
  .rodata._svfprintf_r.str1.1
-                0x00011e78       0x11 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-nano-svfprintf.o)
+                0x00011eb8       0x11 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-nano-svfprintf.o)
  .rodata._printf_i.str1.1
-                0x00011e89       0x22 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-nano-vfprintf_i.o)
+                0x00011ec9       0x22 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m\libc_nano.a(lib_a-nano-vfprintf_i.o)
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x00011eac                . = ALIGN (0x4)
- *fill*         0x00011eab        0x1 
+                0x00011eec                . = ALIGN (0x4)
+ *fill*         0x00011eeb        0x1 
  *(.init)
- .init          0x00011eac        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7e-m/crti.o
-                0x00011eac                _init
- .init          0x00011eb0        0x8 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7e-m/crtn.o
-                0x00011eb8                . = ALIGN (0x4)
-                0x00011eb8                __preinit_array_start = .
+ .init          0x00011eec        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7e-m/crti.o
+                0x00011eec                _init
+ .init          0x00011ef0        0x8 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7e-m/crtn.o
+                0x00011ef8                . = ALIGN (0x4)
+                0x00011ef8                __preinit_array_start = .
  *(.preinit_array)
-                0x00011eb8                __preinit_array_end = .
-                0x00011eb8                . = ALIGN (0x4)
-                0x00011eb8                __init_array_start = .
+                0x00011ef8                __preinit_array_end = .
+                0x00011ef8                . = ALIGN (0x4)
+                0x00011ef8                __init_array_start = .
  *(SORT(.init_array.*))
  *(.init_array)
- .init_array    0x00011eb8        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7e-m/crtbegin.o
-                0x00011ebc                __init_array_end = .
-                0x00011ebc                . = ALIGN (0x4)
+ .init_array    0x00011ef8        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7e-m/crtbegin.o
+                0x00011efc                __init_array_end = .
+                0x00011efc                . = ALIGN (0x4)
  *crtbegin.o(.ctors)
  *(EXCLUDE_FILE(*crtend.o) .ctors)
  *(SORT(.ctors.*))
  *crtend.o(.ctors)
-                0x00011ebc                . = ALIGN (0x4)
+                0x00011efc                . = ALIGN (0x4)
  *(.fini)
- .fini          0x00011ebc        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7e-m/crti.o
-                0x00011ebc                _fini
- .fini          0x00011ec0        0x8 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7e-m/crtn.o
-                0x00011ec8                . = ALIGN (0x4)
-                0x00011ec8                __fini_array_start = .
+ .fini          0x00011efc        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7e-m/crti.o
+                0x00011efc                _fini
+ .fini          0x00011f00        0x8 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7e-m/crtn.o
+                0x00011f08                . = ALIGN (0x4)
+                0x00011f08                __fini_array_start = .
  *(.fini_array)
- .fini_array    0x00011ec8        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7e-m/crtbegin.o
+ .fini_array    0x00011f08        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7e-m/crtbegin.o
  *(SORT(.fini_array.*))
-                0x00011ecc                __fini_array_end = .
+                0x00011f0c                __fini_array_end = .
  *crtbegin.o(.dtors)
  *(EXCLUDE_FILE(*crtend.o) .dtors)
  *(SORT(.dtors.*))
  *crtend.o(.dtors)
-                0x00011ecc                . = ALIGN (0x4)
-                0x00011ecc                _efixed = .
+                0x00011f0c                . = ALIGN (0x4)
+                0x00011f0c                _efixed = .
                 [!provide]                PROVIDE (__exidx_start, .)
 
-.vfp11_veneer   0x00011ecc        0x0
- .vfp11_veneer  0x00011ecc        0x0 linker stubs
+.vfp11_veneer   0x00011f0c        0x0
+ .vfp11_veneer  0x00011f0c        0x0 linker stubs
 
-.v4_bx          0x00011ecc        0x0
- .v4_bx         0x00011ecc        0x0 linker stubs
+.v4_bx          0x00011f0c        0x0
+ .v4_bx         0x00011f0c        0x0 linker stubs
 
-.iplt           0x00011ecc        0x0
- .iplt          0x00011ecc        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7e-m/crtbegin.o
+.iplt           0x00011f0c        0x0
+ .iplt          0x00011f0c        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7e-m/crtbegin.o
 
-.ARM.exidx      0x00011ecc        0x8
+.ARM.exidx      0x00011f0c        0x8
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
- .ARM.exidx     0x00011ecc        0x8 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7e-m\libgcc.a(_udivmoddi4.o)
+ .ARM.exidx     0x00011f0c        0x8 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7e-m\libgcc.a(_udivmoddi4.o)
                 [!provide]                PROVIDE (__exidx_end, .)
-                0x00011ed4                . = ALIGN (0x4)
-                0x00011ed4                _etext = .
+                0x00011f14                . = ALIGN (0x4)
+                0x00011f14                _etext = .
 
 .bootloadersection
                 0x00000000        0x0
@@ -3929,8 +3929,8 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
 .jcr            0x00020000        0x0
  .jcr           0x00020000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7e-m/crtbegin.o
 
-.igot.plt       0x00011ed4        0x0 load address 0x00020000
- .igot.plt      0x00011ed4        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7e-m/crtbegin.o
+.igot.plt       0x00011f14        0x0 load address 0x00020000
+ .igot.plt      0x00011f14        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7e-m/crtbegin.o
 
 .mirrorsection  0x00022000        0x0
                 0x00022000                . = ALIGN (0x4)
@@ -3939,7 +3939,7 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
                 0x00022000                . = ALIGN (0x4)
                 0x00022000                _emirrorsection = .
 
-.relocate       0x20002200      0x964 load address 0x00011ed4
+.relocate       0x20002200      0x964 load address 0x00011f14
                 0x20002200                . = ALIGN (0x4)
                 0x20002200                _srelocate = .
  *(.ramfunc .ramfunc.*)
@@ -4004,7 +4004,7 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
                 0x04000000                . = ALIGN (0x8)
                 0x04000000                _eqspi = .
 
-.bss            0x20002b70     0xcd78 load address 0x00012850
+.bss            0x20002b70     0xcd78 load address 0x00012890
                 0x20002b70                . = ALIGN (0x4)
                 0x20002b70                _sbss = .
                 0x20002b70                _szero = .
@@ -4053,9 +4053,8 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
  .bss           0x200036d4        0x4 hal/utils/src/utils_syscalls.o
  .bss           0x200036d8        0x4 hpl/can/hpl_can.o
  .bss           0x200036dc     0x2004 hpl/nvmctrl/hpl_nvmctrl.o
- .bss           0x200056e0      0x14e izilink/iziplus_driver.o
+ .bss           0x200056e0      0x150 izilink/iziplus_driver.o
                 0x2000570c                iziplus_cmd_delayed_req
- *fill*         0x2000582e        0x2 
  .bss           0x20005830       0x2e izilink/iziplus_module_def.o
                 0x20005830                overrule_time_chx
                 0x20005832                iziplus_init_rdy
@@ -4177,7 +4176,7 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
                 0x2000f8e8                _ebss = .
                 0x2000f8e8                _ezero = .
 
-.stack          0x2000f8e8     0x1000 load address 0x0001f5c8
+.stack          0x2000f8e8     0x1000 load address 0x0001f608
                 0x2000f8e8                . = ALIGN (0x8)
                 0x2000f8e8                _sstack = .
                 0x200108e8                . = (. + STACK_SIZE)

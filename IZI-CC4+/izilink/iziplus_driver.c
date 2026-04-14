@@ -79,7 +79,7 @@ static bool iziplus_lightdata_ok = false;
 static uint16_t iziplus_com_active_timer = IZIPLUS_COM_ACTIVE_TIME / IZIPLUS_TIMEROS_TICKS;
 static uint16_t iziplus_com_tokens = IZIPLUS_COM_TOKEN_TIME / IZIPLUS_TIMEROS_TICKS;
 static uint32_t iziplus_active_time = 0;
-static uint16_t  iziplus_com_reinit = 0;
+static uint16_t  iziplus_com_reinit = 0, iziplus_com_reinit_cnt = 0;
 
 #if USE_CONTACT_TRIGGER	
 static uint8_t iziplus_contact_event = 0, iziplus_contact_repeat = 0, iziplus_contact_flags, iziplus_contact_seqid, iziplus_contact_dly;
@@ -524,15 +524,15 @@ void IziPlus_HandleRx(iziplus_data_frame_t *frame, bool handled)
 								iziplus_dataframe_response(frame->pan_id, IZIPLUS_DEVTYPE, (uint8_t *)iziplus_nwdata, nw_length);
 							}
 						}
-						else
+						else if((nw_data->msgtype.u.frame_type != IZIPLUS_FRAMETYPE_NOT))
 							tokenresult = IZIPLUS_TOKERES_CORRUPT_MEMORY;			// Write failed
 					}
 				}
-				else
+				else if((nw_data->msgtype.u.frame_type != IZIPLUS_FRAMETYPE_NOT))
 					tokenresult = IZIPLUS_TOKERES_INVALID_DATA;					// Incorrect content (not enough parameters)
 #ifndef DEBUG	
 			}
-			else
+			else if((nw_data->msgtype.u.frame_type != IZIPLUS_FRAMETYPE_NOT))
 				tokenresult = IZIPLUS_TOKERES_FAIL;					// Not in commissioning mode
 #endif
 		}
@@ -1204,21 +1204,26 @@ void IziPlus_HandleRx(iziplus_data_frame_t *frame, bool handled)
 			}
 			else if(iziplus_active_time < 600)	// First minute do max once per 5 sec
 			{
-				if(++iziplus_com_reinit > 50)
+				if(++iziplus_com_reinit_cnt >= 50)
 				{
-					iziplus_com_reinit = 0;
+					iziplus_com_reinit = 1;
+					iziplus_com_reinit_cnt = 0;
 				}
 			}
 			else								// After first minute do max once per 60 sec
 			{
-				if(++iziplus_com_reinit > 600)
+				if(++iziplus_com_reinit_cnt >= 600)
 				{
-					iziplus_com_reinit = 0;
+					iziplus_com_reinit = 1;
+					iziplus_com_reinit_cnt = 0;
 				}
 			}
-		}	
+		}
 		else
-			iziplus_com_reinit = 0;	
+		{
+			iziplus_com_reinit_cnt /= 2;
+			iziplus_com_reinit = 0;
+		}
 	}
 	
 	if(iziplus_state == IZIPLUS_STATE_COMMISSIONING)
