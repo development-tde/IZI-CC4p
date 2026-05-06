@@ -87,6 +87,7 @@ void IziPlus_Module_Fixture_CC4();
 bool IziPlus_Module_SetFixtureParameters();
 
 extern const uint8_t ntc_table[512];
+extern const uint8_t ntc_table_ext[512];
 extern boot_t boot_data;
 
 int16_t Adc_GetTempRaw(uint8_t degrees)
@@ -101,9 +102,16 @@ int16_t Adc_GetTempRaw(uint8_t degrees)
 	return -1;
 }
 
-uint16_t Adc_GetTintRaw()
+int16_t Adc_GetTempExtRaw(uint8_t degrees)
 {
-	return 3000;
+	for(uint16_t i = 0; i < 512; i++)
+	{
+		if(ntc_table_ext[i] == degrees)
+		{
+			return (int16_t)(i << 3);				// Give back raw value of AD (convert 8 to 12 bit)
+		}
+	}
+	return -1;
 }
 
 /************************************************************************/
@@ -177,32 +185,34 @@ void IziPlus_Module_Fixture_CC4()
 {
 	strcpy(iziplus_fixdef.model_name, "IZI-DriveCC4+");
 		
-	iziplus_fixdef.max_modes = 9;
-	static const iziplus_mode_def modes[9] =
+	iziplus_fixdef.max_modes = 12;
+	static const iziplus_mode_def modes[12] =
 	{
 		{ .channels = 1, .name = "1 Channel"},
 		{ .channels = 5, .name = "4 Chan Master"},
 		{ .channels = 4, .name = "4 Channel"},
-		{ .channels = 1, .name = "1 Output"},
-		{ .channels = 2, .name = "TunableWhite"},
-		{ .channels = 1, .name = "WarmDimming"},
-		{ .channels = 2, .name = "Changeover TW"},
-		{ .channels = 1, .name = "Changeover WD"},
-		{ .channels = 8, .name = "4 Channel 16-bit"}
+		{ .channels = 8, .name = "4 Channel 16bit"},
+		{ .channels = 2, .name = "TW Single Ctrl"},
+		{ .channels = 1, .name = "WD Single Ctrl"},
+		{ .channels = 4, .name = "TW Dual Ctrl"},
+		{ .channels = 2, .name = "WD Dual Ctrl"},
+		{ .channels = 2, .name = "Crossover TW SC"},
+		{ .channels = 1, .name = "Crossover WD SC"},
+		{ .channels = 4, .name = "Crossover TW DC"},
+		{ .channels = 2, .name = "Crossover WD DC"},
 	};
 	memcpy(iziplus_fixdef.modes, modes, sizeof(modes));
 	iziplus_fixdef.default_mode = 2;
 	
-	iziplus_fixdef.max_configs = 7;
-	static const iziplus_config_def configs[7] =
+	iziplus_fixdef.max_configs = 6;
+	static const iziplus_config_def configs[6] =
 	{
 		{ .size = 1, .idx = 0, .ref = 1, .name = "Current set", .min = 0, .max = 18, .dflt = 0 },
 		{ .size = 1, .idx = 1, .ref = 34, .name = "Filter mode", .min = 0, .max = 3, .dflt = 0},
 		{ .size = 1, .idx = 2, .ref = 12, .name = "NTC1 Temp Prot", .min = 60, .max = 90, .dflt = 70 },
-		{ .size = 1, .idx = 3, .ref = 13, .name = "NTC2 Temp Prot", .min = 60, .max = 90, .dflt = 70 },
-		{ .size = 1, .idx = 4, .ref = 16, .name = "Channel Swap", .min = 0, .max = 23, .dflt = 0 },
-		{ .size = 1, .idx = 5, .ref = 33, .name = "Contact 1 Map", .min = 0, .max = 32, .dflt = 0 },
-		{ .size = 1, .idx = 6, .ref = 35, .name = "Dim curve", .min = 0, .max = 3, .dflt = 2 },
+		{ .size = 1, .idx = 3, .ref = 16, .name = "Channel Swap", .min = 0, .max = 23, .dflt = 0 },
+		{ .size = 1, .idx = 4, .ref = 33, .name = "Contact 1 Map", .min = 0, .max = 32, .dflt = 0 },
+		{ .size = 1, .idx = 5, .ref = 35, .name = "Dim curve", .min = 0, .max = 3, .dflt = 2 },
 	};		// check CONFIG_SIZE if chang.name = "Frequency mode", .min = 0, .max = (CONFIG_MAX_FREQ - 1), .dflt = 0 }ed
 	memcpy(iziplus_fixdef.configs, configs, sizeof(configs));
 	
@@ -210,28 +220,26 @@ void IziPlus_Module_Fixture_CC4()
 	for(int i = 0; i < iziplus_fixdef.max_configs; i++)
 		iziplus_config_size += iziplus_fixdef.configs[i].size;
 	*/
-	iziplus_fixdef.max_monitors = 19;
-	static const iziplus_monitor_def monitors[19] =
+	iziplus_fixdef.max_monitors = 17;
+	static const iziplus_monitor_def monitors[17] =
 	{
 		{ .size = 1, .idx = 0,  .ref = 1,  /*.name = "Supply Voltage" */ },
 		{ .size = 1, .idx = 1,  .ref = 26, /*.name = "Power" */ },
 		{ .size = 1, .idx = 3,  .ref = 23, /*.name = "Output" */ },
 		{ .size = 1, .idx = 4,  .ref = 4,  /*.name = "Internal Temp" */ },
 		{ .size = 1, .idx = 5,  .ref = 5,  /*.name = "NTC1 Temp" */ },
-		{ .size = 1, .idx = 6,  .ref = 6,  /*.name = "NTC2 Temp" */ },
-		{ .size = 1, .idx = 7,  .ref = 13, /*.name = "Max IntTemp" */ },
-		{ .size = 1, .idx = 8,  .ref = 14, /*.name = "Max NTC1 Temp" */ },
-		{ .size = 1, .idx = 9,  .ref = 15, /*.name = "Max NTC2 Temp" */ },
-		{ .size = 1, .idx = 10, .ref = 19, /*.name = "Com Quality" */ },
-		{ .size = 1, .idx = 11, .ref = 25, /*.name = "Active Contacts" */ },
-		{ .size = 1, .idx = 12, .ref = 21, /*.name = "Status" */ },
-		{ .size = 2, .idx = 13, .ref = 30, /*.name = "Forward voltage x" */ },
-		{ .size = 2, .idx = 15, .ref = 32, /*.name = "Uptime" */ },
-		{ .size = 2, .idx = 17, .ref = 33, /*.name = "Operating Time x" */ },
-		{ .size = 2, .idx = 19, .ref = 36, /*.name = "Frequency x" */ },
-		{ .size = 2, .idx = 21, .ref = 34, /*.name = "Min output" */ },
-		{ .size = 1, .idx = 22, .ref = 31, /*.name = "Min supply voltage" */ },
-		{ .size = 2, .idx = 23, .ref = 43, /*.name = "Debug" */ },
+		{ .size = 1, .idx = 6,  .ref = 13, /*.name = "Max IntTemp" */ },
+		{ .size = 1, .idx = 7,  .ref = 14, /*.name = "Max NTC1 Temp" */ },
+		{ .size = 1, .idx = 8, .ref = 19, /*.name = "Com Quality" */ },
+		{ .size = 1, .idx = 9, .ref = 25, /*.name = "Active Contacts" */ },
+		{ .size = 1, .idx = 10, .ref = 21, /*.name = "Status" */ },
+		{ .size = 2, .idx = 11, .ref = 30, /*.name = "Forward voltage x" */ },
+		{ .size = 2, .idx = 13, .ref = 32, /*.name = "Uptime" */ },
+		{ .size = 2, .idx = 15, .ref = 33, /*.name = "Operating Time x" */ },
+		{ .size = 2, .idx = 17, .ref = 36, /*.name = "Frequency x" */ },
+		{ .size = 2, .idx = 19, .ref = 34, /*.name = "Min output" */ },
+		{ .size = 1, .idx = 20, .ref = 31, /*.name = "Min supply voltage" */ },
+		{ .size = 2, .idx = 21, .ref = 43, /*.name = "Debug" */ },
 	};		// MONITOR_SIZE
 	memcpy(iziplus_fixdef.monitors, monitors, sizeof(monitors));
 	/*iziplus_monitor_size = 0;
@@ -249,8 +257,8 @@ void IziPlus_Module_Update()
 	
 	max_intern_temp_raw = Adc_GetTempRaw(MAX_INTERN_TEMP);
 	limit_intern_temp_raw = Adc_GetTempRaw(MAX_INTERN_TEMP - TEMP_LIMIT_START_OFFSET);
-	max_ntc_temp_raw = Adc_GetTempRaw(MAX_NTC_TEMP);
-	limit_ntc_temp_raw = Adc_GetTempRaw(MAX_NTC_TEMP - TEMP_LIMIT_START_OFFSET);
+	max_ntc_temp_raw = Adc_GetTempExtRaw(MAX_NTC_TEMP);
+	limit_ntc_temp_raw = Adc_GetTempExtRaw(MAX_NTC_TEMP - TEMP_LIMIT_START_OFFSET);
 }
 
 bool IziPlus_Module_TemperatureCheck(int16_t temp, uint16_t *temp_master, int16_t max_config, int16_t limit_config)
@@ -613,7 +621,7 @@ uint8_t IziPlus_Module_MonitorValue(uint8_t ref, uint8_t *bfr)
 		uint32_t power = StepDown_GetPower() / 10;
 		bfr[0] = (uint8_t)(power >> 0);
 		bfr[1] = (uint8_t)(power >> 8);
-		stepdown_ctrl_chx[0].test = power;
+		//stepdown_ctrl_chx[0].test = power;
 		return 2;
 	}
 	else if(ref == 23)				// Output (100% is no limiter active)
@@ -635,11 +643,11 @@ uint8_t IziPlus_Module_MonitorValue(uint8_t ref, uint8_t *bfr)
 		*bfr = Adc_GetNtc();
 		return 1;
 	}
-	else if(ref == 6)				// NTC2
+	/*else if(ref == 6)				// NTC2
 	{
 		*bfr = Adc_GetNtc2();
 		return 1;
-	}
+	}*/
 	else if(ref == 13)				// Max Intern Temp
 	{
 		*bfr = Adc_GetTemperatureMax();
@@ -650,11 +658,11 @@ uint8_t IziPlus_Module_MonitorValue(uint8_t ref, uint8_t *bfr)
 		*bfr = Adc_GetNtcMax();
 		return 1;
 	}
-	else if(ref == 15)				// Max NTC2 Temp
+	/*else if(ref == 15)				// Max NTC2 Temp
 	{
 		*bfr = Adc_GetNtc2Max();
 		return 1;
-	}
+	}*/
 	else if(ref == 25)
 	{	
 		*bfr = IziInput_GetExtInput();
@@ -1020,8 +1028,48 @@ bool IziPlus_Module_Is16bit()
 	return appConfig->mode == MODE_4_CHANNEL_16;
 }
 
+bool IziPlus_Module_IsWd()
+{
+	return appConfig->mode > MODE_4_CHANNEL_16 && (appConfig->mode & 0x01);
+}
+
+bool IziPlus_Module_IsTw()
+{
+	return appConfig->mode > MODE_4_CHANNEL_16 && ((appConfig->mode & 0x01) == 0);
+}
+
+bool IziPlus_Module_IsChangeover()
+{
+	return appConfig->mode >= MODE_CHANGEOVER_TW_SINGLE;
+};
+
+bool IziPlus_Module_IsDual()
+{
+	return appConfig->mode > MODE_4_CHANNEL_16 && ((appConfig->mode & 0x03) >= 2);
+};
+
+const uint8_t Tw_Table[] =
+{
+	0,           83,         96,        104,        110,        115,        119,        123,        127,        130,        132,        135,        137,      140,        142,        144,
+	146,        147,        149,        151,        152,        154,        155,        157,        158,        159,        161,        162,        163,      164,        165,        166,
+	168,        169,        170,        171,        172,        173,        173,        174,        175,        176,        177,        178,        179,      179,        180,        181,
+	182,        183,        183,        184,        185,        185,        186,        187,        188,        188,        189,        190,        190,      191,        191,        192,
+	193,        193,        194,        194,        195,        196,        196,        197,        197,        198,        198,        199,        199,      200,        200,        201,
+	202,        202,        203,        203,        204,        204,        204,        205,        205,        206,        206,        207,        207,      208,        208,        209,
+	209,        210,        210,        210,        211,        211,        212,        212,        212,        213,        213,        214,        214,      214,        215,        215,
+	216,        216,        216,        217,        217,        218,        218,        218,        219,        219,        219,        220,        220,      220,        221,        221,
+	222,        222,        222,        223,        223,        223,        224,        224,        224,        225,        225,        225,        226,      226,        226,        227,
+	227,        227,        227,        228,        228,        228,        229,        229,        229,        230,        230,        230,        231,      231,        231,        231,
+	232,        232,        232,        233,        233,        233,        233,        234,        234,        234,        235,        235,        235,      235,        236,        236,
+	236,        236,        237,        237,        237,        238,        238,        238,        238,        239,        239,        239,        239,      240,        240,        240,
+	240,        241,        241,        241,        241,        242,        242,        242,        242,        243,        243,        243,        243,      244,        244,        244,
+	244,        245,        245,        245,        245,        245,        246,        246,        246,        246,        247,        247,        247,      247,        248,        248,
+	248,        248,        248,        249,        249,        249,        249,        249,        250,        250,        250,        250,        251,      251,        251,        251,
+	251,        252,        252,        252,        252,        252,        253,        253,        253,        253,        253,        254,        254,      254,        254,        255
+};
+
 /************************************************************************/
-/* chan_idx 0 = Ch1, 1 = Ch2, 2 = C3, 3 = Ch4							*/
+/* chan_idx 0 = Ch1, 1 = Ch2, 2 = Ch3, 3 = Ch4							*/
 /************************************************************************/
 uint16_t IziPlus_Module_GetDim(uint8_t chan_idx)
 {
@@ -1030,6 +1078,7 @@ uint16_t IziPlus_Module_GetDim(uint8_t chan_idx)
 	uint16_t val = 0;
 	
 	int index = IziPlus_Module_SingleChannel() ? 0 : idxs[chan_idx];
+	stepdown_ctrl_chx[chan_idx].chan_swap_idx = index;
 	if(IziPlus_Module_HasOutputMaster())
 	{
 		uint16_t lvl = !IziPlus_Module_IsOverruled() ? Izi_OutputGet(index + 1) : overrule_level_chx[index];
@@ -1044,6 +1093,64 @@ uint16_t IziPlus_Module_GetDim(uint8_t chan_idx)
 		index *= 2;
 		uint16_t lvl = !IziPlus_Module_IsOverruled() ? Izi_OutputGet(index) : overrule_level_chx[index];
 		val = Izi_OutputGet(index + 1) | (lvl << 8);
+	}
+	else if(IziPlus_Module_IsWd())
+	{
+		uint8_t idx = 0;
+		if(appConfig->mode == MODE_WD_DUAL || appConfig->mode == MODE_CHANGEOVER_WD_DUAL)
+		{
+			if(index >= 2)
+				idx = 1;
+		}
+		uint16_t lvl = !IziPlus_Module_IsOverruled() ? Izi_OutputGet(idx) : overrule_level_chx[idx];
+		if(index & 0x01)
+		{
+			if(IziPlus_Module_IsIdentifying())
+				val = (lvl << 8) | lvl;
+			else if(lvl >= 63 && lvl < 255)
+				val = ((lvl - 63) * 171) * 2;
+			else if(lvl == 255)
+				val = 0xFFFF;
+			else
+				val = 0;
+		}
+		else
+			val = (lvl << 8) | lvl;
+	}
+	else if(IziPlus_Module_IsChangeover())
+	{
+		uint8_t idx = 0;
+		if(!IziPlus_Module_IsDual())
+			idx = index & 0xFD;
+		else
+			idx = index;
+		uint16_t lvl = !IziPlus_Module_IsOverruled() ? Izi_OutputGet(idx) : overrule_level_chx[idx];
+		val = (lvl << 8) | lvl;
+	}
+	else if(IziPlus_Module_IsTw())
+	{
+		uint8_t idx = 0, idx_tw = 1;
+		if(appConfig->mode == MODE_TW_SINGLE)
+		{
+			idx = 0;
+			idx_tw = index & 0x01;	
+		}
+		else if(appConfig->mode == MODE_TW_DUAL)
+		{
+			idx = index & 0x02;
+			idx_tw = index;		
+		}
+		uint16_t lvl = !IziPlus_Module_IsOverruled() ? Izi_OutputGet(idx) : overrule_level_chx[idx];
+		if(index & 0x01)
+		{
+			uint16_t lvl_tw = !IziPlus_Module_IsOverruled() ? Izi_OutputGet(idx_tw) : overrule_level_chx[idx_tw];
+			if(lvl < 0xFF)
+				val = Tw_Table[lvl_tw] * lvl;
+			else
+				val = (Tw_Table[lvl_tw] << 8) | Tw_Table[lvl_tw];
+		}
+		else
+			val = (lvl << 8) | lvl;
 	}
 	else
 	{

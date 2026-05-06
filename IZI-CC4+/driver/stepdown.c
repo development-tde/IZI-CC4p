@@ -1242,7 +1242,6 @@ void Stepdown_SetCurrentCalc(uint16_t mA, volatile  stepdown_control_t *ctrl, ui
 		TCX_TIMER_CH4->COUNT16.CCBUF[1].reg = ctrl->stepdown_offtime;
 		TCX_TIMER_CH4->COUNT16.CCBUF[0].reg = ctrl->stepdown_offtime + 3;
 	}
-	
 	ctrl->mA = mA_org;
 }
 
@@ -1951,7 +1950,44 @@ static void StepDown_SetControl(uint16_t level_chx, volatile  stepdown_control_t
 	if(ctrl->issafety_off())
 		ctrl->level_curve = 0;														// Set too 0 when safety is on
 	
-	// Todo: TW/WD modes
+	// TW/WD modes
+	if(IziPlus_Module_IsChangeover())
+	{
+		uint8_t idx = 0;
+		if(ctrl->chan_swap_idx & 0x01)		// Cold channel
+		{
+			if(IziPlus_Module_IsDual())
+				idx = ctrl->chan_swap_idx >= 2 ? 2 : 0;
+				
+			for(int i = 0; i < MAX_DIM_CHANNELS; i++)	
+			{
+				if(stepdown_ctrl_chx[i].chan_swap_idx == idx)			// Search for swapped channel
+				{
+					idx = i;
+					break;
+				}
+			}	
+			ctrl->level_curve = ((stepdown_ctrl_chx[idx].level_curve_raw >> 8) * (ctrl->level_filter)) >> 8;
+		}
+		else // Warm channel
+		{
+			if(IziPlus_Module_IsDual())
+				idx = ctrl->chan_swap_idx >= 2 ? 3 : 1;
+			else
+				idx = 1;
+				
+			for(int i = 0; i < MAX_DIM_CHANNELS; i++)
+			{
+				if(stepdown_ctrl_chx[i].chan_swap_idx == idx)			// Search for swapped channel
+				{
+					idx = i;
+					break;
+				}
+			}
+			ctrl->level_curve = ((ctrl->level_curve >> 8) * (stepdown_ctrl_chx[idx].level_filter ^ 0xFFFF)) >> 8;
+		}
+	}
+	
 	//ctrl->level_curve = IziPlus_Module_GetTable(chan_idx, ctrl->level_curve);
 	//ctrl->test2 = ctrl->level_curve;
 	ctrl->level_curve = IziPlus_Module_TempLimit(ctrl->level_curve);				// Check if any temperature or power is too high
@@ -2007,7 +2043,9 @@ void StepDown_SetOutputs()
 	{
 		// Set the DAC and toff times
 		if(stepdown_ctrl_chx[i].level_curve > 0)
+		{
 			stepdown_ctrl_chx[i].set_current(i);						// Calculate Toff and Dac value
+		}
 		else
 		{
 			stepdown_ctrl_chx[i].power = 0;								// No calculations done, set to 0 here
@@ -2067,7 +2105,7 @@ void StepDown_SetOutputs()
 	dac_values[1] = stepdown_ctrl_chx[1].dac_data;		// DACB = Ch2
 	dac_values[2] = stepdown_ctrl_chx[3].dac_data;		// DACC = Ch4
 	dac_values[3] = stepdown_ctrl_chx[0].dac_data;		// DACD = Ch1
-
+	
 	Mcp4728_WriteDacs(dac_values);
 }
 

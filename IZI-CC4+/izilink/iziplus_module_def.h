@@ -21,12 +21,15 @@
 #define MODE_1_CHANNEL		0
 #define MODE_4_CHANMASTER	1
 #define MODE_4_CHANNEL		2
-#define MODE_SINGLE_CHANNEL	3
-#define MODE_TUNABLE_WHITE	4
-#define MODE_WARM_DIM		5
-#define MODE_CHANGEOVER_TW	6
-#define MODE_CHANGEOVER_WD	7
-#define MODE_4_CHANNEL_16	8
+#define MODE_4_CHANNEL_16	3
+#define MODE_TW_SINGLE		4
+#define MODE_WD_SINGLE		5
+#define MODE_TW_DUAL		6
+#define MODE_WD_DUAL		7
+#define MODE_CHANGEOVER_TW_SINGLE	8
+#define MODE_CHANGEOVER_WD_SINGLE	9
+#define MODE_CHANGEOVER_TW_DUAL		10
+#define MODE_CHANGEOVER_WD_DUAL		11
 
 #define DMXFAIL_OFF			0
 #define DMXFAIL_HOLD		1
@@ -232,5 +235,8 @@ bool IziPlus_Module_IsSafetyOff_Ch3();
 bool IziPlus_Module_IsSafetyOff_Ch4();
 bool IziPlus_Module_IsSafetyOff_Chx(uint8_t idx);
 void IziPlus_Module_SafetyOff_Chx(uint8_t idx, uint16_t time);
+
+bool IziPlus_Module_IsChangeover();
+bool IziPlus_Module_IsDual();
 
 #endif /* IZIPLUS_MODULE_DEF_H_ */

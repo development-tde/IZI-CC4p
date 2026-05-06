@@ -45,8 +45,8 @@ uint16_t Adc_GetNtc();
 uint16_t Adc_GetNtcRaw();
 uint16_t Adc_GetNtcUpdate();
 uint8_t Adc_GetNtcMax();
-uint16_t Adc_GetNtc2();
+/*uint16_t Adc_GetNtc2();
 uint8_t Adc_GetNtc2Max();
 uint16_t Adc_GetNtc2Raw();
-
+*/
 #endif /* ANALOG_H_ */

@@ -35,9 +35,9 @@ typedef void (*stepdown_control_channelenable_func)(bool, uint8_t);
 // Variables per channel
 struct stepdown_control_s {
 	int32_t level_filter;			// Dmx level last filter value
-	int32_t level_curve;			// Value after temp limit and table convert (after TW/WD ed), to be used for PWM
+	uint32_t level_curve;			// Value after temp limit and table convert (after TW/WD ed), to be used for PWM
 	int32_t level_curve16;			// Value after temp limit and table convert (after TW/WD ed), to be used for PWM
-	int32_t level_curve_raw;		// Value before temp limit and table convert (after TW/WD ed)
+	uint32_t level_curve_raw;		// Value before temp limit and table convert (after TW/WD ed)
 	int32_t freq_new;				// Current frequency of PWM
 	uint32_t period;				// Current period in ticks used for PWM
 	int32_t pwm_new;				// Last duty cycle in ticks for PWM
@@ -82,7 +82,7 @@ struct stepdown_control_s {
 	uint8_t chan_org;				// Non patched channel index
 	uint16_t toff_min2;				// Minimal toff value 2 
 	int8_t switch_sel;
-	uint8_t fe;
+	uint8_t chan_swap_idx;			// Same as channel, but if channels are swapped it contains the swapped channel number (starting from 0, channel starts from 1!!1)
 	uint16_t mA_scaled;
 	uint16_t dac_data_real;
 	uint32_t switch_level_prev;

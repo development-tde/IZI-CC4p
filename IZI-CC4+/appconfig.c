@@ -285,7 +285,7 @@ void AppLog_Default(bool all)
 	
 	if(all)
 		log->operating_sec = log->active_sec = 0;
-	log->intern_temp_max = log->ntc_temp_max = log->ntc2_temp_max = 0;
+	log->intern_temp_max = log->ntc_temp_max = log->fe = 0;
 	log->supply_min = 55000;		// 55V
 	log->min_output = 100;			// 100%
 	log->change_count = 0;

@@ -81,7 +81,7 @@ typedef struct applog_s {
 	uint32_t active_sec;
 	uint16_t intern_temp_max;
 	uint16_t ntc_temp_max;
-	uint16_t ntc2_temp_max;
+	uint16_t fe;
 	uint16_t supply_min;
 	uint16_t change_count;
 	uint8_t min_output;
