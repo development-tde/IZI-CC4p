@@ -168,7 +168,10 @@ typedef struct
 	uint16_t wd_gain;									// 86% in WD mode, so the 10W is not reached over the complete range (144)
 	uint8_t rgbw_sensitivity[MAX_DIM_CHANNELS];			// { 255, 184, 255, 102 };  // RGBW Sensitivity (in patched order!) (148)
 	uint16_t max_current_ch[MAX_DIM_CHANNELS];			// Max current per channel (156)
-	uint8_t reserved[84];
+	int16_t corr_dim_tables[MAX_DIM_CHANNELS];			// Brightness/dim-level correction per channel (0 = no correction), referenced against full brightness
+	uint8_t hwref_min;									// Lowest hwref this emitter data is valid for (164)
+	uint8_t hwref_max;									// Highest hwref this emitter data is valid for (165). 0/0 = legacy: exact match on hwref
+	uint8_t reserved[74];
 	uint16_t device_type;								// The base device type it has to match
 	uint16_t dac_min;									// Future functionality if dac_min should be overruled by emitter (0 = don't use)
 	char chan_chars[MAX_DIM_CHANNELS];					// Character per channel
