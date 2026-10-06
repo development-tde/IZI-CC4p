@@ -1,1 +1,10 @@
 /Debug/
+# Release build outputs (rebuilt by every build; the Makefile, scripts and tools stay tracked)
+/Release/output/
+/Release/*.bin
+/Release/*.eep
+/Release/*.elf
+/Release/*.hex
+/Release/*.lss
+/Release/*.map
+/Release/*.srec
