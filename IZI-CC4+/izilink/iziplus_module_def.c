@@ -29,6 +29,8 @@
 #define POWER_MAX_RESOLUTION		TEMP_MAX_RESOLUTION		// 0.05% per 100ms
 #define POWER_MAX_CC4				120000					// in 1mW = 120Watt (while 4x40W)
 
+#define IDENTIFY_UNLOCK_TIME		30						// 3 sec (per 100ms) for the default/reset identify modes: long enough to execute the action once, it is not a real duration
+
 #define MODE_CTRL_UNKNOWN		0
 #define MODE_CTRL_RGBW			1
 #define MODE_CTRL_TW			2
@@ -488,6 +490,8 @@ void IziPlus_Module_Timer100ms()
 			}
 			else if(module_identify_unlock_time)
 			{
+				module_identify_unlock_time = 0;		// Execute once. This branch ran every 100ms for the whole identify time, and AppConfig_Default()
+														// ends in an Eeprom_Write() - one factory-default command meant thousands of EEPROM sector writes.
 				if(module_identify_mode == IZIPLUS_IDENTMODE_FACTORY_DFLT)
 				{
 					State_SetAttentionInfo(COLOR_RED, COLOR_WHITE, 4, 2);
@@ -963,11 +967,26 @@ void IziPlus_Module_SetIdentify(uint8_t mode, uint8_t time)
 	// Todo: Handle all modes
 	if(time > 0)
 	{
-		State_SetAttentionInfo(COLOR_MAGENTA, COLOR_BLUE, ((uint16_t)time * 60), 2);
+		bool unlock = (time == IZIPLUS_IDENTMODE_MAGIC_TIME);		// Test before any clamping: the magic time (0xDF) is a sentinel that unlocks the default/reset modes, not a duration
+
+		// time is in minutes and this counter runs per 100ms, so time * 600 overflows the 16-bit
+		// counter from 110 minutes up - 0xDF used to land on 2728 (4.5 min) by wrapping, which is
+		// the only reason the sentinel worked at all. Clamp instead, and give the unlock modes a
+		// short fixed time: they act once (see the unlock branch in IziPlus_Module_Timer100ms) and
+		// there is no reason to keep reporting 'identify' to the master after that.
+		uint32_t identify_time = unlock ? IDENTIFY_UNLOCK_TIME : ((uint32_t)time * 600);
+		if(identify_time > 0xFFFF)
+			identify_time = 0xFFFF;									// ~109 minutes, the most a 16-bit 100ms counter can hold
+
+		uint32_t attention_time = (uint32_t)time * 60;				// State_SetAttentionInfo() multiplies this by 5 into a uint16_t
+		if(attention_time > (0xFFFF / 5))
+			attention_time = (0xFFFF / 5);
+
+		State_SetAttentionInfo(COLOR_MAGENTA, COLOR_BLUE, (uint16_t)attention_time, 2);
 		module_cpu_state.u.identify = 1;
-		module_identify_time = ((uint16_t)time * 600);
+		module_identify_time = (uint16_t)identify_time;
 		module_identify_mode = mode;
-		module_identify_unlock_time = time == IZIPLUS_IDENTMODE_MAGIC_TIME;
+		module_identify_unlock_time = unlock;
 		module_identify_prs = 0;
 		State_ResetToggleData_Show();
 	}

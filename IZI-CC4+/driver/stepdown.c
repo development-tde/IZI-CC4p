@@ -42,6 +42,8 @@
 #define POWER_MAX				40000					// Max in power in mW per channel
 
 #define VIN_WARNING_DBC			4						// Debounce for vin warning (per 10 ms)
+#define VIN_OFF_TIME_MS			2000					// 2 sec off when the supply drops under MIN_VIN_MV
+#define VIN_RECOVER_DBC			100						// 1 sec (per task tick) of healthy supply WITH the output running before the Vin error is released
 #define VLED_OC_WARNING_DBC		4						// Debounce for open circuit warning (per 10 ms)
 #define VLED_SC_ERROR_DBC		40						// Debounce for short circuit error (per 10 ms) (should be larger than PWM_LVL_OC_DETECT)
 
@@ -59,6 +61,9 @@
 
 #define MIN_VLED_MV				3000					// Minimal Vled voltage (also used for short detection)
 #define MAX_VIN_VLED_DIFF_MV	4000					// Max 4000 mV difference between Vin and Vled for proper outcome of calculation
+#define VIND_MIN_MV				1300					// Floor for the (Vin - Vled) headroom used in Stepdown_SetCurrentCalc(), see v_headroom there.
+														// Well under MAX_VIN_VLED_DIFF_MV: less headroom than that is already treated as an open
+														// output, so in healthy operation this floor is never reached and changes nothing.
 #define MIN_VIN_MV				30000					// Stop operation if vin lower than 30V (31V on again when 1V hysteresis)
 #define WARN_VIN_MV				30000					// Warn user for low supply (on at 40V when hysteresis is 1V)
 #define MIN_VIN_HYST_MV			1000					// Hysteresis when on again
@@ -940,6 +945,7 @@ void StepDown_Debug(uint8_t* data, uint16_t length)
 
 
 static uint8_t vin_error_prs = 0, vin_high_warn_prs = 0, power_high_warn_prs = 0, vin_warn_prs;
+static uint16_t vin_recover_prs = 0, vin_off_prs = 0;
 
 void StepDown_CheckLimits()
 {
@@ -947,27 +953,60 @@ void StepDown_CheckLimits()
 		return;
 	
 	uint32_t vin = Analog_GetSupplyVoltage();// Adc_GetVin();
+
+	// Low supply protection. Vin is measured with the output running, so closing the output makes
+	// Vin recover all by itself - which means the error may NOT be released on Vin alone. It used
+	// to be: the trip set vin_error_prs = VIN_WARNING_DBC and the recovery branch decremented it,
+	// so the error was gone ~4 ticks (40 ms) after Vin came back while the output stayed off for
+	// the full 2 sec. The module reported OK while it was actually dark, and the master never got
+	// to see the dropout at all. Hold the error until the output is running again on a healthy
+	// supply. vin_off_prs is our own copy of the off time, so this does not depend on the other
+	// StepDown_Close() callers (open/short detection) releasing theirs; StepDown_IsClosed() covers
+	// the reverse case, including the fast task rate where a tick is 5 ms.
+	if(vin_off_prs > 0)
+		vin_off_prs--;
+
 	if(vin < MIN_VIN_MV)
 	{
+		vin_recover_prs = 0;
 		if(++vin_error_prs >= (2*VIN_WARNING_DBC))
 		{
 			State_SetError(STATE_ERROR_VIN_LOW);
 			vin_error_prs = VIN_WARNING_DBC;			// Set again after 4 ticks
-			StepDown_Close(2000);
+			if(vin_off_prs == 0)						// Previous off time expired (or first trip)? Switch off again
+			{
+				vin_off_prs = VIN_OFF_TIME_MS / STEPDOWN_TIMEROS_TICKS;
+				StepDown_Close(VIN_OFF_TIME_MS);
+			}
 		}
 	}
-	else if(vin >= (MIN_VIN_MV + MIN_VIN_HYST_MV))
+	else if(vin < (MIN_VIN_MV + MIN_VIN_HYST_MV))		// In the hysteresis band: not low enough to trip, not high enough to trust
 	{
-		if(vin_error_prs > 0)
+		vin_recover_prs = 0;
+		if(State_IsErrorActive(STATE_ERROR_VIN_LOW) && vin_off_prs == 0)
 		{
-			if(--vin_error_prs == 0)
-				State_ClearError(STATE_ERROR_VIN_LOW);
+			vin_off_prs = VIN_OFF_TIME_MS / STEPDOWN_TIMEROS_TICKS;
+			StepDown_Close(VIN_OFF_TIME_MS);			// Still not healthy? Stay off. Guarded by our own timer now - the old code re-closed on every tick in this band
+		}
+	}
+	else if(State_IsErrorActive(STATE_ERROR_VIN_LOW))
+	{
+		if(vin_off_prs > 0 || StepDown_IsClosed())
+			vin_recover_prs = 0;						// Output is off, a healthy Vin says nothing about the supply under load
+		else if(++vin_recover_prs >= VIN_RECOVER_DBC)
+		{
+			vin_recover_prs = 0;
+			vin_error_prs = 0;
+			State_ClearError(STATE_ERROR_VIN_LOW);
 		}
 	}
 	else if(vin_error_prs > 0)
-		StepDown_Close(1000);					// Still to too low? Extend off time
-	
-	if(vin_error_prs == 0)
+		vin_error_prs--;								// Decay isolated low samples so they cannot pile up into a trip
+
+	// The error supersedes the warning, but do not hide the warning while only the debounce is
+	// running: gated on vin_error_prs == 0 this reported nothing at all on a marginal supply that
+	// never quite tripped, because a single sample under MIN_VIN_MV was enough to shut the gate.
+	if(!State_IsErrorActive(STATE_ERROR_VIN_LOW))
 	{
 		if(vin < WARN_VIN_MV)
 		{
@@ -1083,6 +1122,8 @@ void StepDown_CheckLimits()
 #define CONST_Q		255UL
 #define CONST_U		5UL
 
+#define VIND_MIN_RAW	ADC_MV_RAW(VIND_MIN_MV)			// VIND_MIN_MV in raw ADC counts, the unit vin_ad / vled_ad are in
+
 static uint8_t vled_prs = 0;
 
 /* Check if dac value is within limits */
@@ -1140,7 +1181,21 @@ void Stepdown_SetCurrentCalc(uint16_t mA, volatile  stepdown_control_t *ctrl, ui
 	ctrl->vin_ad = vin_ad;
 	if(ctrl->vin_ad < ctrl->vled_ad)
 		ctrl->vled_ad = ctrl->vin_ad;
-	
+
+	// Supply headroom over the LED voltage, in raw ADC counts. Everything below used to write
+	// (vin_ad - vled_ad) inline. Both are uint16_t so the subtraction itself is done as int, but
+	// every use multiplies it by a UL constant (CONST_G/CONST_M/CONST_Q), which converts the
+	// negative int to unsigned long and wraps it to ~2^32. The surrounding multiplications then
+	// overflow too, and dac_scale_max, dac_power and the reported ctrl->power (which is what the
+	// power limiter in IziPlus_Module_PowerCheck() acts on) all turn to garbage at once: the DAC
+	// slams to DAC_MIN and a bogus POWERx_HIGH warning is set.
+	// vled_ad is the raw measured LED voltage here, not a filtered estimate, so it crosses above
+	// vin_ad on plain ADC noise and non-simultaneous sampling of the two channels - the clamp two
+	// lines up already anticipates that, but it guards ctrl->vled_ad (the filtered top-detector
+	// value) and not this local. Floor the headroom instead; above the floor this is bit-for-bit
+	// the old value, so normal operation is untouched.
+	uint32_t v_headroom = (vin_ad > (vled_ad + VIND_MIN_RAW)) ? ((uint32_t)vin_ad - vled_ad) : VIND_MIN_RAW;
+
 	mA = ((mA_org * (ctrl->level_curve16)) / 65536UL);
 	
 	uint32_t toff_min = TOFF_MIN;//CONST_A - ((vled_ad * CONST_A) / vin_ad);
@@ -1179,7 +1234,7 @@ void Stepdown_SetCurrentCalc(uint16_t mA, volatile  stepdown_control_t *ctrl, ui
 	
 	uint32_t dac_scale_max = 0;
 	uint32_t par1 = (mA * CONST_E) + (toff * vled_ad * CONST_F);
-	uint32_t par2 = ((vin_ad - vled_ad) * CONST_G) + CONST_H;
+	uint32_t par2 = (v_headroom * CONST_G) + CONST_H;
 	if(par1 > par2)
 		dac_scale_max = (par1 - par2) >> 16;
 	
@@ -1201,7 +1256,7 @@ void Stepdown_SetCurrentCalc(uint16_t mA, volatile  stepdown_control_t *ctrl, ui
 		ctrl->dac_data_real = DAC_MIN_VIRTUAL;
 #endif
 
-	uint32_t dac_power = ((((POWER_MAX * CONST_K) / vled_ad) << 16) / ctrl->level_curve16) + ((((toff_set + CONST_D) * vled_ad * CONST_L) - ((vin_ad - vled_ad) * CONST_M)) >> 16) - CONST_N;	
+	uint32_t dac_power = ((((POWER_MAX * CONST_K) / vled_ad) << 16) / ctrl->level_curve16) + ((((toff_set + CONST_D) * vled_ad * CONST_L) - (v_headroom * CONST_M)) >> 16) - CONST_N;
 	if(dac_power < DAC_MIN)
 		dac_power = DAC_MIN;
 	else if(dac_power > DAC_MAX)
@@ -1217,7 +1272,7 @@ void Stepdown_SetCurrentCalc(uint16_t mA, volatile  stepdown_control_t *ctrl, ui
 	
 	//ctrl->dac_data_max = dac_max;
 	
-	uint16_t power = (((((((ctrl->dac_data * CONST_O) + CONST_P + ((vin_ad - vled_ad) * CONST_Q) - ((toff_set + CONST_D) * vled_ad * CONST_U)) >> 12) * vled_ad) >> 8) * ctrl->level_curve16) >> 16);
+	uint16_t power = (((((((ctrl->dac_data * CONST_O) + CONST_P + (v_headroom * CONST_Q) - ((toff_set + CONST_D) * vled_ad * CONST_U)) >> 12) * vled_ad) >> 8) * ctrl->level_curve16) >> 16);
 	ctrl->power = power;	
 	
 	ctrl->stepdown_offtime = toff_set;

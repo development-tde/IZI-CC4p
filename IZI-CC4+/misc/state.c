@@ -672,10 +672,22 @@ void State_TimerSync()
 			tc4_prs = 0;
 		}
 	}
+	// Align the 200ms state machine to the heartbeat, which is the only common time reference the
+	// modules have: retrigger TC4 and restart the prescaler, so the next State_Timer200ms() lands
+	// exactly one period after the sync on every module and they blink in step.
+	// Note tc4_prs = 0, NOT 0xFFF. 0xFFF made the very next TC4 tick (2ms!) run the 200ms machine:
+	// that aligned the modules, but it also cut the blink step in progress down to a barely visible
+	// flash on every heartbeat. It also clobbered the tc4_prs = 0 the branches above had just
+	// written, which is what shows the old tail was accidental. Restarting the period can only ever
+	// lengthen the current step, so it keeps the alignment without the truncation. Leaving tc4_prs
+	// alone is not an option either - the phase then free-runs per module and the blink drifts apart.
+	TC4->COUNT16.CTRLBSET.reg = TC_CTRLBCLR_CMD_RETRIGGER;		// Will set it to 0 when running
+	tc4_prs = 0;
+	// state_counter = 0xFFF makes that next tick roll it over to 0, which is where the error and
+	// warning patterns are allowed to restart (see state_delay in State_Timer200ms).
 	state_counter = 0xFFF;
-	tc4_prs = 0xFFF;
-	state_attentionprs = 0xFFF;
-	state_attentionstate = 0;
+	state_attentionprs = 0xFFF;			// Toggle the attention blink on that tick too, so the identify indication is in step as well
+	state_attentionstate = 0;			// ... and always starting on colour 1
 }
 
 void State_Init()

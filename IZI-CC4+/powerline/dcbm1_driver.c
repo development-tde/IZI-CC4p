@@ -413,7 +413,7 @@ bool dcbm1_checkrate(uint8_t rate)
 {
 	uint8_t data_read;
 	if(dcbm1_readreg(0, &data_read))
-		return data_read == rate;
+		return data_read == (0x60 | (rate & 0x03));
 	
 	return false;
 }

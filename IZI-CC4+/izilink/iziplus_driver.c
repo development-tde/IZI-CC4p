@@ -499,6 +499,12 @@ void IziPlus_HandleRx(iziplus_data_frame_t *frame, bool handled)
 							
 						if(assign_network_req->options != IZIPLUS_OPTION_ASSIGN_NETWORK_TEMP)		// Not temporary?
 						{
+							iziplus_nwtemp.pan_id = 0;						// Stop using Temp network parameters (or make sure). Every iziplus_data_get_*()
+																			// PREFERS the temp values, so without this a module that once received a temporary
+																			// assign-network ignores this permanent one completely: pan id, frequency, rate and
+																			// short id are written to EEPROM below and then not used until the next reboot.
+																			// Symptom: broadcast light data keeps working while addressed commands fail.
+																			// Matches the master, see IziPlus_Task() in IZI-PowerCom/izilink/iziplus_driver.c
 							appconfig_t *appconfig = AppConfig_Get();					// Get current app config in RAM
 							appconfig->pan_id = assign_network_req->pan_id;				// Set all received network config
 							appconfig->pl_frequency = assign_network_req->freq;
@@ -774,7 +780,8 @@ void IziPlus_HandleRx(iziplus_data_frame_t *frame, bool handled)
 			uint8_t channel_amount = IziPlus_Module_GetChannelAmount();
 			if(frame->lengthdir.u.length >= ((appConfig->offset + channel_amount) + 4))			// Enough bytes for out modes channel amount and offset?
 			{
-				Izi_OutputSetBuffer(IZIOUTPUT_SRC_IZI, 0, &frame->data[sizeof(iziplus_network_data_t) + appConfig->offset], channel_amount);		// Set new levels
+				if(nw_data->cmd != IZIPLUS_CMD_LIGHT_DATA_NOINPUT || DMXFAIL_OPERATE(appConfig->dmxfail) == DMXFAIL_HOLD)
+					Izi_OutputSetBuffer(IZIOUTPUT_SRC_IZI, 0, &frame->data[sizeof(iziplus_network_data_t) + appConfig->offset], channel_amount);		// Set new levels
 				if(nw_data->cmd == IZIPLUS_CMD_LIGHT_DATA_NOINPUT)
 				{
 #ifdef DMX_RDM					
@@ -1230,7 +1237,7 @@ void IziPlus_HandleRx(iziplus_data_frame_t *frame, bool handled)
 		iziplus_state_com_timer = IZIPLUS_COMMISSIONING_EXTTIME / IZIPLUS_TIMEROS_TICKS;		// Command received in commissioning state? Extend time of commissioning state
 	else
 		iziplus_com_active_timer = IZIPLUS_COM_ACTIVE_TIME / IZIPLUS_TIMEROS_TICKS;
-		
+
 	boot_data.last_code = 'Z';
 }
 
