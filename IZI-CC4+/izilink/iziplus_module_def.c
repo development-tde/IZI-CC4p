@@ -480,6 +480,10 @@ void IziPlus_Module_Timer100ms()
 			{
 				IziPlus_Module_Overrule_Ch1234(0xFFFFFFFF, 1000, PRIO_OVERRULE_HIGH);
 			}
+			else if(IZIPLUS_IDENTMODE_DIMLEVEL(module_identify_mode) > 0)		// Dim on: SPOTON at about 25, 10 or 50 % on all four channels
+			{
+				IziPlus_Module_Overrule_Ch1234((uint32_t)IZIPLUS_IDENTMODE_DIMLEVEL(module_identify_mode) * 0x01010101u, 1000, PRIO_OVERRULE_HIGH);
+			}
 			else if(module_identify_mode == IZIPLUS_IDENTMODE_QUALITY)
 			{
 				for(int i = 0; i < MAX_DIM_CHANNELS; i++)
