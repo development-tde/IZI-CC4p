@@ -25,7 +25,8 @@
 #define TEMP_MAX_RESOLUTION			2000					// Max calculation for resolution of temp and power reduce, checked per 100ms
 #define TEMP_LIMIT_START_OFFSET		5						// 5 degrees before limit the power reduce will start
 #define MAX_INTERN_TEMP				104						// Max 104 degrees intern (104 = off, from 104 - TEMP_LIMIT_START_OFFSET reduce will start)
-#define MAX_NTC_TEMP				90						// Max 90 degrees intern (90 = off, from 90 - TEMP_LIMIT_START_OFFSET reduce will start)
+#define MIN_NTC_TEMP				60						// Lowest NTC1 Temp Protect setting (config ref 12)
+#define MAX_NTC_TEMP				90						// Highest NTC1 Temp Protect setting, used while the setting is out of range (setting = off, from setting - TEMP_LIMIT_START_OFFSET reduce will start)
 #define POWER_MAX_RESOLUTION		TEMP_MAX_RESOLUTION		// 0.05% per 100ms
 #define POWER_MAX_CC4				120000					// in 1mW = 120Watt (while 4x40W)
 
@@ -259,8 +260,14 @@ void IziPlus_Module_Update()
 	
 	max_intern_temp_raw = Adc_GetTempRaw(MAX_INTERN_TEMP);
 	limit_intern_temp_raw = Adc_GetTempRaw(MAX_INTERN_TEMP - TEMP_LIMIT_START_OFFSET);
-	max_ntc_temp_raw = Adc_GetTempExtRaw(MAX_NTC_TEMP);
-	limit_ntc_temp_raw = Adc_GetTempExtRaw(MAX_NTC_TEMP - TEMP_LIMIT_START_OFFSET);
+
+	uint8_t ntc_temp = appConfig->config[APPCFG_NTC1];			// NTC1 Temp Protect
+	if(ntc_temp < MIN_NTC_TEMP || ntc_temp > MAX_NTC_TEMP)		// Not checked yet (AppConfig_CheckConfig): a value outside the NTC table would switch the protection off
+		ntc_temp = MAX_NTC_TEMP;
+	int16_t max_raw = Adc_GetTempExtRaw(ntc_temp);
+	int16_t limit_raw = Adc_GetTempExtRaw(ntc_temp - TEMP_LIMIT_START_OFFSET);
+	max_ntc_temp_raw = max_raw;									// Assign together, the 100ms timer uses both
+	limit_ntc_temp_raw = limit_raw;
 }
 
 bool IziPlus_Module_TemperatureCheck(int16_t temp, uint16_t *temp_master, int16_t max_config, int16_t limit_config)
