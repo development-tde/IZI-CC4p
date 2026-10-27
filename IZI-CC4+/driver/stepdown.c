@@ -2006,7 +2006,7 @@ static void StepDown_SetControl(uint16_t level_chx, volatile  stepdown_control_t
 		ctrl->level_curve = 0;														// Set too 0 when safety is on
 	
 	// TW/WD modes
-	if(IziPlus_Module_IsChangeover())
+	if(IziPlus_Module_IsChangeover() && !IziPlus_Module_IsIdentifying())		// Identify drives each output on its own
 	{
 		uint8_t idx = 0;
 		if(ctrl->chan_swap_idx & 0x01)		// Cold channel

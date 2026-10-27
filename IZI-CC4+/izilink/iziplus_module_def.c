@@ -31,6 +31,7 @@
 #define POWER_MAX_CC4				120000					// in 1mW = 120Watt (while 4x40W)
 
 #define IDENTIFY_UNLOCK_TIME		30						// 3 sec (per 100ms) for the default/reset identify modes: long enough to execute the action once, it is not a real duration
+#define IDENTIFY_CYCLE				50						// 5 sec (per 100ms) blink identify cycle, same as the CC2+ and the 5 sec network sync of the master
 
 #define MODE_CTRL_UNKNOWN		0
 #define MODE_CTRL_RGBW			1
@@ -192,17 +193,17 @@ void IziPlus_Module_Fixture_CC4()
 	static const iziplus_mode_def modes[12] =
 	{
 		{ .channels = 1, .name = "1 Channel"},
-		{ .channels = 5, .name = "4 Chan Master"},
+		{ .channels = 5, .name = "4 Channel Master"},
 		{ .channels = 4, .name = "4 Channel"},
 		{ .channels = 8, .name = "4 Channel 16bit"},
 		{ .channels = 2, .name = "TW Single Ctrl"},
 		{ .channels = 1, .name = "WD Single Ctrl"},
 		{ .channels = 4, .name = "TW Dual Ctrl"},
 		{ .channels = 2, .name = "WD Dual Ctrl"},
-		{ .channels = 2, .name = "Crossover TW SC"},
-		{ .channels = 1, .name = "Crossover WD SC"},
-		{ .channels = 4, .name = "Crossover TW DC"},
-		{ .channels = 2, .name = "Crossover WD DC"},
+		{ .channels = 2, .name = "Changeover TW SC"},
+		{ .channels = 1, .name = "Changeover WD SC"},
+		{ .channels = 4, .name = "Changeover TW DC"},
+		{ .channels = 2, .name = "Changeover WD DC"},
 	};
 	memcpy(iziplus_fixdef.modes, modes, sizeof(modes));
 	iziplus_fixdef.default_mode = 2;
@@ -410,13 +411,34 @@ bool IziPlus_Module_PowerCheck()
 	return power_master != POWER_MAX_RESOLUTION;					// Report power too high, still reducing = true
 }
 
+/************************************************************************/
+/* Blink identify pattern, per 100ms step of the IDENTIFY_CYCLE:		*/
+/*  0- 1 all off (short, in case they were on)							*/
+/*  2- 5 all on, 6-9 all off (only with more than one channel)			*/
+/* 10-   channel n blinks n times (200ms on, 200ms off)					*/
+/* Returns the software channels that are on (bit 0 = channel 1)		*/
+/************************************************************************/
+static uint8_t IziPlus_Module_IdentifyBlink(uint8_t prs, uint8_t channels)
+{
+	if(prs < 10)
+		return (channels > 1 && prs >= 2 && prs < 6) ? ((1 << channels) - 1) : 0;
+
+	prs -= 10;
+	for(uint8_t ch = 0; ch < channels; ch++)
+	{
+		uint8_t len = (ch + 1) * 4;
+		if(prs < len)
+			return ((prs & 0x03) < 2) ? (1 << ch) : 0;
+		prs -= len;
+	}
+	return 0;
+}
+
 /*
  * 100 ms timer timed by OS. Do not call OS routines from here
  */
 void IziPlus_Module_Timer100ms()
 {
-	if(++module_identify_prs >= 50)
-		module_identify_prs = 0;
 	if(overrule_time_chx > 0)
 		overrule_time_chx--;
 		
@@ -458,30 +480,17 @@ void IziPlus_Module_Timer100ms()
 		{
 			if(module_identify_mode == IZIPLUS_IDENTMODE_BLINK)
 			{
-				if(module_identify_prs <= 1)
-					IziPlus_Module_Overrule_Ch1234(0xFFFFFFFF, 400, PRIO_OVERRULE_HIGH);
-				else if(module_identify_prs == 4)
-					IziPlus_Module_Overrule_Ch1234(0, 200, PRIO_OVERRULE_HIGH);
-					
-				if(module_identify_prs == 6)
-					IziPlus_Module_Overrule_Chx(0, 0xFF, 200, PRIO_OVERRULE_HIGH);
-				else if(module_identify_prs == 8)
-					IziPlus_Module_Overrule_Chx(0, 0, 200, PRIO_OVERRULE_HIGH);
-			
-				if(module_identify_prs == 10 || module_identify_prs == 14)
-					IziPlus_Module_Overrule_Chx(1, 0xFF, 200, PRIO_OVERRULE_HIGH);
-				else if(module_identify_prs == 12 || module_identify_prs == 16)
-					IziPlus_Module_Overrule_Chx(1, 0, 200, PRIO_OVERRULE_HIGH);
-					
-				if(module_identify_prs == 18 || module_identify_prs == 22 || module_identify_prs == 26)
-					IziPlus_Module_Overrule_Chx(2, 0xFF, 200, PRIO_OVERRULE_HIGH);
-				else if(module_identify_prs == 20 || module_identify_prs == 24 || module_identify_prs == 28)
-					IziPlus_Module_Overrule_Chx(2, 0, 200, PRIO_OVERRULE_HIGH);
-					
-				if(module_identify_prs == 30 || module_identify_prs == 34 || module_identify_prs == 38 || module_identify_prs == 42)
-					IziPlus_Module_Overrule_Chx(3, 0xFF, 200, PRIO_OVERRULE_HIGH);
-				else if(module_identify_prs == 32 || module_identify_prs == 36 || module_identify_prs == 40 || module_identify_prs == 44)
-					IziPlus_Module_Overrule_Chx(3, 0, module_identify_prs == 44 ? 600 : 200, PRIO_OVERRULE_HIGH);
+				// Channels are the software channels (overrule_level_chx is indexed through the Channel Swap table in GetDim).
+				// Modes with one control channel light all outputs together.
+				bool single = appConfig->mode == MODE_1_CHANNEL || appConfig->mode == MODE_WD_SINGLE || appConfig->mode == MODE_CHANGEOVER_WD_SINGLE;
+				uint8_t blink = IziPlus_Module_IdentifyBlink(module_identify_prs, single ? 1 : MAX_DIM_CHANNELS);
+				uint32_t dim1234 = 0;
+				for(int i = 0; i < MAX_DIM_CHANNELS; i++)
+				{
+					if(single ? blink != 0 : (blink & (1 << i)) != 0)
+						dim1234 |= 0xFFu << (i * 8);
+				}
+				IziPlus_Module_Overrule_Ch1234(dim1234, 1000, PRIO_OVERRULE_HIGH);		// Overrule until timer expires, set every step
 			}
 			else if(module_identify_mode == IZIPLUS_IDENTMODE_SPOTON)
 			{
@@ -537,6 +546,8 @@ void IziPlus_Module_Timer100ms()
 			module_cpu_state.u.identify = 0;
 		}
 	}
+	if(++module_identify_prs >= IDENTIFY_CYCLE)		// After the identify step, so step 0 is shown first (as the CC2+ does)
+		module_identify_prs = 0;
 	if(++timer_prs >= 10)
 	{
 		appLogData->operating_sec++;
@@ -1109,7 +1120,12 @@ uint16_t IziPlus_Module_GetDim(uint8_t chan_idx)
 	
 	int index = IziPlus_Module_SingleChannel() ? 0 : idxs[chan_idx];
 	stepdown_ctrl_chx[chan_idx].chan_swap_idx = index;
-	if(IziPlus_Module_HasOutputMaster())
+	if(IziPlus_Module_IsIdentifying() && IziPlus_Module_IsOverruled())		// Identify sets the output level directly, whatever the mode (software channel order)
+	{
+		uint8_t lvl = overrule_level_chx[idxs[chan_idx]];
+		val = (lvl << 8) | lvl;
+	}
+	else if(IziPlus_Module_HasOutputMaster())
 	{
 		uint16_t lvl = !IziPlus_Module_IsOverruled() ? Izi_OutputGet(index + 1) : overrule_level_chx[index];
 		uint16_t lvl_master = !IziPlus_Module_IsOverruled() ? Izi_OutputGet(0) : 0xFF;				// If so, merge them. If overruled, set master to full
@@ -1135,9 +1151,7 @@ uint16_t IziPlus_Module_GetDim(uint8_t chan_idx)
 		uint16_t lvl = !IziPlus_Module_IsOverruled() ? Izi_OutputGet(idx) : overrule_level_chx[idx];
 		if(index & 0x01)
 		{
-			if(IziPlus_Module_IsIdentifying())
-				val = (lvl << 8) | lvl;
-			else if(lvl >= 63 && lvl < 255)
+			if(lvl >= 63 && lvl < 255)
 				val = ((lvl - 63) * 171) * 2;
 			else if(lvl == 255)
 				val = 0xFFFF;
