@@ -37,6 +37,7 @@
 
 #define DAC_MIN					512						// Minimum DAC value for OK measurement
 #define DAC_MIN_VIRTUAL			512						// Minimum DAC value that we want to match other IZI+ products, but can't be met due to bad DAC
+#define CHANGEOVER_COMP			154						// Part of the changeover power compensation applied, /256 (0 = linear split, 256 = full DAC model, which overshoots: 12 W at 50 % for 10 W at the ends)
 #define DAC_MAX					4095					// Maximum DAC value for OK measurement
 
 #define POWER_MAX				40000					// Max in power in mW per channel
@@ -1895,6 +1896,53 @@ const uint16_t dmxTable[MAX_CURVES][257] =
 	}
 };
 
+static uint32_t StepDown_Isqrt64(uint64_t val)
+{
+	uint64_t res = 0;
+	uint64_t bit = 1ULL << 62;
+	while(bit > val)
+		bit >>= 2;
+	while(bit != 0)
+	{
+		if(val >= res + bit)
+		{
+			val -= res + bit;
+			res = (res >> 1) + bit;
+		}
+		else
+			res >>= 1;
+		bit >>= 2;
+	}
+	return (uint32_t)res;
+}
+
+// Changeover TW/WD: the average LED current of an output is not linear in level_curve. Both the DAC peak
+// current (DAC_MIN + level * (dac_scale_max - DAC_MIN), Stepdown_SetCurrentCalc) and the PWM duty follow the
+// level, so current goes as f(x) = x * (a + (1 - a) * x) with a = DAC_MIN / dac_scale_max. A plain split
+// B * t / B * (1 - t) then sums to less than f(B) halfway through a colour sweep (power dip). Return the level
+// (24-bit) that gives this output share/65536 of the current it has at 'level', f^-1(share * f(level)), so
+// warm + cold current stays linear in the colour channel. Before the first current calculation a = 1, the old
+// linear split.
+static uint32_t StepDown_ChangeoverLevel(volatile stepdown_control_t *ctrl, uint32_t level, uint16_t share)
+{
+	uint32_t lin = ((level >> 8) * share) >> 8;											// Plain split
+	uint32_t a = 0x1000000UL;
+	if(ctrl->dac_scale_max > DAC_MIN)
+		a = ((uint32_t)DAC_MIN << 24) / ctrl->dac_scale_max;
+	uint32_t k = 0x1000000UL - a;
+	if(k == 0)
+		return lin;
+
+	uint32_t f = ((uint64_t)level * (a + (((uint64_t)k * level) >> 24))) >> 24;		// f(level)
+	uint32_t p = ((uint64_t)f * share) >> 16;											// Wanted f(x)
+	uint32_t root = StepDown_Isqrt64((uint64_t)a * a + 4ULL * k * p);					// Solve k*x^2 + a*x - p = 0
+	uint64_t x = ((uint64_t)(root - a) << 24) / (2ULL * k);
+	if(x > 0xFFFFFF)
+		x = 0xFFFFFF;
+	if(x < lin)
+		x = lin;
+	return lin + (((x - lin) * CHANGEOVER_COMP) >> 8);									// The real curve is more linear than the DAC model
+}
 
 static void StepDown_SetControl(uint16_t level_chx, volatile  stepdown_control_t *ctrl, uint8_t chan_idx)
 {
@@ -2022,7 +2070,7 @@ static void StepDown_SetControl(uint16_t level_chx, volatile  stepdown_control_t
 					break;
 				}
 			}	
-			ctrl->level_curve = ((stepdown_ctrl_chx[idx].level_curve_raw >> 8) * (ctrl->level_filter)) >> 8;
+			ctrl->level_curve = StepDown_ChangeoverLevel(ctrl, stepdown_ctrl_chx[idx].level_curve_raw, ctrl->level_filter);
 		}
 		else // Warm channel
 		{
@@ -2039,7 +2087,7 @@ static void StepDown_SetControl(uint16_t level_chx, volatile  stepdown_control_t
 					break;
 				}
 			}
-			ctrl->level_curve = ((ctrl->level_curve >> 8) * (stepdown_ctrl_chx[idx].level_filter ^ 0xFFFF)) >> 8;
+			ctrl->level_curve = StepDown_ChangeoverLevel(ctrl, ctrl->level_curve, stepdown_ctrl_chx[idx].level_filter ^ 0xFFFF);
 		}
 	}
 	
