@@ -32,6 +32,7 @@
 
 #define IDENTIFY_UNLOCK_TIME		30						// 3 sec (per 100ms) for the default/reset identify modes: long enough to execute the action once, it is not a real duration
 #define IDENTIFY_CYCLE				50						// 5 sec (per 100ms) blink identify cycle, same as the CC2+ and the 5 sec network sync of the master
+#define IDENTIFY_SYNC_WAIT			60						// 6 sec (per 100ms) max blinking all outputs at the start of a blink identify, waiting for the sync of the master
 
 #define MODE_CTRL_UNKNOWN		0
 #define MODE_CTRL_RGBW			1
@@ -45,6 +46,8 @@ iziplus_cpustate_u module_cpu_state;
 uint8_t module_monitor[IZI_MAX_MONITOR];
 uint8_t module_config[IZI_MAX_CONFIG];
 uint16_t module_identify_time = 0, module_identify_prs = 0, module_identify_mode = 0, module_identify_unlock_time = 0;
+static uint8_t module_identify_wait = IDENTIFY_SYNC_WAIT;	// Steps blinking all outputs before the first sync; IDENTIFY_SYNC_WAIT = cycle running
+static TickType_t module_sync_tick = 0;						// Tick of the last sync of the master (also when not identifying), phase of the blink-all
 uint16_t module_pup_time  = 0;
 uint16_t module_reset_report;
 extern uint8_t reset_cause;
@@ -478,7 +481,16 @@ void IziPlus_Module_Timer100ms()
 	{
 		if(--module_identify_time > 0)
 		{
-			if(module_identify_mode == IZIPLUS_IDENTMODE_BLINK)
+			if(module_identify_mode == IZIPLUS_IDENTMODE_BLINK && module_identify_wait < IDENTIFY_SYNC_WAIT)
+			{
+				// Until the first sync all outputs blink together (0.4 sec on/off), so modules never start halfway the cycle.
+				// Timed from the last sync, so modules that start identify at different moments still blink in phase
+				bool on = (((xTaskGetTickCount() - module_sync_tick) / 400) & 0x01) == 0;
+				IziPlus_Module_Overrule_Ch1234(on ? 0xFFFFFFFF : 0, 1000, PRIO_OVERRULE_HIGH);
+				if(++module_identify_wait >= IDENTIFY_SYNC_WAIT)
+					module_identify_prs = IDENTIFY_CYCLE - 1;			// No sync (no master): start the cycle at step 0 on the next step
+			}
+			else if(module_identify_mode == IZIPLUS_IDENTMODE_BLINK)
 			{
 				// Channels are the software channels (overrule_level_chx is indexed through the Channel Swap table in GetDim).
 				// Modes with one control channel light all outputs together.
@@ -618,6 +630,8 @@ void IziPlus_Module_SafetyOff_Chx(uint8_t idx, uint16_t time)
 void IziPlus_Module_IdentifySync()
 {
 	module_identify_prs = 0;
+	module_identify_wait = IDENTIFY_SYNC_WAIT;
+	module_sync_tick = xTaskGetTickCount();
 }
 
 bool IziPlus_Module_IsIdentifying()
@@ -1005,11 +1019,15 @@ void IziPlus_Module_SetIdentify(uint8_t mode, uint8_t time)
 			attention_time = (0xFFFF / 5);
 
 		State_SetAttentionInfo(COLOR_MAGENTA, COLOR_BLUE, (uint16_t)attention_time, 2);
+		if(module_identify_time == 0 || module_identify_mode != mode)		// New identify: blink all until the next sync. A repeated one keeps its synced cycle
+		{
+			module_identify_prs = 0;
+			module_identify_wait = 0;
+		}
 		module_cpu_state.u.identify = 1;
 		module_identify_time = (uint16_t)identify_time;
 		module_identify_mode = mode;
 		module_identify_unlock_time = unlock;
-		module_identify_prs = 0;
 		State_ResetToggleData_Show();
 	}
 	else

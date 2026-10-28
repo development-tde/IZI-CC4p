@@ -452,6 +452,8 @@ void IziPlus_HandleRx(iziplus_data_frame_t *frame, bool handled)
 	{
 		State_TimerSync();
 		IziPlus_Module_IdentifySync();
+		if(IziPlus_Module_IsIdentifying())
+			xTimerReset(xIziPlus_Timer, 0);			// Restart the 100ms timer, so the identify steps of all modules are aligned to the sync (not up to 100ms apart)
 	}
 	
 	boot_data.last_code = 'E';
