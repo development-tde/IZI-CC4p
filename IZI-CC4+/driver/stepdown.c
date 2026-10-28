@@ -37,7 +37,7 @@
 
 #define DAC_MIN					512						// Minimum DAC value for OK measurement
 #define DAC_MIN_VIRTUAL			512						// Minimum DAC value that we want to match other IZI+ products, but can't be met due to bad DAC
-#define CHANGEOVER_COMP			154						// Part of the changeover power compensation applied, /256 (0 = linear split, 256 = full DAC model, which overshoots: 12 W at 50 % for 10 W at the ends)
+#define CHANGEOVER_COMP			176						// Part of the changeover power compensation applied, /256 (0 = linear split, 256 = full DAC model, which overshoots: 12 W at 50 % for 10 W at the ends; 154 gave 10 W)
 #define DAC_MAX					4095					// Maximum DAC value for OK measurement
 
 #define POWER_MAX				40000					// Max in power in mW per channel
