@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReleaseNotes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Sources>
+    <Source Repo="." />
+    <Source Repo="..\IZI-Lib-sam" />
+  </Sources>
+  <Release Version="1.2.81" Classification="Important" Status="Released">
+    <ReleaseDate>2026-10-30T00:00:00+01:00</ReleaseDate>
+    <Notes>
+      <Summary>This release adds dimmed steady-light identify modes and makes blink identify show each output separately, in step across all modules. It also makes the external temperature protection use its configured limit and keeps light output steady in Changeover modes during a colour change.</Summary>
+      <NewFeatures>
+        <Item>Three new identify modes light the fixture steadily at about 10 %, 25 % or 50 %, so fixtures that have already been handled on site are easy to tell apart.</Item>
+      </NewFeatures>
+      <Enhancements>
+        <Item>Blink identify now uses the same 5-second pattern as the IZI-DriveCC2+: all outputs on, all off, then each output blinks its own number of times.</Item>
+        <Item>In modes with one control channel, blink identify flashes all outputs together.</Item>
+        <Item>When several modules are identified at once, they blink in step with each other because they follow the timing of the IZI-PowerCom.</Item>
+        <Item>A new blink identify starts by flashing all outputs together until it is in step with the system, so a module never starts halfway through the pattern.</Item>
+        <Item>Repeating the same identify command no longer restarts the blink pattern.</Item>
+        <Item>The Crossover modes are now called Changeover (TW SC, WD SC, TW DC, WD DC), and "4 Chan Master" is now "4 Channel Master"; existing mode settings stay the same.</Item>
+      </Enhancements>
+      <BugFixes>
+        <Item>The external temperature protection (NTC1 Temp Protect) now uses the configured limit (60–90 °C) instead of always 90 °C, reducing output from 5 °C below the setting.</Item>
+        <Item>In the Changeover tunable white and warm dim modes, total light output no longer dips halfway through a colour change.</Item>
+        <Item>Identify now lights the outputs correctly in the Changeover modes.</Item>
+      </BugFixes>
+      <KnownIssues />
+    </Notes>
+    <Dependencies />
+    <Revisions>
+      <Revision Repo="." Commit="8e91f7411a7c310c1e8fdfd48db9286cb374068b" />
+      <Revision Repo="..\IZI-Lib-sam" Commit="24be023e35800e9f60f6df1fe667c88724d255a1" />
+    </Revisions>
+  </Release>
+  <Release Version="1.2.72" Classification="Feature" Status="Released">
+    <ReleaseDate>2026-10-06T00:00:00+02:00</ReleaseDate>
+    <Notes>
+      <Summary>Initial release</Summary>
+      <NewFeatures />
+      <Enhancements />
+      <BugFixes />
+      <KnownIssues />
+    </Notes>
+    <Dependencies />
+    <Revisions />
+  </Release>
+</ReleaseNotes>
